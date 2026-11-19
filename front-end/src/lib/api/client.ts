@@ -13,6 +13,7 @@ export const endpoints = {
   districts: "/api/geo/districts",
   census: "/api/geo/census-sections",
   layers: "/api/geo/layers",
+  censusMetrics: "/api/geo/census-metrics",
   insights: (id: string) => `/api/listings/${encodeURIComponent(id)}/insights`,
 };
 const base = (
@@ -22,7 +23,14 @@ export async function request(
   path: string,
   init: RequestInit = {},
 ): Promise<Response> {
-  const timeout = AbortSignal.timeout(20000);
+  const configuredTimeout = Number(
+    process.env.NEXT_PUBLIC_API_TIMEOUT_MS ?? 90000,
+  );
+  const timeout = AbortSignal.timeout(
+    Number.isFinite(configuredTimeout)
+      ? Math.max(1000, Math.min(300000, configuredTimeout))
+      : 90000,
+  );
   const signal = init.signal
     ? AbortSignal.any([init.signal, timeout])
     : timeout;

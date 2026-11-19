@@ -8,6 +8,7 @@ import { ChatInput } from "./chat-input";
 import { ListingList } from "@/components/listings/listing-list";
 import { Logo } from "../logo";
 import { Button } from "../ui/button";
+import { LoadingStatus } from "../ui/loading-status";
 export function ChatPanel({ compact }: { compact: boolean }) {
   const messages = useAtlas((s) => s.messages);
   const pending = useAtlas((s) => s.pending);
@@ -75,12 +76,10 @@ export function ChatPanel({ compact }: { compact: boolean }) {
             </div>
           ))}
           {pending && (
-            <div className="thinking" role="status">
-              <span />
-              <span />
-              <span />
-              <p>Buscando tu lugar…</p>
-            </div>
+            <LoadingStatus
+              title="Atlas está buscando tu próximo hogar"
+              detail="Estamos procesando tus criterios y consultando las viviendas. Los resultados aparecerán aquí y en el mapa."
+            />
           )}
           <div ref={bottom} />
         </div>

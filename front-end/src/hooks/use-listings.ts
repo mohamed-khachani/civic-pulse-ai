@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, keepPreviousData } from "@tanstack/react-query";
 import { api } from "@/lib/api";
 import { useAtlas } from "@/stores/atlas-store";
 export function useDebounced<T>(value: T, delay = 300) {
@@ -12,20 +12,24 @@ export function useDebounced<T>(value: T, delay = 300) {
   return debounced;
 }
 export function useListings(page = 1) {
-  const filters = useDebounced(useAtlas((s) => s.filters));
+  const currentFilters = useAtlas((s) => s.filters);
+  const filters = useDebounced(currentFilters);
   const sort = useAtlas((s) => s.sort);
   const resultSetId = useAtlas((s) => s.resultSetId);
-  return useQuery({
+  const query = useQuery({
+    placeholderData: keepPreviousData,
     queryKey: ["listings", filters, sort, page, resultSetId],
     queryFn: ({ signal }) =>
       api.listings(filters, sort, page, signal, resultSetId),
   });
+  return { ...query, filtersReady: filters === currentFilters };
 }
 export function useGeo() {
   const currentFilters = useAtlas((s) => s.filters);
   const filters = useDebounced(currentFilters);
   const resultSetId = useAtlas((s) => s.resultSetId);
   const query = useQuery({
+    placeholderData: keepPreviousData,
     queryKey: ["geo", filters, resultSetId],
     queryFn: ({ signal }) => api.geo(filters, signal, resultSetId),
   });

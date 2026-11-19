@@ -217,14 +217,12 @@ describe("Map coordinates and source metrics", () => {
     const s = useAtlas.getState();
     s.setFilters({ max_price: 1000 });
     const revision = useAtlas.getState().searchRevision;
-    useAtlas
-      .getState()
-      .applyChat(revision, {
-        filters: {},
-        filters_mode: "replace",
-        conversation_id: "c",
-        suggestions: [],
-      });
+    useAtlas.getState().applyChat(revision, {
+      filters: {},
+      filters_mode: "replace",
+      conversation_id: "c",
+      suggestions: [],
+    });
     expect(useAtlas.getState().filters).toEqual({});
   });
 });

@@ -60,3 +60,29 @@ Optional geographic layers render polygons, points and lines only when supplied.
 - `tests`: contract, state, filtering, stale-response, CSV and optional Playwright journey coverage.
 
 On mobile the header switches between a full-screen map and a dedicated conversation tab; shared state survives either view. Accessible Radix dialogs/popovers manage focus, the input supports Enter/Shift+Enter and IME, and reduced-motion preferences are respected by CSS/Motion. No authentication, scraper, database, backend, or scoring service is implemented.
+
+## Madrid boundaries, automatic camera and census layers
+
+The map uses the actual Comunidad de Madrid outline, dissolved from the INE's 179 municipal polygons. `transformConstrain` limits all gestures and programmatic camera moves to that outline; a neutral mask hides the territory outside it. The region's bounding box and minimum zoom also limit navigation. This is a simplified administrative display boundary, not cadastral precision.
+
+Every completed geographic search automatically fits **all** returned points, independent of the listing-card pagination. A single listing can zoom to street/neighborhood scale (maximum automatic zoom 16). Panning, changing layers and switching modes do not reframe an unchanged result set. Explicit focus actions take precedence. Pending/stale responses do not move the camera.
+
+**Capas y entorno** now includes:
+
+- All **4,518 INE 2025 census sections** across the Community, lazily loaded from the bundled WGS84 snapshot.
+- Read-only inspection on hover (or tap on mobile). The card shows all available section variables, independent of the highlighted variable. End users cannot edit colors.
+- A single layer selector for choropleth variables with owner-configured hexadecimal color stops. No census-only tab, section search, or unavailable “other layers” list is exposed. Missing measurements stay gray. The API controls the palette and any per-section colors.
+- A legend showing units, source, observed/estimated/demo status, and a section inspector showing the selected value.
+- All polygon, point and line overlays insert **before the listing layers**. Listings and popups stay above them.
+
+Geographic shapes are real INE data. In mock mode, acoustic pollution and NO₂ values are **explicitly synthetic demonstration fixtures**, not environmental measurements. The population variable comes from the INE 2025 census and is labeled separately. Production loads environmental metrics from `GET /api/geo/census-metrics`, returning `CensusMetric[]` with `id`, `name`, `unit`, `kind`, `source`, optional `year`/`description`, sorted `stops: [{value,color}]` and `values: { [censusSectionId]: number | null }`. No environmental values are invented on production failures. GeoJSON features may also carry an optional per-section `properties.color`, set by the application owner/backend. Palette colors come from the API’s `CensusMetric.stops[].color`; demo palettes live in `src/lib/mock/census.ts`. These are configuration inputs, not user-editable controls.
+
+Override `NEXT_PUBLIC_CENSUS_GEOJSON_URL` to use the backend's full census collection instead of the bundled snapshot. Features require `properties.id` (CUSEC), `properties.municipality` and a Polygon/MultiPolygon geometry; optional `population` and `color` remain optional. Keep the geometry snapshot and metric identifiers on the same census vintage.
+
+Source and attribution: [INE Censo 2025 geographic service](https://www.ine.es/servergis/rest/services/Hosted/Censo_2025___N%C3%BAmero_de_personas/FeatureServer). **Seccionado cedido por el Instituto Nacional de Estadística.** See `public/geo/README.md`. Rebuild the public assets and bundled navigation boundary using `npm run geo:refresh` (network required). No housing backend is implemented by this preparation script.
+
+## Latency handling
+
+Chat, initial queries, filter changes, background result refreshes and census data show an accessible indeterminate progress bar, contextual status, elapsed time, and a reassuring message after ten seconds. No fabricated completion percentage is shown. Previous markers/cards remain visible and are identified as previous results during updates. Map panning stays available. The API timeout defaults to 90 seconds, configurable with `NEXT_PUBLIC_API_TIMEOUT_MS` (1–300 seconds). `NEXT_PUBLIC_MOCK_LATENCY_MS` controls demo latency.
+
+Hovering a census polygon gives it a subtle raised appearance (3 px elevation and a small shadow), preserving its configured thematic color and keeping listings above it. Listing and cluster hit tests always take precedence over census hover. **Ocultar viviendas / Mostrar viviendas** toggles only map markers and property popups; search criteria, cards, selection and conversation are preserved. **Sin resaltado** disables the census overlay entirely. Missing readings appear as “Sin datos”, and demo/estimated/observed provenance is shown per metric.

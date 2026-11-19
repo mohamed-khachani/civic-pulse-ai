@@ -8,6 +8,7 @@ import { numbers } from "@/lib/utils";
 import { ListingCard } from "./listing-card";
 import { ActiveFilters } from "../filters/filters";
 import { Button } from "../ui/button";
+import { LoadingStatus } from "../ui/loading-status";
 const sorts: Record<SortOrder, string> = {
   recommended: "Recomendados",
   price_asc: "Precio: menor a mayor",
@@ -25,22 +26,28 @@ export function ListingList({ compact = false }: { compact?: boolean }) {
     setPrevious({ filters, sort });
     setPage(1);
   }
-  const { data, error, isPending, isFetching, refetch } = useListings(page);
+  const { data, error, isPending, isFetching, filtersReady, refetch } =
+    useListings(page);
+  const pendingChat = useAtlas((s) => s.pending);
+  const refreshing = isFetching || !filtersReady;
+
   const options = useOptions();
   return (
     <section
       className="results-section"
       aria-label="Viviendas encontradas"
-      aria-busy={isFetching}
+      aria-busy={refreshing || pendingChat}
     >
       <div className="results-heading">
         <div>
           <span className="eyebrow">TU PRÓXIMO CAPÍTULO</span>
           <h3>
-            {isPending
-              ? "Buscando viviendas…"
+            {refreshing
+              ? data
+                ? "Actualizando viviendas…"
+                : "Buscando viviendas…"
               : data
-                ? `${numbers(data.total)} viviendas para ti`
+                ? `${numbers(data.total)} ${data.total === 1 ? "vivienda" : "viviendas"} para ti`
                 : "Tus resultados"}
             {isFetching && !isPending && (
               <LoaderCircle size={14} className="spin" />
@@ -64,6 +71,22 @@ export function ListingList({ compact = false }: { compact?: boolean }) {
         </label>
       </div>
       <ActiveFilters />
+      {refreshing && !pendingChat && (
+        <LoadingStatus
+          compact
+          title={data ? "Actualizando los resultados" : "Buscando viviendas"}
+          detail={
+            data
+              ? "Conservamos las viviendas anteriores mientras llegan los nuevos resultados."
+              : "Consultando las viviendas que cumplen tus criterios."
+          }
+        />
+      )}
+      {data && (refreshing || pendingChat) && (
+        <p className="previous-results-note">
+          Resultados anteriores · esperando la respuesta del servicio.
+        </p>
+      )}
       {error ? (
         <div className="empty-state" role="alert">
           <SearchX />
@@ -96,7 +119,9 @@ export function ListingList({ compact = false }: { compact?: boolean }) {
         </div>
       ) : (
         <>
-          <div className={`listing-grid ${compact ? "compact-grid" : ""}`}>
+          <div
+            className={`listing-grid ${compact ? "compact-grid" : ""} ${refreshing || pendingChat ? "results-updating" : ""}`}
+          >
             {data.listings.map((l) => (
               <ListingCard key={l.id} listing={l} compact={compact} />
             ))}

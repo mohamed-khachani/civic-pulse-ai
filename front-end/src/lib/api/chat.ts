@@ -81,6 +81,13 @@ export async function readChatResponse(
         "La conversación se ha interrumpido antes de completarse.",
       );
     return result;
+  } catch (error) {
+    if (
+      error instanceof DOMException &&
+      (error.name === "AbortError" || error.name === "TimeoutError")
+    )
+      throw new Error("El servicio ha tardado demasiado. Inténtalo de nuevo.");
+    throw error;
   } finally {
     await reader.cancel().catch(() => {});
     reader.releaseLock();

@@ -2076,3 +2076,604 @@ select {
     scroll-behavior: auto !important;
   }
 }
+
+/* Geospatial workspace: layers sit under listing markers; loading never blocks map gestures. */
+.loading-status {
+  padding: 16px;
+  border: 1px solid #dce8df;
+  border-radius: 11px;
+  background: #f8fbf9;
+  margin: 12px 0;
+  color: #415f49;
+  text-align: left;
+  min-width: 0;
+}
+.loading-status-copy {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+}
+.loading-status-icon {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  height: 34px;
+  width: 34px;
+  background: #eaf4ed;
+  border-radius: 10px;
+  color: #16803c;
+}
+.loading-status strong {
+  display: block;
+  font-size: 13px;
+  line-height: 1.5;
+  font-weight: 550;
+}
+.loading-status p {
+  font-size: 11px;
+  line-height: 1.6;
+  color: #718176;
+  margin-top: 4px;
+}
+.loading-elapsed {
+  margin-left: auto;
+  align-self: flex-start;
+  font-size: 10px;
+  color: #83988a;
+  white-space: nowrap;
+  padding-top: 3px;
+  font-variant-numeric: tabular-nums;
+}
+.loading-track {
+  height: 3px;
+  background: #e3ece6;
+  border-radius: 5px;
+  overflow: hidden;
+  margin-top: 13px;
+}
+.loading-track > span {
+  display: block;
+  height: 100%;
+  width: 35%;
+  background: #65a376;
+  border-radius: 5px;
+  animation: loadingSweep 1.8s ease-in-out infinite;
+}
+.loading-status-compact {
+  padding: 12px;
+  margin: 0 0 13px;
+}
+.loading-status-compact .loading-status-icon {
+  width: 29px;
+  height: 29px;
+}
+.loading-status-compact strong {
+  font-size: 12px;
+}
+.map-progress {
+  position: absolute;
+  bottom: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(370px, calc(100% - 100px));
+  pointer-events: none;
+  z-index: 8;
+}
+.map-progress .loading-status {
+  background: #fff;
+  box-shadow: 0 4px 20px #17211b0c;
+  margin: 0;
+}
+.previous-results-note {
+  font-size: 10px;
+  line-height: 1.5;
+  color: #87978c;
+  margin: 0 0 12px;
+}
+.results-updating {
+  opacity: 0.58;
+  transition: opacity 0.2s;
+}
+@keyframes loadingSweep {
+  0% {
+    transform: translateX(-110%);
+  }
+  100% {
+    transform: translateX(390%);
+  }
+}
+.census-panel {
+  width: 335px;
+  color: #17211b;
+}
+.census-heading h3 {
+  font-size: 16px;
+  font-weight: 550;
+}
+.census-heading p {
+  font-size: 11px;
+  line-height: 1.7;
+  color: #7b8a80;
+  margin-top: 5px;
+}
+.census-tabs {
+  display: flex;
+  gap: 4px;
+  background: #f1f5f2;
+  border-radius: 7px;
+  padding: 4px;
+  margin: 16px 0;
+}
+.census-tabs button {
+  flex: 1;
+  padding: 8px 9px;
+  font-size: 11px;
+  border-radius: 5px;
+  color: #718176;
+}
+.census-tabs button[aria-selected="true"] {
+  background: #fff;
+  color: #16803c;
+  box-shadow: 0 1px 4px #17211b0c;
+}
+.census-toggle {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 12px;
+  padding: 7px 0 15px;
+  border-bottom: 1px solid #e5eae7;
+}
+.census-toggle input,
+.metric-option input,
+.additional-layers input {
+  accent-color: #16803c;
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+}
+.census-toggle small {
+  display: block;
+  font-size: 10px;
+  color: #8a978e;
+  margin-top: 4px;
+}
+.census-help {
+  font-size: 11px;
+  line-height: 1.7;
+  color: #75877a;
+  margin: 13px 0;
+}
+.census-search {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  color: #687c6e;
+  font-size: 11px;
+  margin: 15px 0 10px;
+}
+.census-search input {
+  width: 100%;
+  border: 1px solid #dce5df;
+  border-radius: 7px;
+  padding: 10px;
+  font-size: 12px;
+  background: #fff;
+}
+.census-search-results {
+  max-height: 205px;
+  overflow: auto;
+  border: 1px solid #e7ede8;
+  border-radius: 8px;
+  scrollbar-width: thin;
+}
+.census-search-results > button {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  width: 100%;
+  text-align: left;
+  padding: 9px 10px;
+  border-bottom: 1px solid #f0f3f1;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+.census-search-results > button:hover,
+.census-search-results > button[aria-pressed="true"] {
+  background: #f0f7f2;
+}
+.census-search-results small {
+  display: block;
+  font-size: 10px;
+  color: #8a978e;
+  margin-top: 3px;
+}
+.census-search-results svg {
+  margin-left: auto;
+  color: #16803c;
+}
+.census-search-results > p {
+  font-size: 12px;
+  color: #7b8a80;
+  padding: 15px;
+}
+.section-swatch {
+  width: 16px;
+  height: 16px;
+  border: 1px solid #17211b15;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+.metric-option {
+  display: flex;
+  gap: 9px;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid #eff3f0;
+  font-size: 12px;
+}
+.metric-option small {
+  display: block;
+  font-size: 10px;
+  color: #8a978e;
+  margin-top: 5px;
+}
+.metric-palette {
+  padding: 14px;
+  background: #f7faf8;
+  border: 1px solid #e6eee8;
+  border-radius: 8px;
+  margin-top: 15px;
+}
+.metric-palette h4,
+.additional-layers h4 {
+  font-size: 12px;
+  font-weight: 550;
+  margin: 0 0 12px;
+}
+.metric-palette > label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+  font-size: 11px;
+  color: #65776b;
+}
+.metric-palette > p {
+  font-size: 10px;
+  color: #75877b;
+  line-height: 1.7;
+  margin-top: 12px;
+}
+.metric-palette > small {
+  display: block;
+  font-size: 9px;
+  color: #8b9a90;
+  line-height: 1.6;
+  margin-top: 7px;
+}
+.additional-layers {
+  border-top: 1px solid #e5eae7;
+  margin-top: 20px;
+  padding-top: 15px;
+}
+.additional-layers > label {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 12px;
+  padding: 9px 0;
+  color: #6f8175;
+}
+.additional-layers small {
+  display: block;
+  font-size: 10px;
+  color: #a0aca4;
+  margin-top: 4px;
+}
+.census-attribution {
+  font-size: 9px;
+  line-height: 1.7;
+  color: #95a198;
+  border-top: 1px solid #edf1ee;
+  margin-top: 16px;
+  padding-top: 12px;
+}
+.census-error {
+  padding: 10px;
+  font-size: 11px;
+  line-height: 1.6;
+  color: #9d4f3e;
+  background: #fcf6f4;
+  border-radius: 6px;
+  margin: 10px 0;
+}
+.census-error .button {
+  margin-top: 9px;
+}
+.census-map-error {
+  position: absolute;
+  top: 120px;
+  left: 20px;
+  max-width: 290px;
+  padding: 15px;
+  background: #fff;
+  border: 1px solid #e5eae7;
+  border-radius: 9px;
+  z-index: 8;
+  box-shadow: 0 4px 18px #17211b12;
+  font-size: 12px;
+  line-height: 1.6;
+}
+.census-map-error .button {
+  margin-top: 10px;
+}
+.census-inspector,
+.census-legend {
+  position: absolute;
+  left: 22px;
+  bottom: 87px;
+  z-index: 6;
+  width: 250px;
+  border: 1px solid #dce5df;
+  background: white;
+  box-shadow: 0 4px 20px #17211b10;
+  border-radius: 10px;
+  padding: 16px;
+}
+.census-inspector .eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 9px;
+  color: #748f7c;
+  letter-spacing: 1px;
+}
+.census-inspector h3 {
+  font-size: 18px;
+  margin: 8px 0 3px;
+  font-variant-numeric: tabular-nums;
+}
+.census-inspector > p {
+  font-size: 11px;
+  color: #829087;
+}
+.inspector-close {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  padding: 3px;
+  color: #819087;
+}
+.inspector-metric {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-top: 13px;
+  border-top: 1px solid #edf1ee;
+  padding-top: 13px;
+}
+.inspector-metric > span {
+  font-size: 11px;
+  color: #6e8476;
+}
+.inspector-metric strong {
+  font-size: 17px;
+  font-weight: 550;
+}
+.inspector-metric small {
+  font-size: 9px;
+  color: #90a096;
+}
+.census-legend {
+  width: 245px;
+  pointer-events: none;
+}
+.census-legend h4 {
+  font-size: 12px;
+  font-weight: 550;
+  margin: 0 0 7px;
+}
+.metric-kind {
+  font-size: 9px;
+  color: #819489;
+}
+.metric-demo {
+  color: #9c7136;
+}
+.legend-scale {
+  height: 9px;
+  border-radius: 3px;
+  margin-top: 12px;
+}
+.legend-values {
+  display: flex;
+  justify-content: space-between;
+  font-size: 9px;
+  color: #74887b;
+  margin-top: 6px;
+}
+.census-legend > p {
+  font-size: 9px;
+  color: #8b9b91;
+  margin-top: 8px;
+  line-height: 1.6;
+}
+.census-legend > small {
+  font-size: 9px;
+  color: #8b9b91;
+  display: block;
+  line-height: 1.6;
+  margin-top: 7px;
+}
+.census-legend i {
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  background: #d9dfdb;
+  margin-right: 5px;
+}
+.map-legends {
+  bottom: 300px;
+}
+@media (max-width: 767px) {
+  .census-panel {
+    width: min(335px, calc(100vw - 60px));
+  }
+  .census-inspector,
+  .census-legend {
+    left: 13px;
+    bottom: 85px;
+    width: 235px;
+    padding: 14px;
+  }
+  .map-progress {
+    bottom: 25px;
+    width: calc(100% - 95px);
+    left: 13px;
+    transform: none;
+  }
+  .map-progress .loading-status {
+    padding: 10px;
+  }
+  .map-progress strong {
+    font-size: 11px;
+  }
+  .map-progress p {
+    font-size: 10px;
+  }
+  .map-progress .loading-status-icon {
+    width: 25px;
+    height: 25px;
+  }
+  .map-progress .loading-track {
+    margin-top: 9px;
+  }
+  .map-layers {
+    bottom: 35px;
+  }
+  .map-progress ~ .map-layers {
+    bottom: 100px;
+  }
+  .census-legend {
+    max-width: calc(100% - 80px);
+  }
+  .census-search-results {
+    max-height: 170px;
+  }
+  .census-map-error {
+    top: 120px;
+    left: 13px;
+    width: calc(100% - 65px);
+  }
+}
+
+.metric-scale-stop {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-bottom: 9px;
+  font-size: 11px;
+  color: #65776b;
+}
+
+.map-layers {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.census-hover-popup {
+  z-index: 9;
+  pointer-events: none !important;
+}
+.census-hover-popup .maplibregl-popup-content {
+  pointer-events: none;
+  padding: 0 !important;
+  border: 1px solid #dce5df;
+  box-shadow: 0 6px 24px #17211b20 !important;
+}
+.census-hover-info {
+  width: 275px;
+  padding: 16px;
+  color: #17211b;
+}
+.census-hover-info > .eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 9px;
+  color: #748f7c;
+  letter-spacing: 1px;
+}
+.census-hover-info > h3 {
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.4;
+  font-weight: 550;
+  margin: 7px 0 3px;
+  font-variant-numeric: tabular-nums;
+}
+.census-hover-info > p {
+  font-family: var(--font-sans);
+  font-size: 11px;
+  color: #829087;
+  margin: 0;
+}
+.section-metrics {
+  margin-top: 12px;
+}
+.section-metric-row {
+  padding: 10px 0;
+  border-top: 1px solid #edf1ee;
+  font-family: var(--font-sans);
+}
+.section-metric-row > div {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+.section-metric-row span {
+  font-size: 11px;
+  color: #6e8175;
+  line-height: 1.5;
+}
+.section-metric-row strong {
+  font-size: 12px;
+  line-height: 1.5;
+  font-weight: 550;
+  white-space: nowrap;
+  color: #263c2e;
+}
+.section-metric-row small {
+  display: block;
+  margin-top: 3px;
+  font-size: 9px;
+  line-height: 1.5;
+  color: #8b9b91;
+}
+.section-metric-active > div > span {
+  color: #3d6f4b;
+  font-weight: 550;
+}
+.census-inspector {
+  max-height: calc(100% - 215px);
+  overflow: auto;
+  scrollbar-width: thin;
+}
+@media (max-width: 767px) {
+  .map-layers {
+    gap: 6px;
+  }
+  .map-layers .button {
+    font-size: 10px;
+    padding: 8px 10px;
+  }
+  .census-hover-info {
+    width: 250px;
+  }
+  .census-inspector {
+    max-height: calc(100% - 225px);
+  }
+}

@@ -138,6 +138,46 @@ const geometrySchema = z.discriminatedUnion("type", [
     coordinates: z.array(z.array(ringSchema).min(1)).min(1),
   }),
 ]);
+export const hexColorSchema = z
+  .string()
+  .regex(/^#[0-9a-fA-F]{6}$/, "Usa un color hexadecimal como #16803C");
+export const censusCollectionSchema = z.object({
+  type: z.literal("FeatureCollection"),
+  features: z.array(
+    z.object({
+      type: z.literal("Feature"),
+      id: z.string().optional(),
+      geometry: geometrySchema.refine(
+        (g) => g.type === "Polygon" || g.type === "MultiPolygon",
+      ),
+      properties: z.object({
+        id: z.string(),
+        municipality: z.string(),
+        color: hexColorSchema.optional(),
+        population: z.number().nullable().optional(),
+      }),
+    }),
+  ),
+});
+export const censusMetricSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  unit: z.string(),
+  kind: z.enum(["observed", "estimated", "synthetic"]),
+  source: z.string(),
+  description: z.string().optional(),
+  year: z.number().int().optional(),
+  stops: z
+    .array(z.object({ value: z.number(), color: hexColorSchema }))
+    .min(2)
+    .refine(
+      (stops) => stops.every((s, i) => i === 0 || s.value > stops[i - 1].value),
+      "Stops must be strictly increasing",
+    ),
+  values: z.record(z.string(), z.number().nullable()),
+});
+export type CensusCollection = z.infer<typeof censusCollectionSchema>;
+export type CensusMetric = z.infer<typeof censusMetricSchema>;
 export const geographicLayerSchema = z.object({
   id: z.string(),
   name: z.string(),

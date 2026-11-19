@@ -21,7 +21,16 @@ export interface MapSlice {
   viewport: MapViewport;
   mapAction?: MapAction;
   mapActionVersion: number;
+  fittedResultKey?: string;
   visibleLayers: string[];
+  censusVisible: boolean;
+  listingsVisible: boolean;
+  setListingsVisible: (visible: boolean) => void;
+  activeCensusMetric?: string;
+  selectedCensusId?: string;
+  setCensusVisible: (visible: boolean) => void;
+  setCensusMetric: (id?: string) => void;
+  selectCensus: (id?: string) => void;
   select: (id?: string) => void;
   setViewport: (viewport: MapViewport) => void;
   act: (action: MapAction) => void;

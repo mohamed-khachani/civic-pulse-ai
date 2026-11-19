@@ -290,7 +290,7 @@ export function MapFilters() {
         {isFetching ? (
           <LoaderCircle size={14} className="spin" />
         ) : (
-          `${data?.total ?? "—"} viviendas`
+          `${data?.total ?? "—"} ${data?.total === 1 ? "vivienda" : "viviendas"}`
         )}
       </span>
     </div>

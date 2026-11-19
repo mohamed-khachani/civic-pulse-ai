@@ -1,4 +1,4 @@
-import type { GeographicLayer, MapViewport } from "@/types";
+import type { GeographicLayer, MapViewport, ListingGeoFeature } from "@/types";
 /** Derive a scale from the supplied layer's values, never an invented 0–100 score. */
 export function metricRange(
   layer: GeographicLayer,
@@ -33,3 +33,30 @@ export function markerPill(selected = false) {
   ctx.stroke();
   return ctx.getImageData(0, 0, 144, 64);
 }
+
+/** Full result geometry, not the paginated cards. Degenerate bounds are valid for fitBounds + maxZoom. */
+export function resultBounds(
+  features: ListingGeoFeature[],
+): [[number, number], [number, number]] | undefined {
+  if (!features.length) return;
+  let west = Infinity,
+    south = Infinity,
+    east = -Infinity,
+    north = -Infinity;
+  for (const f of features) {
+    const [x, y] = f.geometry.coordinates;
+    west = Math.min(west, x);
+    south = Math.min(south, y);
+    east = Math.max(east, x);
+    north = Math.max(north, y);
+  }
+  return [
+    [west, south],
+    [east, north],
+  ];
+}
+export const resultSignature = (features: ListingGeoFeature[]) =>
+  features
+    .map((f) => `${f.properties.id}:${f.geometry.coordinates.join(",")}`)
+    .sort()
+    .join("|");

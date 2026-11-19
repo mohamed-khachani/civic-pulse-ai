@@ -18,10 +18,13 @@ const wait = (signal?: AbortSignal) =>
       clearTimeout(timer);
       reject(new DOMException("Aborted", "AbortError"));
     };
-    const timer = setTimeout(() => {
-      signal?.removeEventListener("abort", abort);
-      resolve();
-    }, 420);
+    const timer = setTimeout(
+      () => {
+        signal?.removeEventListener("abort", abort);
+        resolve();
+      },
+      Number(process.env.NEXT_PUBLIC_MOCK_LATENCY_MS ?? 1200),
+    );
     signal?.addEventListener("abort", abort, { once: true });
   });
 const normalize = (s: string) =>
@@ -118,13 +121,10 @@ export const mockApi = {
   async layers(signal?: AbortSignal): Promise<GeographicLayer[]> {
     await wait(signal);
     return [
-      "Secciones censales",
       "Transporte público",
       "Parques y jardines",
       "Centros sanitarios",
       "Centros educativos",
-      "Calidad del aire",
-      "Ruido ambiental",
     ].map((name, i) => ({ id: `layer-${i}`, name, available: false }));
   },
   async chat(
@@ -139,7 +139,7 @@ export const mockApi = {
       (l) => l.id === request.selected_listing_id,
     );
     let message = matches.length
-      ? `He encontrado ${matches.length} viviendas de ejemplo que encajan con tu búsqueda${filters.district ? ` en ${filters.district}` : ""}. Puedes explorar sus detalles o verlas en el mapa.`
+      ? `He encontrado ${matches.length} ${matches.length === 1 ? "vivienda de ejemplo que encaja" : "viviendas de ejemplo que encajan"} con tu búsqueda${filters.district ? ` en ${filters.district}` : ""}. Puedes explorar sus detalles o verlas en el mapa.`
       : "No hay viviendas de ejemplo con estos criterios. Prueba a ampliar el presupuesto o a quitar algún filtro.";
     if (
       /metro|transporte|upm|universidad|tranquil|parque|servicio|zona|ruido|trayecto/.test(

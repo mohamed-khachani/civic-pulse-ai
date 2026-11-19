@@ -15,7 +15,6 @@ import {
   Plus,
   Minus,
   Scan,
-  Layers,
   Search,
   LoaderCircle,
   TriangleAlert,
@@ -34,11 +33,40 @@ import { useGeo } from "@/hooks/use-listings";
 import { api } from "@/lib/api";
 import { mapActionSchema, type Bounds, type GeographicLayer } from "@/types";
 import { MapFilters } from "../filters/filters";
-import { Popover } from "../ui/popover";
 import { Button } from "../ui/button";
 import { euros } from "@/lib/utils";
-import { metricRange, viewportCamera, markerPill } from "@/lib/map";
+import {
+  metricRange,
+  viewportCamera,
+  markerPill,
+  resultBounds,
+  resultSignature,
+} from "@/lib/map";
 import { ListingImage } from "../listings/listing-card";
+import {
+  MADRID_BOUNDS,
+  MADRID_MIN_ZOOM,
+  constrainMadrid,
+  madridBoundary,
+  outsideMadrid,
+} from "@/lib/geo/madrid";
+import {
+  CensusMapLayers,
+  MapLayersPanel,
+  CensusInspector,
+  CensusLegend,
+  CensusHoverTooltip,
+} from "./census-layers";
+import { useCensus, useCensusMetrics } from "@/hooks/use-census";
+import { mapHoverTarget } from "@/lib/map-interactions";
+import { LoadingStatus } from "../ui/loading-status";
+const constrainCamera: maplibregl.TransformConstrainFunction = (
+  lngLat,
+  zoom,
+) => ({
+  center: new maplibregl.LngLat(...constrainMadrid([lngLat.lng, lngLat.lat])),
+  zoom: Math.max(MADRID_MIN_ZOOM, zoom),
+});
 const madrid = { latitude: 40.4168, longitude: -3.7038, zoom: 11.7 };
 export default function MadridMap() {
   const map = useRef<MapRef>(null);
@@ -46,18 +74,31 @@ export default function MadridMap() {
   const [failed, setFailed] = useState(false);
   const [popupId, setPopupId] = useState<string>();
   const [hoveredId, setHoveredId] = useState<string>();
+  const [overListing, setOverListing] = useState(false);
+  const [hoveredCensus, setHoveredCensus] = useState<{
+    id: string;
+    longitude: number;
+    latitude: number;
+  }>();
   const [reload, setReload] = useState(0);
   const selected = useAtlas((s) => s.selectedId);
   const action = useAtlas((s) => s.mapAction);
   const version = useAtlas((s) => s.mapActionVersion);
   const viewport = useAtlas((s) => s.viewport);
   const visibleLayers = useAtlas((s) => s.visibleLayers);
+  const pendingChat = useAtlas((s) => s.pending);
+  const censusVisible = useAtlas((s) => s.censusVisible);
+  const listingsVisible = useAtlas((s) => s.listingsVisible);
+  const fittedKey = useAtlas((s) => s.fittedResultKey);
+  const census = useCensus(censusVisible);
+  const censusMetrics = useCensusMetrics(censusVisible);
   const {
     data: geo,
     error,
     isPending,
     isFetching,
     filtersReady,
+    isPlaceholderData,
     refetch,
   } = useGeo();
   const { data: layers } = useQuery({
@@ -80,31 +121,53 @@ export default function MadridMap() {
     enabled: !!popupFeature,
   });
   const lastAction = useRef(-1);
+  const resultKey = useMemo(
+    () => (geo ? resultSignature(geo.features) : undefined),
+    [geo],
+  );
   const fit = useCallback(() => {
-    if (!map.current || !geo?.features.length) return;
-    const coords = geo.features.map((f) => f.geometry.coordinates);
-    const xs = coords.map((c) => c[0]),
-      ys = coords.map((c) => c[1]);
-    map.current.fitBounds(
-      [
-        [Math.min(...xs), Math.min(...ys)],
-        [Math.max(...xs), Math.max(...ys)],
-      ],
-      {
-        padding: 75,
-        maxZoom: 14,
-        duration: window.matchMedia("(prefers-reduced-motion: reduce)").matches
-          ? 0
-          : 650,
-      },
-    );
-  }, [geo]);
+    const bounds = geo ? resultBounds(geo.features) : undefined;
+    if (!map.current || !bounds) return;
+    map.current.fitBounds(bounds, {
+      padding: { top: 115, right: 45, bottom: 85, left: 45 },
+      maxZoom: 16,
+      duration: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+        ? 0
+        : 650,
+    });
+    useAtlas.setState({ fittedResultKey: resultKey });
+  }, [geo, resultKey]);
+  useEffect(() => {
+    if (
+      ready &&
+      geo &&
+      filtersReady &&
+      !isFetching &&
+      !isPlaceholderData &&
+      !pendingChat &&
+      (!action || action.type === "none") &&
+      resultKey !== fittedKey
+    )
+      fit();
+  }, [
+    ready,
+    geo,
+    filtersReady,
+    isFetching,
+    isPlaceholderData,
+    pendingChat,
+    action,
+    resultKey,
+    fittedKey,
+    fit,
+  ]);
   useEffect(() => {
     if (
       !ready ||
       !geo ||
       !filtersReady ||
       isFetching ||
+      isPlaceholderData ||
       !action ||
       lastAction.current === version
     )
@@ -137,6 +200,7 @@ export default function MadridMap() {
     if (a.type === "focus_listing") {
       const point = geo.features.find((f) => f.properties.id === a.listing_id);
       if (point) {
+        useAtlas.getState().select(a.listing_id);
         map.current?.flyTo({
           center: point.geometry.coordinates,
           zoom: 14,
@@ -148,20 +212,54 @@ export default function MadridMap() {
         queueMicrotask(() => setPopupId(a.listing_id));
       }
     }
+    if (a.type !== "none") useAtlas.setState({ fittedResultKey: resultKey });
     lastAction.current = version;
     useAtlas.setState({ mapAction: undefined });
-  }, [action, version, ready, geo, fit, filtersReady, isFetching]);
+  }, [
+    action,
+    version,
+    ready,
+    geo,
+    fit,
+    filtersReady,
+    isFetching,
+    isPlaceholderData,
+    resultKey,
+  ]);
   useEffect(() => {
-    if (geo && selected && !selectedFeature) {
+    if (
+      geo &&
+      filtersReady &&
+      !isFetching &&
+      !isPlaceholderData &&
+      selected &&
+      !selectedFeature
+    ) {
       useAtlas.getState().select(undefined);
     }
-  }, [geo, selected, selectedFeature]);
+  }, [
+    geo,
+    selected,
+    selectedFeature,
+    filtersReady,
+    isFetching,
+    isPlaceholderData,
+  ]);
   const selectedFilter = useMemo(
     () => ["==", ["get", "id"], selected ?? ""] as never,
     [selected],
   );
   async function onClick(e: MapLayerMouseEvent) {
-    const feature = e.features?.[0];
+    const target = mapHoverTarget(e.features, listingsVisible);
+    if (target?.type === "section" && censusVisible) {
+      useAtlas.getState().selectCensus(target.id);
+      setHoveredCensus(undefined);
+      setPopupId(undefined);
+      return;
+    }
+    const feature = listingsVisible
+      ? e.features?.find((f) => f.layer.id !== "census-fill")
+      : undefined;
     if (!feature) return;
     if (feature.properties?.cluster_id !== undefined) {
       const source = map.current?.getSource("listings") as GeoJSONSource;
@@ -177,6 +275,7 @@ export default function MadridMap() {
           : 400,
       });
     } else if (feature.properties?.id) {
+      useAtlas.getState().selectCensus(undefined);
       const id = String(feature.properties.id);
       useAtlas.getState().select(id);
       setPopupId(id);
@@ -194,6 +293,7 @@ export default function MadridMap() {
     type: "symbol",
     filter: ["!", ["has", "point_count"]],
     layout: {
+      visibility: listingsVisible ? "visible" : "none",
       "text-field": ["concat", ["to-string", ["get", "price"]], " €"],
       "text-font": ["Open Sans Regular"],
       "text-size": 12,
@@ -217,6 +317,18 @@ export default function MadridMap() {
         key={reload}
         ref={map}
         initialViewState={viewport}
+        maxBounds={
+          [...MADRID_BOUNDS[0], ...MADRID_BOUNDS[1]] as [
+            number,
+            number,
+            number,
+            number,
+          ]
+        }
+        minZoom={MADRID_MIN_ZOOM}
+        renderWorldCopies={false}
+        transformConstrain={constrainCamera}
+        locale={{ "Popup.Close": "Cerrar vista previa" }}
         mapStyle={
           process.env.NEXT_PUBLIC_MAP_STYLE_URL ||
           "https://basemaps.cartocdn.com/gl/positron-gl-style/style.json"
@@ -248,36 +360,63 @@ export default function MadridMap() {
           })
         }
         onClick={(e) => void onClick(e)}
-        interactiveLayerIds={["clusters", "prices", "selected-price"]}
-        onMouseMove={(e) =>
-          setHoveredId(
-            e.features?.find((f) => f.properties?.id)?.properties?.id as
-              string | undefined,
-          )
-        }
+        interactiveLayerIds={[
+          ...(listingsVisible
+            ? ["clusters", "prices", "selected-price", "hovered-price"]
+            : []),
+          ...(censusVisible && census.data ? ["census-fill"] : []),
+        ]}
+        onMouseMove={(e) => {
+          if (e.originalEvent.buttons) {
+            setHoveredCensus(undefined);
+            setHoveredId(undefined);
+            setOverListing(false);
+            return;
+          }
+          const target = mapHoverTarget(e.features, listingsVisible);
+          setOverListing(target?.type === "listing");
+          setHoveredId(target?.type === "listing" ? target.id : undefined);
+          setHoveredCensus(
+            target?.type === "section" && censusVisible
+              ? {
+                  id: target.id,
+                  longitude: e.lngLat.lng,
+                  latitude: e.lngLat.lat,
+                }
+              : undefined,
+          );
+        }}
+        onDragStart={() => {
+          setHoveredCensus(undefined);
+          setHoveredId(undefined);
+          setOverListing(false);
+        }}
         onMouseEnter={() => {
           const canvas = map.current?.getCanvas();
           if (canvas) canvas.style.cursor = "pointer";
         }}
         onMouseLeave={() => {
           setHoveredId(undefined);
+          setHoveredCensus(undefined);
+          setOverListing(false);
           const canvas = map.current?.getCanvas();
           if (canvas) canvas.style.cursor = "";
         }}
         attributionControl={{ compact: true }}
         style={{ width: "100%", height: "100%" }}
       >
-        {geo && ready && (
+        {ready && (
           <Source
             id="listings"
             type="geojson"
-            data={geo}
+            data={geo ?? { type: "FeatureCollection", features: [] }}
             cluster
             clusterMaxZoom={13}
             clusterRadius={42}
           >
             <Layer
               id="clusters"
+              layout={{ visibility: listingsVisible ? "visible" : "none" }}
               type="circle"
               filter={["has", "point_count"]}
               paint={{
@@ -300,6 +439,7 @@ export default function MadridMap() {
               type="symbol"
               filter={["has", "point_count"]}
               layout={{
+                visibility: listingsVisible ? "visible" : "none",
                 "text-field": ["get", "point_count_abbreviated"],
                 "text-font": ["Open Sans Regular"],
                 "text-size": 13,
@@ -332,14 +472,46 @@ export default function MadridMap() {
             />
           </Source>
         )}
+        {ready && (
+          <>
+            <Source id="madrid-outside" type="geojson" data={outsideMadrid}>
+              <Layer
+                id="madrid-mask"
+                beforeId="clusters"
+                type="fill"
+                paint={{ "fill-color": "#eef2ef", "fill-opacity": 1 }}
+              />
+            </Source>
+            <Source id="madrid-boundary" type="geojson" data={madridBoundary}>
+              <Layer
+                id="madrid-border"
+                beforeId="clusters"
+                type="line"
+                paint={{
+                  "line-color": "#74947d",
+                  "line-width": 1.3,
+                  "line-dasharray": [4, 3],
+                }}
+              />
+            </Source>
+            <CensusMapLayers
+              hoveredId={censusVisible ? hoveredCensus?.id : undefined}
+            />
+          </>
+        )}
         {layers
           ?.filter(
             (l) => l.available && l.geojson && visibleLayers.includes(l.id),
           )
-          .map((l) => (
-            <GeographicMapLayer key={l.id} layer={l} />
-          ))}
-        {popupFeature && (
+          .map((l) => ready && <GeographicMapLayer key={l.id} layer={l} />)}
+        {censusVisible && hoveredCensus && (
+          <CensusHoverTooltip
+            sectionId={hoveredCensus.id}
+            longitude={hoveredCensus.longitude}
+            latitude={hoveredCensus.latitude}
+          />
+        )}
+        {listingsVisible && popupFeature && (
           <Popup
             longitude={popupFeature.geometry.coordinates[0]}
             latitude={popupFeature.geometry.coordinates[1]}
@@ -434,42 +606,9 @@ export default function MadridMap() {
           <Scan size={18} />
         </button>
       </div>
-      <div className="map-layers">
-        <Popover
-          label="Capas del mapa"
-          trigger={
-            <Button variant="outline">
-              <Layers size={16} />
-              <span>Capas del mapa</span>
-            </Button>
-          }
-        >
-          <div className="layers-menu">
-            <h3>Una mirada a tu entorno</h3>
-            <label>
-              <input type="checkbox" checked disabled />
-              Viviendas
-            </label>
-            {layers?.map((l) => (
-              <label key={l.id}>
-                <input
-                  type="checkbox"
-                  disabled={!l.available || !l.geojson}
-                  checked={visibleLayers.includes(l.id)}
-                  onChange={() => useAtlas.getState().toggleLayer(l.id)}
-                />
-                <span>
-                  {l.name}
-                  {(!l.available || !l.geojson) && (
-                    <small>Sin datos disponibles</small>
-                  )}
-                </span>
-              </label>
-            ))}
-            {!layers && <p>Las capas aparecerán cuando estén disponibles.</p>}
-          </div>
-        </Popover>
-      </div>
+      <MapLayersPanel />
+      {!hoveredCensus && !overListing && <CensusInspector />}
+      <CensusLegend hidden={Boolean(hoveredCensus) || overListing} />
       <div className="map-legends">
         {layers
           ?.filter((l) => visibleLayers.includes(l.id) && l.metric)
@@ -493,10 +632,46 @@ export default function MadridMap() {
             </div>
           ))}
       </div>
-      {(isPending || !ready) && !failed && (
-        <div className="map-status">
-          <LoaderCircle size={15} className="spin" />
-          Cargando {isPending ? "viviendas" : "mapa"}…
+      {(pendingChat ||
+        isPending ||
+        isFetching ||
+        !filtersReady ||
+        !ready ||
+        (censusVisible && (census.isFetching || censusMetrics.isFetching))) &&
+        !failed && (
+          <div className="map-progress">
+            <LoadingStatus
+              compact
+              title={
+                pendingChat
+                  ? "Atlas está buscando"
+                  : !ready
+                    ? "Preparando el mapa"
+                    : isFetching || !filtersReady
+                      ? "Actualizando viviendas"
+                      : "Cargando datos de la zona"
+              }
+              detail={
+                pendingChat
+                  ? "Estamos procesando tu consulta. El mapa se actualizará al recibir los resultados."
+                  : "Los resultados anteriores siguen visibles hasta completar la consulta."
+              }
+            />
+          </div>
+        )}
+      {censusVisible && (census.error || censusMetrics.error) && (
+        <div className="census-map-error" role="alert">
+          <p>{census.error?.message ?? censusMetrics.error?.message}</p>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => {
+              if (census.error) void census.refetch();
+              if (censusMetrics.error) void censusMetrics.refetch();
+            }}
+          >
+            Reintentar datos de la zona
+          </Button>
         </div>
       )}
       {(error || failed) && (
@@ -540,6 +715,7 @@ function GeographicMapLayer({ layer: l }: { layer: GeographicLayer }) {
       data={l.geojson as GeoJSON.FeatureCollection}
     >
       <Layer
+        beforeId="clusters"
         id={`${l.id}-fill`}
         type="fill"
         filter={["==", ["geometry-type"], "Polygon"]}
@@ -565,12 +741,14 @@ function GeographicMapLayer({ layer: l }: { layer: GeographicLayer }) {
         }}
       />
       <Layer
+        beforeId="clusters"
         id={`${l.id}-point`}
         type="circle"
         filter={["==", ["geometry-type"], "Point"]}
         paint={{ "circle-radius": 5, "circle-color": l.color ?? "#16803c" }}
       />
       <Layer
+        beforeId="clusters"
         id={`${l.id}-line`}
         type="line"
         filter={["==", ["geometry-type"], "LineString"]}

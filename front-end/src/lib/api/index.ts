@@ -1,6 +1,8 @@
 import { z } from "zod";
 import {
   geographicLayerSchema,
+  censusCollectionSchema,
+  censusMetricSchema,
   geoResponseSchema,
   listingSchema,
   optionsSchema,
@@ -15,6 +17,28 @@ import { serializeFilters } from "@/lib/search";
 export { isMock };
 const mock = () => import("@/lib/mock/adapter").then((m) => m.mockApi);
 export const api = {
+  census: async (signal?: AbortSignal) => {
+    const url =
+      process.env.NEXT_PUBLIC_CENSUS_GEOJSON_URL ||
+      "/geo/madrid-census-2025.geojson";
+    const response = await fetch(url, {
+      signal: signal
+        ? AbortSignal.any([signal, AbortSignal.timeout(60000)])
+        : AbortSignal.timeout(60000),
+    });
+    if (!response.ok)
+      throw new Error(
+        "No se pudieron cargar las secciones censales de Madrid.",
+      );
+    const parsed = censusCollectionSchema.safeParse(await response.json());
+    if (!parsed.success)
+      throw new Error("La cartografía censal no tiene el formato esperado.");
+    return parsed.data;
+  },
+  censusMetrics: async (signal?: AbortSignal) =>
+    isMock
+      ? (await import("@/lib/mock/census")).mockCensusMetrics(signal)
+      : json(endpoints.censusMetrics, z.array(censusMetricSchema), { signal }),
   listings: async (
     f: ListingSearchFilters,
     s: SortOrder,
