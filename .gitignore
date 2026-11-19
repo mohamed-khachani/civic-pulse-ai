@@ -1,0 +1,9 @@
+node_modules
+*-lock.json
+*.lock
+html/
+.zip
+.xlsx
+.venv
+venv
+__pycache__
