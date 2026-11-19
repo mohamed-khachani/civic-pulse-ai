@@ -1,0 +1,535 @@
+mohamedkhachaniupm@Mohameds-MacBook-Pro-4 listings-extractor % yarn dev
+yarn run v1.22.22
+warning package.json: No license field
+$ tsx src/scraper.ts
+[1/263] Attempt 1
+[1] Saved 2825572 bytes
+[2/263] Attempt 1
+[2] Saved 2982175 bytes
+[3/263] Attempt 1
+[3] Saved 2891633 bytes
+[4/263] Attempt 1
+[4] Saved 2679790 bytes
+[5/263] Attempt 1
+[5] Saved 2498341 bytes
+[6/263] Attempt 1
+[6] Saved 2081651 bytes
+[7/263] Attempt 1
+[7] Saved 2749431 bytes
+[8/263] Attempt 1
+[8] Saved 2636681 bytes
+[9/263] Attempt 1
+[9] Saved 2384051 bytes
+[10/263] Attempt 1
+[10] Saved 2838991 bytes
+[11/263] Attempt 1
+[11] Saved 2748335 bytes
+[12/263] Attempt 1
+[12] Saved 2703892 bytes
+[13/263] Attempt 1
+[13] Saved 2725070 bytes
+[14/263] Attempt 1
+[14] Saved 2683962 bytes
+[15/263] Attempt 1
+[15] Saved 2724238 bytes
+[16/263] Attempt 1
+[16] Saved 2682506 bytes
+[17/263] Attempt 1
+[17] Saved 2686434 bytes
+[18/263] Attempt 1
+[18] Saved 2740123 bytes
+[19/263] Attempt 1
+[19] Saved 2669523 bytes
+[20/263] Attempt 1
+[20] Saved 2776055 bytes
+[21/263] Attempt 1
+[21] Saved 2678004 bytes
+[22/263] Attempt 1
+[22] Saved 2841448 bytes
+[23/263] Attempt 1
+[23] Saved 2676584 bytes
+[24/263] Attempt 1
+[24] Saved 2746873 bytes
+[25/263] Attempt 1
+[25] Saved 2733557 bytes
+[26/263] Attempt 1
+[26] Saved 2904813 bytes
+[27/263] Attempt 1
+[27] Saved 2686997 bytes
+[28/263] Attempt 1
+[28] Saved 2652380 bytes
+[29/263] Attempt 1
+[29] Saved 2851410 bytes
+[30/263] Attempt 1
+[30] Saved 2848794 bytes
+[31/263] Attempt 1
+[31] Saved 2832731 bytes
+[32/263] Attempt 1
+[32] Saved 2756122 bytes
+[33/263] Attempt 1
+[33] Saved 2787169 bytes
+[34/263] Attempt 1
+[34] Saved 2927741 bytes
+[35/263] Attempt 1
+[35] Saved 2822543 bytes
+[36/263] Attempt 1
+[36] Saved 2593588 bytes
+[37/263] Attempt 1
+[37] Saved 2736980 bytes
+[38/263] Attempt 1
+[38] Saved 2798436 bytes
+[39/263] Attempt 1
+[39] Saved 2739233 bytes
+[40/263] Attempt 1
+[40] Saved 2754576 bytes
+[41/263] Attempt 1
+[41] Saved 2610946 bytes
+[42/263] Attempt 1
+[42] Saved 2654596 bytes
+[43/263] Attempt 1
+[43] Saved 2966514 bytes
+[44/263] Attempt 1
+[44] Saved 2873755 bytes
+[45/263] Attempt 1
+[45] Saved 2863068 bytes
+[46/263] Attempt 1
+[46] Saved 3451421 bytes
+[47/263] Attempt 1
+[47] Saved 2683061 bytes
+[48/263] Attempt 1
+[48] Saved 2781864 bytes
+[49/263] Attempt 1
+[49] Saved 2809015 bytes
+[50/263] Attempt 1
+[50] Saved 2599350 bytes
+[51/263] Attempt 1
+[51] Saved 2528512 bytes
+[52/263] Attempt 1
+[52] Saved 2745239 bytes
+[53/263] Attempt 1
+[53] Saved 2734110 bytes
+[54/263] Attempt 1
+[54] Saved 2810680 bytes
+[55/263] Attempt 1
+[55] Saved 2794669 bytes
+[56/263] Attempt 1
+[56] Saved 2824195 bytes
+[57/263] Attempt 1
+[57] Saved 2943049 bytes
+[58/263] Attempt 1
+[58] Saved 2741531 bytes
+[59/263] Attempt 1
+[59] Saved 2860326 bytes
+[60/263] Attempt 1
+[60] Saved 2858761 bytes
+[61/263] Attempt 1
+[61] Saved 2823736 bytes
+[62/263] Attempt 1
+[62] Saved 2752009 bytes
+[63/263] Attempt 1
+[63] Saved 2761473 bytes
+[64/263] Attempt 1
+[64] Saved 2640765 bytes
+[65/263] Attempt 1
+[65] Saved 2861061 bytes
+[66/263] Attempt 1
+[66] Saved 2331893 bytes
+[67/263] Attempt 1
+[67] Saved 2726930 bytes
+[68/263] Attempt 1
+[68] Saved 2888439 bytes
+[69/263] Attempt 1
+[69] Saved 2795446 bytes
+[70/263] Attempt 1
+[70] Saved 3199614 bytes
+[71/263] Attempt 1
+[71] Saved 2755729 bytes
+[72/263] Attempt 1
+[72] Saved 2774048 bytes
+[73/263] Attempt 1
+[73] Saved 2875533 bytes
+[74/263] Attempt 1
+[74] Saved 2831129 bytes
+[75/263] Attempt 1
+[75] Saved 2892230 bytes
+[76/263] Attempt 1
+[76] Saved 2516447 bytes
+[77/263] Attempt 1
+[77] Saved 2742010 bytes
+[78/263] Attempt 1
+[78] Saved 2792457 bytes
+[79/263] Attempt 1
+[79] Saved 2869793 bytes
+[80/263] Attempt 1
+[80] Saved 2508296 bytes
+[81/263] Attempt 1
+[81] Saved 2615705 bytes
+[82/263] Attempt 1
+[82] Saved 2673951 bytes
+[83/263] Attempt 1
+[83] Saved 2664406 bytes
+[84/263] Attempt 1
+[84] Saved 2816962 bytes
+[85/263] Attempt 1
+[85] Saved 2746660 bytes
+[86/263] Attempt 1
+[86] Saved 2309362 bytes
+[87/263] Attempt 1
+[87] Saved 2523722 bytes
+[88/263] Attempt 1
+[88] Saved 2801401 bytes
+[89/263] Attempt 1
+[89] Saved 2712788 bytes
+[90/263] Attempt 1
+[90] Saved 2373430 bytes
+[91/263] Attempt 1
+[91] Saved 2582247 bytes
+[92/263] Attempt 1
+[92] Saved 3073698 bytes
+[93/263] Attempt 1
+[93] Saved 2677989 bytes
+[94/263] Attempt 1
+[94] Saved 2263768 bytes
+[95/263] Attempt 1
+[95] Saved 2246685 bytes
+[96/263] Attempt 1
+[96] Saved 2414539 bytes
+[97/263] Attempt 1
+[97] Saved 2441729 bytes
+[98/263] Attempt 1
+[98] Saved 2566070 bytes
+[99/263] Attempt 1
+[99] Saved 2599875 bytes
+[100/263] Attempt 1
+[100] Saved 2662785 bytes
+[101/263] Attempt 1
+[101] Saved 2423137 bytes
+[102/263] Attempt 1
+[102] Saved 2334909 bytes
+[103/263] Attempt 1
+[103] Saved 2707944 bytes
+[104/263] Attempt 1
+[104] Saved 2500993 bytes
+[105/263] Attempt 1
+[105] Saved 2316206 bytes
+[106/263] Attempt 1
+[106] Saved 2343585 bytes
+[107/263] Attempt 1
+[107] Saved 2380004 bytes
+[108/263] Attempt 1
+[108] Saved 2315361 bytes
+[109/263] Attempt 1
+[109] Saved 2711177 bytes
+[110/263] Attempt 1
+[110] Saved 2376553 bytes
+[111/263] Attempt 1
+[111] Saved 2321207 bytes
+[112/263] Attempt 1
+[112] Saved 2308138 bytes
+[113/263] Attempt 1
+[113] Saved 2321357 bytes
+[114/263] Attempt 1
+[114] Saved 2384555 bytes
+[115/263] Attempt 1
+[115] Saved 2310882 bytes
+[116/263] Attempt 1
+[116] Saved 2331841 bytes
+[117/263] Attempt 1
+[117] Saved 2345774 bytes
+[118/263] Attempt 1
+[118] Saved 2356508 bytes
+[119/263] Attempt 1
+[119] Saved 2395304 bytes
+[120/263] Attempt 1
+[120] Saved 2338430 bytes
+[121/263] Attempt 1
+[121] Saved 2361619 bytes
+[122/263] Attempt 1
+[122] Saved 2349382 bytes
+[123/263] Attempt 1
+[123] Saved 2324466 bytes
+[124/263] Attempt 1
+[124] Saved 2356888 bytes
+[125/263] Attempt 1
+[125] Saved 2322633 bytes
+[126/263] Attempt 1
+[126] Saved 2366998 bytes
+[127/263] Attempt 1
+[127] Saved 2347250 bytes
+[128/263] Attempt 1
+[128] Saved 2356752 bytes
+[129/263] Attempt 1
+[129] Saved 2361583 bytes
+[130/263] Attempt 1
+[130] Saved 2330616 bytes
+[131/263] Attempt 1
+[131] Saved 2323353 bytes
+[132/263] Attempt 1
+[132] Saved 2243826 bytes
+[133/263] Attempt 1
+[133] Saved 2314197 bytes
+[134/263] Attempt 1
+[134] Saved 2313478 bytes
+[135/263] Attempt 1
+[135] Saved 2360656 bytes
+[136/263] Attempt 1
+[136] Saved 2357686 bytes
+[137/263] Attempt 1
+[137] Saved 2311098 bytes
+[138/263] Attempt 1
+[138] Saved 2348584 bytes
+[139/263] Attempt 1
+[139] Saved 2311825 bytes
+[140/263] Attempt 1
+[140] Saved 2386713 bytes
+[141/263] Attempt 1
+[141] Saved 2260511 bytes
+[142/263] Attempt 1
+[142] Saved 2315637 bytes
+[143/263] Attempt 1
+[143] Saved 2342629 bytes
+[144/263] Attempt 1
+[144] Saved 2306473 bytes
+[145/263] Attempt 1
+[145] Saved 2368455 bytes
+[146/263] Attempt 1
+[146] Saved 2274997 bytes
+[147/263] Attempt 1
+[147] Saved 2331868 bytes
+[148/263] Attempt 1
+[148] Saved 2562526 bytes
+[149/263] Attempt 1
+[149] Saved 2436590 bytes
+[150/263] Attempt 1
+[150] Saved 2475566 bytes
+[151/263] Attempt 1
+[151] Saved 2552218 bytes
+[152/263] Attempt 1
+[152] Saved 2453242 bytes
+[153/263] Attempt 1
+[153] Saved 2386173 bytes
+[154/263] Attempt 1
+[154] Saved 2519351 bytes
+[155/263] Attempt 1
+[155] Saved 2320175 bytes
+[156/263] Attempt 1
+[156] Saved 2250741 bytes
+[157/263] Attempt 1
+[157] Saved 2316740 bytes
+[158/263] Attempt 1
+[158] Saved 2300198 bytes
+[159/263] Attempt 1
+[159] Saved 2306015 bytes
+[160/263] Attempt 1
+[160] Saved 2285392 bytes
+[161/263] Attempt 1
+[161] Saved 2449682 bytes
+[162/263] Attempt 1
+[162] Saved 2286953 bytes
+[163/263] Attempt 1
+[163] Saved 2245869 bytes
+[164/263] Attempt 1
+[164] Saved 2232066 bytes
+[165/263] Attempt 1
+[165] Saved 2287549 bytes
+[166/263] Attempt 1
+[166] Saved 2257339 bytes
+[167/263] Attempt 1
+[167] Saved 2312725 bytes
+[168/263] Attempt 1
+[168] Saved 2281494 bytes
+[169/263] Attempt 1
+[169] Saved 2351794 bytes
+[170/263] Attempt 1
+[170] Saved 2592283 bytes
+[171/263] Attempt 1
+[171] Saved 2294223 bytes
+[172/263] Attempt 1
+[172] Saved 2301710 bytes
+[173/263] Attempt 1
+[173] Saved 2277760 bytes
+[174/263] Attempt 1
+[174] Saved 2230408 bytes
+[175/263] Attempt 1
+[175] Saved 2233347 bytes
+[176/263] Attempt 1
+[176] Saved 2406427 bytes
+[177/263] Attempt 1
+[177] Saved 2341607 bytes
+[178/263] Attempt 1
+[178] Saved 2171441 bytes
+[179/263] Attempt 1
+[179] Saved 2210678 bytes
+[180/263] Attempt 1
+[180] Saved 2244401 bytes
+[181/263] Attempt 1
+[181] Saved 2254895 bytes
+[182/263] Attempt 1
+[182] Saved 2308958 bytes
+[183/263] Attempt 1
+[183] Saved 2295035 bytes
+[184/263] Attempt 1
+[184] Saved 2268974 bytes
+[185/263] Attempt 1
+[185] Saved 2249208 bytes
+[186/263] Attempt 1
+[186] Saved 2266604 bytes
+[187/263] Attempt 1
+[187] Saved 2259840 bytes
+[188/263] Attempt 1
+[188] Saved 2235623 bytes
+[189/263] Attempt 1
+[189] Saved 2287481 bytes
+[190/263] Attempt 1
+[190] Saved 2250594 bytes
+[191/263] Attempt 1
+[191] Saved 2285498 bytes
+[192/263] Attempt 1
+[192] Saved 2286831 bytes
+[193/263] Attempt 1
+[193] Saved 2561065 bytes
+[194/263] Attempt 1
+[194] Saved 2352343 bytes
+[195/263] Attempt 1
+[195] Saved 2283815 bytes
+[196/263] Attempt 1
+[196] Saved 2339912 bytes
+[197/263] Attempt 1
+[197] Saved 2231174 bytes
+[198/263] Attempt 1
+[198] Saved 2330912 bytes
+[199/263] Attempt 1
+[199] Saved 2240414 bytes
+[200/263] Attempt 1
+[200] Saved 2229204 bytes
+[201/263] Attempt 1
+[201] Saved 2227949 bytes
+[202/263] Attempt 1
+[202] Saved 2216390 bytes
+[203/263] Attempt 1
+[203] Saved 2258704 bytes
+[204/263] Attempt 1
+[204] Saved 2152525 bytes
+[205/263] Attempt 1
+[205] Saved 1836392 bytes
+[206/263] Attempt 1
+[206] Saved 2132392 bytes
+[207/263] Attempt 1
+[207] Saved 2433369 bytes
+[208/263] Attempt 1
+[208] Saved 2203255 bytes
+[209/263] Attempt 1
+[209] Saved 2215646 bytes
+[210/263] Attempt 1
+[210] Saved 2240345 bytes
+[211/263] Attempt 1
+[211] Saved 2248651 bytes
+[212/263] Attempt 1
+[212] Saved 2123145 bytes
+[213/263] Attempt 1
+[213] Saved 2042623 bytes
+[214/263] Attempt 1
+[214] Saved 1941043 bytes
+[215/263] Attempt 1
+[215] Saved 1887868 bytes
+[216/263] Attempt 1
+[216] Saved 2115924 bytes
+[217/263] Attempt 1
+[217] Saved 1875563 bytes
+[218/263] Attempt 1
+[218] Saved 1912620 bytes
+[219/263] Attempt 1
+[219] Saved 1903339 bytes
+[220/263] Attempt 1
+[220] Saved 2006262 bytes
+[221/263] Attempt 1
+[221] Saved 2128350 bytes
+[222/263] Attempt 1
+[222] Saved 2234879 bytes
+[223/263] Attempt 1
+[223] Saved 2131694 bytes
+[224/263] Attempt 1
+[224] Saved 1985940 bytes
+[225/263] Attempt 1
+[225] Saved 1871776 bytes
+[226/263] Attempt 1
+[226] Saved 1872606 bytes
+[227/263] Attempt 1
+[227] Saved 1882720 bytes
+[228/263] Attempt 1
+[228] Saved 1880648 bytes
+[229/263] Attempt 1
+[229] Saved 1871610 bytes
+[230/263] Attempt 1
+[230] Saved 1884778 bytes
+[231/263] Attempt 1
+[231] Saved 1922146 bytes
+[232/263] Attempt 1
+[232] Saved 1851036 bytes
+[233/263] Attempt 1
+[233] Saved 1884490 bytes
+[234/263] Attempt 1
+[234] Saved 1914065 bytes
+[235/263] Attempt 1
+[235] Saved 1954921 bytes
+[236/263] Attempt 1
+[236] Saved 1925179 bytes
+[237/263] Attempt 1
+[237] Saved 1935227 bytes
+[238/263] Attempt 1
+[238] Saved 1955174 bytes
+[239/263] Attempt 1
+[239] Saved 1919226 bytes
+[240/263] Attempt 1
+[240] Saved 1949853 bytes
+[241/263] Attempt 1
+[241] Saved 1928382 bytes
+[242/263] Attempt 1
+[242] Saved 1792872 bytes
+[243/263] Attempt 1
+[243] Saved 1949914 bytes
+[244/263] Attempt 1
+[244] Saved 1896400 bytes
+[245/263] Attempt 1
+[245] Saved 1979318 bytes
+[246/263] Attempt 1
+[246] Saved 1946366 bytes
+[247/263] Attempt 1
+[247] Saved 1846035 bytes
+[248/263] Attempt 1
+[248] Saved 2233913 bytes
+[249/263] Attempt 1
+[249] Saved 2249630 bytes
+[250/263] Attempt 1
+[250] Saved 2119567 bytes
+[251/263] Attempt 1
+[251] Saved 2116382 bytes
+[252/263] Attempt 1
+[252] Saved 1977630 bytes
+[253/263] Attempt 1
+[253] Saved 1857802 bytes
+[254/263] Attempt 1
+[254] Saved 1871932 bytes
+[255/263] Attempt 1
+[255] Saved 1929610 bytes
+[256/263] Attempt 1
+[256] Saved 1795563 bytes
+[257/263] Attempt 1
+[257] Saved 1787693 bytes
+[258/263] Attempt 1
+[258] Saved 1776611 bytes
+[259/263] Attempt 1
+[259] Saved 2888195 bytes
+[260/263] Attempt 1
+[260] Saved 2821927 bytes
+[261/263] Attempt 1
+[261] Saved 1560098 bytes
+[262/263] Attempt 1
+[262] Saved 1484076 bytes
+[263/263] Attempt 1
+[263] Saved 2309393 bytes
+
+Scraping finished
+Successful: 263
+Failed: 0
+✨  Done in 3141.95s.
