@@ -3,7 +3,7 @@ node_modules
 *.lock
 html/
 .zip
-.xlsx
 .venv
 venv
 __pycache__
+.DS_Store

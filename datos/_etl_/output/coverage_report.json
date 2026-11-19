@@ -1,0 +1,1982 @@
+{
+  "census_section_count": 2462,
+  "facilities": {
+    "education": {
+      "geocoded": 1617,
+      "missing_coords": 1,
+      "duplicate_ids": 0,
+      "assigned_inside_madrid": 1617
+    },
+    "health": {
+      "geocoded": 279,
+      "missing_coords": 0,
+      "duplicate_ids": 0,
+      "assigned_inside_madrid": 279
+    },
+    "sports": {
+      "geocoded": 605,
+      "missing_coords": 1,
+      "duplicate_ids": 0,
+      "assigned_inside_madrid": 605
+    },
+    "libraries": {
+      "geocoded": 52,
+      "missing_coords": 0,
+      "duplicate_ids": 0,
+      "assigned_inside_madrid": 52
+    },
+    "parks": {
+      "geocoded": 203,
+      "missing_coords": 5,
+      "duplicate_ids": 0,
+      "assigned_inside_madrid": 203
+    }
+  },
+  "accidents": {
+    "road_accidents": {
+      "unique_incident_ids": 16318,
+      "assigned": 16232,
+      "missing_coordinates": 8,
+      "unassigned_coordinates": 78
+    },
+    "bike_accidents": {
+      "unique_incident_ids": 998,
+      "assigned": 989,
+      "missing_coordinates": 0,
+      "unassigned_coordinates": 9
+    }
+  },
+  "monitoring": {
+    "air": {
+      "status": "missing_station_locations"
+    },
+    "noise": {
+      "status": "missing_station_locations"
+    }
+  },
+  "traffic": {
+    "status": "traffic_zip_missing"
+  },
+  "metrics": {
+    "section_code": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_code": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_name": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_code": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_name": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "section_area_km2": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "section_centroid_lat": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "section_centroid_lon": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_area_km2": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_area_km2": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_1_5_1_poblacion_en_etapas_educativas_0c8c21": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_1_5_3_nivel_de_estudios_de_la_poblacion_mayor_o_igual_a_25_anos_3377ac": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_absentismo_0d6547": {
+      "non_null_sections": 1209,
+      "fraction": 0.4911
+    },
+    "barrio_study_actividades_culturales_2eaff4": {
+      "non_null_sections": 1209,
+      "fraction": 0.4911
+    },
+    "barrio_study_actuaciones_deportivas_en_distritos_ecdc5a": {
+      "non_null_sections": 1209,
+      "fraction": 0.4911
+    },
+    "barrio_study_apartamentos_municipales_para_mayores_76007d": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_asociaciones_culturales_y_casas_regionales_330184": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_asociaciones_de_mujeres_f6396a": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_asociaciones_seccion_1a_1e5b15": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_asociaciones_vecinales_1c4b9b": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_bibliotecas_comunidad_madrid_ad8ede": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_bibliotecas_municipales_f39888": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_centro_de_dia_de_atencion_a_ninos_y_ninas_de_3_a_12_anos_7cf5e3": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_centros_de_adolescentes_y_jovenes_aspa_c68bfb": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_centros_de_apoyo_a_las_familias_caf_ec4942": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_centros_de_atencion_a_la_infancia_cai_1fd1a2": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_centros_de_atencion_a_las_adicciones_cad_y_ccad_20c2cf": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_centros_de_dia_de_alzheimer_y_fisicos_fca5ab": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_centros_de_servicios_sociales_ea5435": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_centros_deportivos_municipales_d326b4": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_centros_docentes_ensenanza_infantil_y_primaria_3ee385": {
+      "non_null_sections": 1209,
+      "fraction": 0.4911
+    },
+    "barrio_study_centros_municipales_de_mayores_925c6a": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_centros_municipales_de_salud_comunitaria_cmsc_d74814": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_centros_para_personas_sin_hogar_c841ac": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_centros_y_espacios_culturales_15e475": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_colegios_privados_inf_o_pri_o_inf_y_pri_ea856d": {
+      "non_null_sections": 4,
+      "fraction": 0.0016
+    },
+    "barrio_study_colegios_privados_inf_pri_y_sec_o_pri_y_sec_6280ee": {
+      "non_null_sections": 4,
+      "fraction": 0.0016
+    },
+    "barrio_study_colegios_publicos_infantil_y_primaria_a08e18": {
+      "non_null_sections": 2331,
+      "fraction": 0.9468
+    },
+    "barrio_study_comercio_1b2571": {
+      "non_null_sections": 1209,
+      "fraction": 0.4911
+    },
+    "barrio_study_concejalia_presidencia_del_distrito_b7e40d": {
+      "non_null_sections": 1209,
+      "fraction": 0.4911
+    },
+    "barrio_study_consumo_d69b2b": {
+      "non_null_sections": 1209,
+      "fraction": 0.4911
+    },
+    "barrio_study_direc_y_gestion_admtva_del_distrito_110b69": {
+      "non_null_sections": 1209,
+      "fraction": 0.4911
+    },
+    "barrio_study_duracion_media_del_credito_meses_en_transaccion_de_vivienda_29d9b9": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_edificios_c19f89": {
+      "non_null_sections": 1209,
+      "fraction": 0.4911
+    },
+    "barrio_study_equipamiento_de_zonas_ajardinadas_464abf": {
+      "non_null_sections": 1209,
+      "fraction": 0.4911
+    },
+    "barrio_study_escuelas_infantiles_municipales_6a413a": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_escuelas_infantiles_privadas_276cac": {
+      "non_null_sections": 14,
+      "fraction": 0.0057
+    },
+    "barrio_study_escuelas_infantiles_publicas_33c118": {
+      "non_null_sections": 14,
+      "fraction": 0.0057
+    },
+    "barrio_study_espacios_de_igualdad_b7f7e8": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_etapas_educativas_total_ninas_f784f9": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_etapas_educativas_total_ninos_a54784": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_familia_e_infancia_7601b0": {
+      "non_null_sections": 1209,
+      "fraction": 0.4911
+    },
+    "barrio_study_fundaciones_seccion_2a_c3da66": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_hogares_con_un_hombre_solo_mayor_de_65_anos_bddeba": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_hogares_con_una_mujer_sola_mayor_de_65_anos_fa36fa": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_hogares_monoparentales_un_hombre_adulto_con_uno_o_mas_menores_291ace": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_hogares_monoparentales_una_mujer_adulta_con_uno_o_mas_menores_e22562": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_indice_de_dependencia_poblacion_de_0_15_poblacion_65_anos_y_mas_pob_16_64_f46a06": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_instalaciones_deportivas_89d72d": {
+      "non_null_sections": 1209,
+      "fraction": 0.4911
+    },
+    "barrio_study_instalaciones_deportivas_basicas_dc8b8d": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_institutos_publicos_de_educacion_secundaria_4e3094": {
+      "non_null_sections": 4,
+      "fraction": 0.0016
+    },
+    "barrio_study_mayores_e81114": {
+      "non_null_sections": 1209,
+      "fraction": 0.4911
+    },
+    "barrio_study_mercados_municipales_75e6e0": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_ngeu_convenio_servicios_sociales_b3dbdb": {
+      "non_null_sections": 1209,
+      "fraction": 0.4911
+    },
+    "barrio_study_numero_de_inmuebles_de_uso_residencial_40ed69": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_numero_de_locales_dados_de_alta_abiertos_f21045": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_numero_de_locales_dados_de_alta_cerrados_d8afd2": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_numero_de_locales_dados_de_alta_en_uso_como_vivienda_ba1806": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_numero_de_locales_dados_de_alta_totales_34c7a9": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_numero_habitantes_e7f0b0": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_otras_actuaciones_en_vias_publicas_c20a45": {
+      "non_null_sections": 1209,
+      "fraction": 0.4911
+    },
+    "barrio_study_paro_registrado_numero_de_personas_registradas_en_sepe_en_febrero_b97b4f": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_paro_registrado_numero_de_personas_registradas_en_sepe_en_febrero_hombres_d4357b": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_paro_registrado_numero_de_personas_registradas_en_sepe_en_febrero_mujeres_0706f3": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_participacion_ciudadana_661204": {
+      "non_null_sections": 1209,
+      "fraction": 0.4911
+    },
+    "barrio_study_pension_media_mensual_hombres_804faf": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_pension_media_mensual_mujeres_738f69": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_personas_con_nacionalidad_espanola_64cce1": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_personas_con_nacionalidad_espanola_hombres_f43ee1": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_personas_con_nacionalidad_espanola_mujeres_71478a": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_personas_con_nacionalidad_extranjera_2f6cc6": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_personas_con_nacionalidad_extranjera_hombres_fdc45d": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_personas_con_nacionalidad_extranjera_mujeres_a8f85f": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_piscinas_cubiertas_17dd72": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_piscinas_de_verano_a2fb97": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_pista_de_atletismo_4f6afa": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_poblacion_de_0_a_14_anos_a5e494": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_poblacion_de_15_a_29_anos_255808": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_poblacion_de_30_a_44_anos_2f35d5": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_poblacion_de_45_a_64_anos_db856d": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_poblacion_de_65_a_79_anos_135d85": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_poblacion_de_65_anos_y_mas_724f94": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_poblacion_de_80_anos_y_mas_77f61b": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_poblacion_densidad_hab_ha_3525f3": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_poblacion_en_etapa_educativa_de_0_a_2_anos_c03ae3": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_poblacion_en_etapa_educativa_de_12_a_15_anos_319625": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_poblacion_en_etapa_educativa_de_3_a_5_anos_88db62": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_poblacion_en_etapa_educativa_de_6_a_11_anos_ec0e2c": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_poblacion_en_etapa_educativa_poblacion_de_0_a_16_anos_16_no_incluidos_3e518b": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_poblacion_hombres_f7783a": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_poblacion_infantil_femenina_en_etapa_educativa_de_0_a_2_anos_d0f8f0": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_poblacion_infantil_femenina_en_etapa_educativa_de_12_a_15_anos_80c6db": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_poblacion_infantil_femenina_en_etapa_educativa_de_3_a_5_anos_89ea30": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_poblacion_infantil_femenina_en_etapa_educativa_de_6_a_11_anos_c4a08d": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_poblacion_infantil_masculina_en_etapa_educativa_de_0_a_2_anos_18d6e6": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_poblacion_infantil_masculina_en_etapa_educativa_de_12_a_15_anos_cc18e0": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_poblacion_infantil_masculina_en_etapa_educativa_de_3_a_5_anos_617dd7": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_poblacion_infantil_masculina_en_etapa_educativa_de_6_a_11_anos_1c0059": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_poblacion_mayor_igual_de_25_anos_con_bachiller_elemental_graduado_escolar_0cd622": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_poblacion_mayor_igual_de_25_anos_con_ensenanza_primaria_incompleta_76d9e3": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_poblacion_mayor_igual_de_25_anos_con_estudios_superiores_licenciatura_arq_ca2c82": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_poblacion_mayor_igual_de_25_anos_con_formacion_profesional_2o_grado_bachi_b380fb": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_poblacion_mayor_igual_de_25_anos_con_nivel_de_estudios_desconocido_y_o_no_b4fc1f": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_poblacion_mayor_igual_de_25_anos_con_titulacion_media_diplomatura_arquite_d29228": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_poblacion_mayor_igual_de_25_anos_que_no_sabe_leer_ni_escribir_o_sin_estud_4ee68d": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_poblacion_mujeres_d9844b": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_porcentaje_de_envejecimiento_poblacion_mayor_de_65_anos_poblacion_total_ec1146": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_porcentaje_de_sobre_envejecimiento_poblacion_mayor_de_80_anos_poblacion_m_52fed3": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_primera_y_segunda_nacionalidad_extranjera_en_el_distrito_china_poblacion__8a100d": {
+      "non_null_sections": 93,
+      "fraction": 0.0378
+    },
+    "barrio_study_primera_y_segunda_nacionalidad_extranjera_en_el_distrito_colombia_poblaci_a84a4a": {
+      "non_null_sections": 1489,
+      "fraction": 0.6048
+    },
+    "barrio_study_primera_y_segunda_nacionalidad_extranjera_en_el_distrito_filipinas_poblac_e8f5d4": {
+      "non_null_sections": 117,
+      "fraction": 0.0475
+    },
+    "barrio_study_primera_y_segunda_nacionalidad_extranjera_en_el_distrito_italia_poblacion_0e77c6": {
+      "non_null_sections": 876,
+      "fraction": 0.3558
+    },
+    "barrio_study_primera_y_segunda_nacionalidad_extranjera_en_el_distrito_paraguay_poblaci_33bbb2": {
+      "non_null_sections": 192,
+      "fraction": 0.078
+    },
+    "barrio_study_primera_y_segunda_nacionalidad_extranjera_en_el_distrito_peru_poblacion_t_cfb9e0": {
+      "non_null_sections": 637,
+      "fraction": 0.2587
+    },
+    "barrio_study_primera_y_segunda_nacionalidad_extranjera_en_el_distrito_rumania_poblacio_bbda84": {
+      "non_null_sections": 131,
+      "fraction": 0.0532
+    },
+    "barrio_study_primera_y_segunda_nacionalidad_extranjera_en_el_distrito_venezuela_poblac_2dd498": {
+      "non_null_sections": 1539,
+      "fraction": 0.6251
+    },
+    "barrio_study_proporcion_de_personas_migrantes_poblacion_extranjera_menos_ue_y_resto_pa_4ae379": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_renta_media_disponible_por_persona_0970f1": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_renta_neta_media_anual_de_los_hogares_urban_audit_eb29c9": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_residencias_para_personas_mayores_13d6e4": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_salubridad_publica_2658a9": {
+      "non_null_sections": 1209,
+      "fraction": 0.4911
+    },
+    "barrio_study_seccion_201_836011": {
+      "non_null_sections": 65,
+      "fraction": 0.0264
+    },
+    "barrio_study_seccion_202_320445": {
+      "non_null_sections": 60,
+      "fraction": 0.0244
+    },
+    "barrio_study_seccion_203_0ed8d5": {
+      "non_null_sections": 59,
+      "fraction": 0.024
+    },
+    "barrio_study_seccion_204_432048": {
+      "non_null_sections": 58,
+      "fraction": 0.0236
+    },
+    "barrio_study_seccion_205_7ce33e": {
+      "non_null_sections": 53,
+      "fraction": 0.0215
+    },
+    "barrio_study_seccion_206_72aa20": {
+      "non_null_sections": 67,
+      "fraction": 0.0272
+    },
+    "barrio_study_seccion_207_af0a09": {
+      "non_null_sections": 64,
+      "fraction": 0.026
+    },
+    "barrio_study_seccion_208_2238a1": {
+      "non_null_sections": 43,
+      "fraction": 0.0175
+    },
+    "barrio_study_seccion_209_05693f": {
+      "non_null_sections": 44,
+      "fraction": 0.0179
+    },
+    "barrio_study_seccion_210_6ea763": {
+      "non_null_sections": 79,
+      "fraction": 0.0321
+    },
+    "barrio_study_seccion_211_9513ee": {
+      "non_null_sections": 70,
+      "fraction": 0.0284
+    },
+    "barrio_study_seccion_212_45a0ac": {
+      "non_null_sections": 41,
+      "fraction": 0.0167
+    },
+    "barrio_study_seccion_213_dec969": {
+      "non_null_sections": 87,
+      "fraction": 0.0353
+    },
+    "barrio_study_seccion_214_7af02c": {
+      "non_null_sections": 35,
+      "fraction": 0.0142
+    },
+    "barrio_study_seccion_215_fd45be": {
+      "non_null_sections": 107,
+      "fraction": 0.0435
+    },
+    "barrio_study_seccion_216_64ddfa": {
+      "non_null_sections": 42,
+      "fraction": 0.0171
+    },
+    "barrio_study_seccion_217_0330ba": {
+      "non_null_sections": 56,
+      "fraction": 0.0227
+    },
+    "barrio_study_seccion_218_486e90": {
+      "non_null_sections": 75,
+      "fraction": 0.0305
+    },
+    "barrio_study_seccion_219_5d42d3": {
+      "non_null_sections": 47,
+      "fraction": 0.0191
+    },
+    "barrio_study_seccion_220_4d5bd7": {
+      "non_null_sections": 37,
+      "fraction": 0.015
+    },
+    "barrio_study_seccion_221_b5aa4a": {
+      "non_null_sections": 20,
+      "fraction": 0.0081
+    },
+    "barrio_study_servicios_complementarios_educacion_36a8ba": {
+      "non_null_sections": 1209,
+      "fraction": 0.4911
+    },
+    "barrio_study_servicios_sociales_y_emergencia_social_ad8835": {
+      "non_null_sections": 1209,
+      "fraction": 0.4911
+    },
+    "barrio_study_superficie_ha_a9d5c4": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_superficie_media_construida_m2_inmuebles_de_uso_residencial_819ddd": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_superficie_media_de_la_vivienda_m2_en_transaccion_e72390": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_tasa_absoluta_de_paro_registrado_febrero_5ddb63": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_tasa_absoluta_de_paro_registrado_hombres_7b527f": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_tasa_absoluta_de_paro_registrado_mujeres_bb1f64": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_tasa_de_desempleo_en_hombres_de_16_a_24_anos_8b6591": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_tasa_de_desempleo_en_hombres_de_25_a_44_anos_d00f7c": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_tasa_de_desempleo_en_hombres_de_45_a_64_anos_7f19a6": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_tasa_de_desempleo_en_mujeres_de_16_a_24_anos_a9609d": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_tasa_de_desempleo_en_mujeres_de_25_a_44_anos_f16355": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_tasa_de_desempleo_en_mujeres_de_45_a_64_anos_c5ec36": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_total_hogares_05d0db": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_valor_catastral_medio_por_inmueble_de_uso_residencial_a1b238": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "barrio_study_zonas_verdes_10a81b": {
+      "non_null_sections": 1209,
+      "fraction": 0.4911
+    },
+    "bike_accidents_2026_count": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_1_5_1_poblacion_en_etapas_educativas_0c8c21": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_1_5_2_escolarizacion_del_alumnado_por_tipo_de_centro_2719ed": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_1_5_3_nivel_de_estudios_de_la_poblacion_mayor_o_igual_a_25_anos_3377ac": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_absentismo_0d6547": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_actividades_culturales_2eaff4": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_actuaciones_deportivas_en_distritos_ecdc5a": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_alguna_dependencia_funcional_hombres_aa3155": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_alguna_dependencia_funcional_mujeres_6d4b17": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_alumnado_con_necesidades_de_apoyo_educativo_en_centros_privados_concertad_ef0645": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_alumnado_con_necesidades_de_apoyo_educativo_en_centros_privados_sin_conci_d1ef5f": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_alumnado_con_necesidades_de_apoyo_educativo_en_centros_publicos_136f82": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_alumnado_en_centros_privados_concertados_20f83c": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_alumnado_en_centros_privados_sin_concierto_b36fc5": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_alumnado_en_centros_publicos_c7f0ea": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_alumnado_extranjero_en_centros_privados_concertados_78f351": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_alumnado_extranjero_en_centros_privados_sin_concierto_78337c": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_alumnado_extranjero_en_centros_publicos_086a7e": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_apartamentos_municipales_para_mayores_76007d": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_asociaciones_culturales_y_casas_regionales_330184": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_asociaciones_de_mujeres_f6396a": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_asociaciones_seccion_1a_1e5b15": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_asociaciones_vecinales_1c4b9b": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_atestados_partes_de_accidentes_de_trafico_confeccionados_07045e": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_autopercepcion_de_buen_estado_de_salud_hombres_7c5c43": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_autopercepcion_de_buen_estado_de_salud_mujeres_958e6b": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_autopercepcion_de_buen_estado_de_salud_respuesta_muy_buena_buena_464c05": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_bibliotecas_comunidad_madrid_ad8ede": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_bibliotecas_municipales_f39888": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_calidad_de_vida_relacionada_con_la_salud_cvrs_b4f451": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_calidad_de_vida_relacionada_con_la_salud_cvrs_hombres_dde178": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_calidad_de_vida_relacionada_con_la_salud_cvrs_mujeres_cfa680": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_campos_de_futbol_11_e4126f": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_casos_trabajados_por_el_programa_de_absentismo_municipal_7ee3a3": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_casos_trabajados_por_el_programa_de_absentismo_municipal_hombres_ccfd75": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_casos_trabajados_por_el_programa_de_absentismo_municipal_mujeres_ebb83e": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_centro_de_dia_de_atencion_a_ninos_y_ninas_de_3_a_12_anos_7cf5e3": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_centros_de_adolescentes_y_jovenes_aspa_c68bfb": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_centros_de_apoyo_a_las_familias_caf_ec4942": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_centros_de_atencion_a_la_infancia_cai_1fd1a2": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_centros_de_atencion_a_las_adicciones_cad_y_ccad_20c2cf": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_centros_de_dia_de_alzheimer_y_fisicos_fca5ab": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_centros_de_servicios_sociales_ea5435": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_centros_deportivos_municipales_d326b4": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_centros_docentes_ensenanza_infantil_y_primaria_3ee385": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_centros_municipales_de_mayores_925c6a": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_centros_municipales_de_salud_comunitaria_cmsc_d74814": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_centros_para_personas_sin_hogar_c841ac": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_centros_y_espacios_culturales_15e475": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_colegios_privados_inf_o_pri_o_inf_y_pri_ea856d": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_colegios_privados_inf_pri_y_sec_o_pri_y_sec_6280ee": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_colegios_publicos_infantil_y_primaria_a08e18": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_comercio_1b2571": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_concejalia_presidencia_del_distrito_b7e40d": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_consumo_d69b2b": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_consumo_de_medicamentos_4ee47d": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_consumo_de_medicamentos_hombres_c0b665": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_consumo_de_medicamentos_mujeres_666228": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_consumo_de_tabaco_diario_63d129": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_consumo_de_tabaco_diario_hombres_95d177": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_consumo_de_tabaco_diario_mujeres_dd2627": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_demandas_de_intervencion_en_los_centros_de_atencion_a_la_infancia_cai_0c3cdc": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_diabetes_mellitus_983bb7": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_diabetes_mellitus_hombres_0d4b6b": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_diabetes_mellitus_mujeres_5a2dbc": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_direc_y_gestion_admtva_del_distrito_110b69": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_duracion_media_del_credito_meses_en_transaccion_de_vivienda_29d9b9": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_edificios_c19f89": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_equipamiento_de_zonas_ajardinadas_464abf": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_escuelas_infantiles_municipales_6a413a": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_escuelas_infantiles_privadas_276cac": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_escuelas_infantiles_publicas_33c118": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_espacios_de_igualdad_b7f7e8": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_etapas_educativas_total_ninas_f784f9": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_etapas_educativas_total_ninos_a54784": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_expedientes_instruidos_por_agentes_tutores_fb61d5": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_familia_e_infancia_7601b0": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_familias_atendidas_por_el_equipo_de_trabajo_con_menores_y_familia_etmf_41828a": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_fundaciones_seccion_2a_c3da66": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_hipertension_arterial_90fdfc": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_hipertension_arterial_hombres_0d3552": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_hipertension_arterial_mujeres_b1a60f": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_hogares_con_un_hombre_solo_mayor_de_65_anos_bddeba": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_hogares_con_una_mujer_sola_mayor_de_65_anos_fa36fa": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_hogares_monoparentales_un_hombre_adulto_con_uno_o_mas_menores_291ace": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_hogares_monoparentales_una_mujer_adulta_con_uno_o_mas_menores_e22562": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_indice_de_dependencia_poblacion_de_0_15_poblacion_65_anos_y_mas_pob_16_64_f46a06": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_inspecciones_y_actuaciones_en_locales_de_espectaculos_publicos_y_activida_1636cd": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_instalaciones_deportivas_89d72d": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_instalaciones_deportivas_basicas_dc8b8d": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_institutos_publicos_de_educacion_secundaria_4e3094": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_intervenciones_de_la_policia_municipal_en_materia_de_seguridad_delitos_re_0b9b74": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_intervenciones_de_la_policia_municipal_en_materia_de_seguridad_relacionad_ad3304": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_intervenciones_de_la_policia_municipal_en_materia_de_seguridad_relacionad_e23f33": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_intervenciones_de_la_policia_municipal_en_materia_de_seguridad_relacionad_e574ca": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_mayores_e81114": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_menores_atendidos_por_el_servicio_de_conciliacion_y_de_apoyo_a_familias_c_869eee": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_mercados_municipales_75e6e0": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_ngeu_convenio_servicios_sociales_b3dbdb": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_numero_de_inmuebles_de_uso_residencial_40ed69": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_numero_de_locales_dados_de_alta_abiertos_f21045": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_numero_de_locales_dados_de_alta_cerrados_d8afd2": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_numero_de_locales_dados_de_alta_en_uso_como_vivienda_ba1806": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_numero_de_locales_dados_de_alta_totales_34c7a9": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_numero_de_personas_con_grado_de_discapacidad_reconocido_ee1089": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_numero_de_personas_con_grado_de_discapacidad_reconocido_hombres_b5c76b": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_numero_de_personas_con_grado_de_discapacidad_reconocido_mujeres_85442f": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_numero_habitantes_e7f0b0": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_otras_actuaciones_en_vias_publicas_c20a45": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_paro_registrado_numero_de_personas_registradas_en_sepe_en_febrero_b97b4f": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_paro_registrado_numero_de_personas_registradas_en_sepe_en_febrero_hombres_d4357b": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_paro_registrado_numero_de_personas_registradas_en_sepe_en_febrero_mujeres_0706f3": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_participacion_ciudadana_661204": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_pension_media_mensual_hombres_804faf": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_pension_media_mensual_mujeres_738f69": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_personas_atendidas_en_la_unidad_de_primera_atencion_en_centros_de_servici_d42039": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_personas_beneficiarias_de_prestaciones_sociales_de_caracter_economico_67fb7b": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_personas_con_nacionalidad_espanola_64cce1": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_personas_con_nacionalidad_espanola_hombres_f43ee1": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_personas_con_nacionalidad_espanola_mujeres_71478a": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_personas_con_nacionalidad_extranjera_2f6cc6": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_personas_con_nacionalidad_extranjera_hombres_fdc45d": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_personas_con_nacionalidad_extranjera_mujeres_a8f85f": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_personas_con_obesidad_0f00a6": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_personas_con_obesidad_hombres_c166bc": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_personas_con_obesidad_mujeres_f86326": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_personas_con_servicio_de_ayuda_a_domicilio_modalidad_auxiliar_de_hogar_3c1606": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_personas_con_servicio_de_ayuda_a_domicilio_modalidad_auxiliar_de_hogar_ho_278e4e": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_personas_con_servicio_de_ayuda_a_domicilio_modalidad_auxiliar_de_hogar_mu_2b24dd": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_personas_con_sobrepeso_21c2f7": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_personas_con_sobrepeso_hombres_e3f78c": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_personas_con_sobrepeso_mujeres_734c3c": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_personas_detenidas_e_investigadas_por_la_policia_municipal_en_materia_de__867a21": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_personas_mayores_de_65_anos_con_alguna_dependencia_funcional_0607be": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_personas_paradas_de_larga_duracion_febrero_464a7c": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_personas_paradas_de_larga_duracion_febrero_hombres_45ee11": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_personas_paradas_de_larga_duracion_febrero_mujeres_de88f5": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_personas_paradas_que_no_perciben_prestaciones_febrero_db0dd3": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_personas_paradas_que_no_perciben_prestaciones_febrero_hombres_b86d15": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_personas_paradas_que_no_perciben_prestaciones_febrero_mujeres_3fa133": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_personas_paradas_que_si_perciben_prestaciones_febrero_3ad52d": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_personas_paradas_que_si_perciben_prestaciones_febrero_hombres_73b3c2": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_personas_paradas_que_si_perciben_prestaciones_febrero_mujeres_36664a": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_personas_perceptoras_de_prestacion_de_la_renta_minima_de_insercion_2f02d7": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_personas_socias_de_los_centros_municipales_de_mayores_5d7ea7": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_personas_socias_de_los_centros_municipales_de_mayores_hombres_c3e78e": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_personas_socias_de_los_centros_municipales_de_mayores_mujeres_d19ba4": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_piscinas_cubiertas_17dd72": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_piscinas_de_verano_a2fb97": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_pista_de_atletismo_4f6afa": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_poblacion_de_0_a_14_anos_a5e494": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_poblacion_de_15_a_29_anos_255808": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_poblacion_de_30_a_44_anos_2f35d5": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_poblacion_de_45_a_64_anos_db856d": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_poblacion_de_65_a_79_anos_135d85": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_poblacion_de_65_anos_y_mas_724f94": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_poblacion_de_80_anos_y_mas_77f61b": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_poblacion_densidad_hab_ha_3525f3": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_poblacion_en_etapa_educativa_de_0_a_2_anos_c03ae3": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_poblacion_en_etapa_educativa_de_12_a_15_anos_319625": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_poblacion_en_etapa_educativa_de_3_a_5_anos_88db62": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_poblacion_en_etapa_educativa_de_6_a_11_anos_ec0e2c": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_poblacion_en_etapa_educativa_poblacion_de_0_a_16_anos_16_no_incluidos_3e518b": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_poblacion_hombres_f7783a": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_poblacion_infantil_femenina_en_etapa_educativa_de_0_a_2_anos_d0f8f0": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_poblacion_infantil_femenina_en_etapa_educativa_de_12_a_15_anos_80c6db": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_poblacion_infantil_femenina_en_etapa_educativa_de_3_a_5_anos_89ea30": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_poblacion_infantil_femenina_en_etapa_educativa_de_6_a_11_anos_c4a08d": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_poblacion_infantil_masculina_en_etapa_educativa_de_0_a_2_anos_18d6e6": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_poblacion_infantil_masculina_en_etapa_educativa_de_12_a_15_anos_cc18e0": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_poblacion_infantil_masculina_en_etapa_educativa_de_3_a_5_anos_617dd7": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_poblacion_infantil_masculina_en_etapa_educativa_de_6_a_11_anos_1c0059": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_poblacion_mayor_igual_de_25_anos_con_bachiller_elemental_graduado_escolar_0cd622": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_poblacion_mayor_igual_de_25_anos_con_ensenanza_primaria_incompleta_76d9e3": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_poblacion_mayor_igual_de_25_anos_con_estudios_superiores_licenciatura_arq_ca2c82": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_poblacion_mayor_igual_de_25_anos_con_formacion_profesional_2o_grado_bachi_b380fb": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_poblacion_mayor_igual_de_25_anos_con_nivel_de_estudios_desconocido_y_o_no_b4fc1f": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_poblacion_mayor_igual_de_25_anos_con_titulacion_media_diplomatura_arquite_d29228": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_poblacion_mayor_igual_de_25_anos_que_no_sabe_leer_ni_escribir_o_sin_estud_4ee68d": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_poblacion_mujeres_d9844b": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_porcentaje_de_envejecimiento_poblacion_mayor_de_65_anos_poblacion_total_ec1146": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_porcentaje_de_sobre_envejecimiento_poblacion_mayor_de_80_anos_poblacion_m_52fed3": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_presencia_de_enfermedad_cronica_df29cf": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_presencia_de_enfermedad_cronica_hombres_ab6e71": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_presencia_de_enfermedad_cronica_mujeres_7b2b61": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_primera_y_segunda_nacionalidad_extranjera_en_el_distrito_china_poblacion__8a100d": {
+      "non_null_sections": 2313,
+      "fraction": 0.9395
+    },
+    "district_study_primera_y_segunda_nacionalidad_extranjera_en_el_distrito_colombia_poblaci_a84a4a": {
+      "non_null_sections": 2252,
+      "fraction": 0.9147
+    },
+    "district_study_primera_y_segunda_nacionalidad_extranjera_en_el_distrito_filipinas_poblac_e8f5d4": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_primera_y_segunda_nacionalidad_extranjera_en_el_distrito_italia_poblacion_0e77c6": {
+      "non_null_sections": 2406,
+      "fraction": 0.9773
+    },
+    "district_study_primera_y_segunda_nacionalidad_extranjera_en_el_distrito_paraguay_poblaci_33bbb2": {
+      "non_null_sections": 2369,
+      "fraction": 0.9622
+    },
+    "district_study_primera_y_segunda_nacionalidad_extranjera_en_el_distrito_peru_poblacion_t_cfb9e0": {
+      "non_null_sections": 2252,
+      "fraction": 0.9147
+    },
+    "district_study_primera_y_segunda_nacionalidad_extranjera_en_el_distrito_rumania_poblacio_bbda84": {
+      "non_null_sections": 2276,
+      "fraction": 0.9245
+    },
+    "district_study_primera_y_segunda_nacionalidad_extranjera_en_el_distrito_venezuela_poblac_2dd498": {
+      "non_null_sections": 2369,
+      "fraction": 0.9622
+    },
+    "district_study_probabilidad_de_padecer_enfermedad_ghq_12_mujeres_d79da7": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_probabilidad_de_padecer_enfermedad_mental_ghq_12_277f92": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_probabilidad_de_padecer_enfermedad_mental_ghq_12_hombres_36f9a3": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_proporcion_de_personas_migrantes_poblacion_extranjera_menos_ue_y_resto_pa_4ae379": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_renta_media_disponible_por_persona_0970f1": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_renta_neta_media_anual_de_los_hogares_urban_audit_eb29c9": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_residencias_para_personas_mayores_13d6e4": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_salubridad_publica_2658a9": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_seccion_201_836011": {
+      "non_null_sections": 110,
+      "fraction": 0.0447
+    },
+    "district_study_seccion_202_320445": {
+      "non_null_sections": 111,
+      "fraction": 0.0451
+    },
+    "district_study_seccion_203_0ed8d5": {
+      "non_null_sections": 93,
+      "fraction": 0.0378
+    },
+    "district_study_seccion_204_432048": {
+      "non_null_sections": 124,
+      "fraction": 0.0504
+    },
+    "district_study_seccion_205_7ce33e": {
+      "non_null_sections": 101,
+      "fraction": 0.041
+    },
+    "district_study_seccion_206_72aa20": {
+      "non_null_sections": 117,
+      "fraction": 0.0475
+    },
+    "district_study_seccion_207_af0a09": {
+      "non_null_sections": 121,
+      "fraction": 0.0491
+    },
+    "district_study_seccion_208_2238a1": {
+      "non_null_sections": 187,
+      "fraction": 0.076
+    },
+    "district_study_seccion_209_05693f": {
+      "non_null_sections": 90,
+      "fraction": 0.0366
+    },
+    "district_study_seccion_210_6ea763": {
+      "non_null_sections": 196,
+      "fraction": 0.0796
+    },
+    "district_study_seccion_211_9513ee": {
+      "non_null_sections": 182,
+      "fraction": 0.0739
+    },
+    "district_study_seccion_212_45a0ac": {
+      "non_null_sections": 93,
+      "fraction": 0.0378
+    },
+    "district_study_seccion_213_dec969": {
+      "non_null_sections": 176,
+      "fraction": 0.0715
+    },
+    "district_study_seccion_214_7af02c": {
+      "non_null_sections": 83,
+      "fraction": 0.0337
+    },
+    "district_study_seccion_215_fd45be": {
+      "non_null_sections": 168,
+      "fraction": 0.0682
+    },
+    "district_study_seccion_216_64ddfa": {
+      "non_null_sections": 126,
+      "fraction": 0.0512
+    },
+    "district_study_seccion_217_0330ba": {
+      "non_null_sections": 109,
+      "fraction": 0.0443
+    },
+    "district_study_seccion_218_486e90": {
+      "non_null_sections": 75,
+      "fraction": 0.0305
+    },
+    "district_study_seccion_219_5d42d3": {
+      "non_null_sections": 56,
+      "fraction": 0.0227
+    },
+    "district_study_seccion_220_4d5bd7": {
+      "non_null_sections": 112,
+      "fraction": 0.0455
+    },
+    "district_study_seccion_221_b5aa4a": {
+      "non_null_sections": 32,
+      "fraction": 0.013
+    },
+    "district_study_sedentarismo_828437": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_sedentarismo_hombres_5b643a": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_sedentarismo_mujeres_86497b": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_servicios_complementarios_educacion_36a8ba": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_servicios_sociales_y_emergencia_social_ad8835": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_solicitudes_tramitadas_de_renta_minima_de_insercion_104938": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_superficie_de_zonas_verdes_y_parques_de_distrito_ha_02b074": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_superficie_de_zonas_verdes_y_parques_de_distrito_ha_no_de_habitantes_10_0_72934c": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_superficie_deportiva_m2_85fc1b": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_superficie_ha_a9d5c4": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_superficie_media_construida_m2_inmuebles_de_uso_residencial_819ddd": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_superficie_media_de_la_vivienda_m2_en_transaccion_e72390": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_superficie_parques_historicos_singulares_y_forestales_distrito_ha_no_habi_4f1cee": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_superficie_parques_historicos_singulares_y_forestales_por_distrito_ha_074a17": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_tasa_absoluta_de_paro_registrado_febrero_5ddb63": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_tasa_absoluta_de_paro_registrado_hombres_7b527f": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_tasa_absoluta_de_paro_registrado_mujeres_bb1f64": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_tasa_de_desempleo_en_hombres_de_16_a_24_anos_8b6591": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_tasa_de_desempleo_en_hombres_de_25_a_44_anos_d00f7c": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_tasa_de_desempleo_en_hombres_de_45_a_64_anos_7f19a6": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_tasa_de_desempleo_en_mujeres_de_16_a_24_anos_a9609d": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_tasa_de_desempleo_en_mujeres_de_25_a_44_anos_f16355": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_tasa_de_desempleo_en_mujeres_de_45_a_64_anos_c5ec36": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_total_alumnado_con_necesidades_de_apoyo_educativo_1a6b72": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_total_alumnado_extranjero_9dd422": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_total_hogares_05d0db": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_total_prestaciones_sociales_de_caracter_economico_686262": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_valor_catastral_medio_por_inmueble_de_uso_residencial_a1b238": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_study_zonas_verdes_10a81b": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "education_count_1000m": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "education_count_500m": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "education_count_in_section": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "education_nearest_m": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "health_count_1000m": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "health_count_500m": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "health_count_in_section": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "health_nearest_m": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "libraries_count_1000m": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "libraries_count_500m": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "libraries_count_in_section": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "libraries_nearest_m": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "padron_distinct_ages": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "padron_reference_date": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "parks_catalogued_area_ha_at_points": {
+      "non_null_sections": 7,
+      "fraction": 0.0028
+    },
+    "parks_count_1000m": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "parks_count_500m": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "parks_count_in_section": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "parks_nearest_m": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "population_age_0_17": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "population_age_18_34": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "population_age_35_64": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "population_age_65_plus": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "population_density_km2": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "population_men": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "population_total": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "population_women": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "road_accidents_2026_count": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "section_2024_rent_collective_eur_m2_p25": {
+      "non_null_sections": 2390,
+      "fraction": 0.9708
+    },
+    "section_2024_rent_collective_eur_m2_p50": {
+      "non_null_sections": 2390,
+      "fraction": 0.9708
+    },
+    "section_2024_rent_collective_eur_m2_p75": {
+      "non_null_sections": 2390,
+      "fraction": 0.9708
+    },
+    "section_2024_rent_collective_month_eur_p25": {
+      "non_null_sections": 2390,
+      "fraction": 0.9708
+    },
+    "section_2024_rent_collective_month_eur_p50": {
+      "non_null_sections": 2390,
+      "fraction": 0.9708
+    },
+    "section_2024_rent_collective_month_eur_p75": {
+      "non_null_sections": 2390,
+      "fraction": 0.9708
+    },
+    "section_2024_rent_collective_size_m2_p25": {
+      "non_null_sections": 2390,
+      "fraction": 0.9708
+    },
+    "section_2024_rent_collective_size_m2_p50": {
+      "non_null_sections": 2390,
+      "fraction": 0.9708
+    },
+    "section_2024_rent_collective_size_m2_p75": {
+      "non_null_sections": 2390,
+      "fraction": 0.9708
+    },
+    "section_2024_rent_house_eur_m2_p25": {
+      "non_null_sections": 108,
+      "fraction": 0.0439
+    },
+    "section_2024_rent_house_eur_m2_p50": {
+      "non_null_sections": 108,
+      "fraction": 0.0439
+    },
+    "section_2024_rent_house_eur_m2_p75": {
+      "non_null_sections": 108,
+      "fraction": 0.0439
+    },
+    "section_2024_rent_house_month_eur_p25": {
+      "non_null_sections": 108,
+      "fraction": 0.0439
+    },
+    "section_2024_rent_house_month_eur_p50": {
+      "non_null_sections": 108,
+      "fraction": 0.0439
+    },
+    "section_2024_rent_house_month_eur_p75": {
+      "non_null_sections": 108,
+      "fraction": 0.0439
+    },
+    "section_2024_rent_house_size_m2_p25": {
+      "non_null_sections": 108,
+      "fraction": 0.0439
+    },
+    "section_2024_rent_house_size_m2_p50": {
+      "non_null_sections": 108,
+      "fraction": 0.0439
+    },
+    "section_2024_rent_house_size_m2_p75": {
+      "non_null_sections": 108,
+      "fraction": 0.0439
+    },
+    "section_2024_rental_collective_units": {
+      "non_null_sections": 2408,
+      "fraction": 0.9781
+    },
+    "section_2024_rental_single_family_units": {
+      "non_null_sections": 2408,
+      "fraction": 0.9781
+    },
+    "section_2024_rental_units": {
+      "non_null_sections": 2408,
+      "fraction": 0.9781
+    },
+    "sports_count_1000m": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "sports_count_500m": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "sports_count_in_section": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "sports_nearest_m": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    }
+  },
+  "rows_written": 2462,
+  "columns_written": 473,
+  "generated_at_utc": "2026-11-19T13:29:40.969640+00:00",
+  "sources": {
+    "census_topojson": "/Users/mohamedkhachaniupm/civic/datos/geografia/seccionado-censa.json",
+    "districts": "/Users/mohamedkhachaniupm/civic/datos/geografia/distritos.csv",
+    "neighbourhoods": "/Users/mohamedkhachaniupm/civic/datos/geografia/Barrios.csv",
+    "padron": "/Users/mohamedkhachaniupm/civic/datos/padron/padron.csv",
+    "district_study_2026": "/Users/mohamedkhachaniupm/civic/datos/padron/estudio-2026.xlsx",
+    "rental_section_2024": "/Users/mohamedkhachaniupm/civic/datos/alquiler/referencia-precio-alquiler-seccion-censa;.xlsx",
+    "rental_district_2024": null,
+    "rental_postal_2023": "/Users/mohamedkhachaniupm/civic/datos/alquiler/alquiler-medio.csv",
+    "section_postal_crosswalk": null,
+    "schools": "/Users/mohamedkhachaniupm/civic/datos/calidad-vida/centros-educativos.csv",
+    "medical_centres": "/Users/mohamedkhachaniupm/civic/datos/calidad-vida/centros-atencion-medica.csv",
+    "sports_facilities": "/Users/mohamedkhachaniupm/civic/datos/calidad-vida/instalaciones-deportivas.csv",
+    "libraries": "/Users/mohamedkhachaniupm/civic/datos/calidad-vida/bibliotecas.csv",
+    "parks": "/Users/mohamedkhachaniupm/civic/datos/zonas_verdes/parques-y-jardines.csv",
+    "park_area_catalogue": "/Users/mohamedkhachaniupm/civic/datos/zonas_verdes/arbolado-superficie.csv",
+    "traffic_accidents": "/Users/mohamedkhachaniupm/civic/datos/accidentes/accidentes-trafico.xlsx",
+    "bike_accidents": "/Users/mohamedkhachaniupm/civic/datos/accidentes/accidentes-bici.xlsx",
+    "noise": "/Users/mohamedkhachaniupm/civic/datos/calidad-vida/contaminacion-acustica.csv",
+    "air_quality": "/Users/mohamedkhachaniupm/civic/datos/calidad-vida/calidad-aire.csv",
+    "traffic_zip": null,
+    "traffic_sensor_locations": null,
+    "air_station_locations": null,
+    "noise_station_locations": null
+  }
+}

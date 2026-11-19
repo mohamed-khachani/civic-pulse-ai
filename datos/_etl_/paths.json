@@ -1,0 +1,30 @@
+{
+  "output_dir": "output",
+  "max_monitor_distance_m": 2000,
+  "study_metric_regex": "",
+  "files": {
+    "census_topojson": "../geografia/seccionado-censa.json",
+    "districts": "../geografia/distritos.csv",
+    "neighbourhoods": "../geografia/Barrios.csv",
+    "padron": "../padron/padron.csv",
+    "district_study_2026": "../padron/estudio-2026.xlsx",
+    "rental_section_2024": "../alquiler/referencia-precio-alquiler-seccion-censa;.xlsx",
+    "rental_district_2024": "../ralquiler/eferencias-precio-alquiler-distrito.xlsx",
+    "rental_postal_2023": "../alquiler/alquiler-medio.csv",
+    "section_postal_crosswalk": "",
+    "schools": "../calidad-vida/centros-educativos.csv",
+    "medical_centres": "../calidad-vida/centros-atencion-medica.csv",
+    "sports_facilities": "../calidad-vida/instalaciones-deportivas.csv",
+    "libraries": "../calidad-vida/bibliotecas.csv",
+    "parks": "../zonas_verdes/parques-y-jardines.csv",
+    "park_area_catalogue": "../zonas_verdes/arbolado-superficie.csv",
+    "traffic_accidents": "../accidentes/accidentes-trafico.xlsx",
+    "bike_accidents": "../accidentes/accidentes-bici.xlsx",
+    "noise": "../calidad-vida/contaminacion-acustica.csv",
+    "air_quality": "../calidad-vida/calidad-aire.csv",
+    "traffic_zip": "../calidad-vida/trafico-2026.zip",
+    "traffic_sensor_locations": "",
+    "air_station_locations": "",
+    "noise_station_locations": ""
+  }
+}
