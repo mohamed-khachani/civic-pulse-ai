@@ -31,7 +31,7 @@ interface ScrapeResult {
 
 const CONFIG: ScraperConfig = {
   baseUrl:
-    "https://www.pisos.com/venta/pisos-madrid_capital_zona_urbana/",
+    "https://www.pisos.com/alquiler/pisos-madrid_capital_zona_urbana/", 
   startPage: 0,
   endPage: 100,
   outputDir: path.resolve("html"),
