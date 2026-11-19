@@ -401,39 +401,66 @@ def parse_listing(html: str) -> dict:
     return listing
 
 
-def main():
-    parser = argparse.ArgumentParser(description="Parse pisos.com HTML into clean, typed JSON")
-    parser.add_argument("input", type=Path, help="HTML file OR folder containing HTML files")
-    parser.add_argument("-o", "--output", type=Path, help="Output JSON file OR folder")
-    args = parser.parse_args()
 
-    if not args.input.exists():
-        parser.error(f"Input not found: {args.input}")
-    paths = sorted(p for p in args.input.rglob("*") if p.suffix.lower() in {".html", ".htm"}) if args.input.is_dir() else [args.input]
-    if not paths:
-        parser.error("No .html or .htm files found")
-    if args.input.is_dir() and args.output and args.output.suffix.lower() == ".json":
-        parser.error("When input is a folder, --output must be an output folder")
+def main():
+    base_dir = Path(__file__).resolve().parent
+
+    input_dir = base_dir / "pisoscom"
+    output_dir = base_dir / "outputs"
+
+    if not input_dir.exists():
+        raise FileNotFoundError(f"Input folder not found: {input_dir}")
+
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    paths = sorted(
+        p for p in input_dir.rglob("*")
+        if p.is_file() and p.suffix.lower() in {".html", ".htm"}
+    )
+
+    print(f"Found {len(paths)} HTML files")
 
     success = 0
-    for path in paths:
+    failed = 0
+
+    for i, path in enumerate(paths, start=1):
         try:
-            data = parse_listing(path.read_text(encoding="utf-8-sig", errors="replace"))
-            if args.input.is_dir():
-                rel = path.relative_to(args.input).with_suffix(".json")
-                output = (args.output or (args.input / "json")) / rel
-            else:
-                output = args.output or path.with_suffix(".json")
-            output.parent.mkdir(parents=True, exist_ok=True)
-            output.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-            print(f"[OK] {path} -> {output} | price={data['price']['amount']} | features={len(data['all_features'])}")
+            html = path.read_text(
+                encoding="utf-8-sig",
+                errors="replace"
+            )
+
+            data = parse_listing(html)
+
+            relative_path = path.relative_to(input_dir)
+            output_path = output_dir / relative_path.with_suffix(".json")
+
+            output_path.parent.mkdir(
+                parents=True,
+                exist_ok=True
+            )
+
+            output_path.write_text(
+                json.dumps(data, ensure_ascii=False, indent=2) + "\n",
+                encoding="utf-8"
+            )
+
             success += 1
+            print(f"[{i}/{len(paths)}] [OK] {path.name}")
+
         except Exception as exc:
-            print(f"[ERROR] {path}: {exc}")
-    print(f"Done: {success}/{len(paths)} HTML files converted")
-    if success != len(paths):
+            failed += 1
+            print(f"[{i}/{len(paths)}] [ERROR] {path.name}: {exc}")
+
+    print("\nProcessing completed")
+    print(f"Total:   {len(paths)}")
+    print(f"Success: {success}")
+    print(f"Failed:  {failed}")
+
+    if failed:
         raise SystemExit(1)
 
 
 if __name__ == "__main__":
     main()
+
