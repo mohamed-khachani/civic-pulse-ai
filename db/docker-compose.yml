@@ -1,26 +1,37 @@
-
 services:
   postgres:
-    build: .
+    platform: linux/amd64
+
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    image: habitat-postgres:17-postgis
     container_name: postgres-db
     restart: unless-stopped
 
     environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: habitat_admin
+      POSTGRES_PASSWORD: habitat_password
+      POSTGRES_DB: habitat_ai
+      PGDATA: /var/lib/postgresql/data/pgdata
 
     ports:
-      - "127.0.0.1:${POSTGRES_PORT:-5432}:5432"
+      - "127.0.0.1:5432:5432"
 
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - habitat_postgres_data:/var/lib/postgresql/data
 
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
-      interval: 10s
+      test:
+        - CMD-SHELL
+        - pg_isready -U habitat_admin -d habitat_ai
+      interval: 5s
       timeout: 5s
-      retries: 5
+      retries: 10
+      start_period: 20s
+
+    shm_size: 256mb
 
 volumes:
-  postgres_data:
+  habitat_postgres_data:

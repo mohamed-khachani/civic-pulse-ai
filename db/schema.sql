@@ -41,6 +41,7 @@ CREATE TABLE IF NOT EXISTS housing.listings (
     id                        BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     portal                    TEXT NOT NULL
                               CHECK (portal IN ('pisoscom', 'fotocasa')),
+    portal_listing_id TEXT NOT NULL,
     url                       TEXT NOT NULL,  -- The ONLY standalone URL: portal ad URL.
     listing_reference         TEXT,
 

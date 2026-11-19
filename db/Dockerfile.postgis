@@ -1,0 +1,37 @@
+
+FROM postgres:17-alpine
+
+RUN apk add --no-cache \
+    geos \
+    proj \
+    json-c \
+    libxml2 \
+    protobuf-c
+
+RUN apk add --no-cache --virtual .build-deps \
+    build-base \
+    clang \
+    llvm-dev \
+    geos-dev \
+    proj-dev \
+    json-c-dev \
+    libxml2-dev \
+    protobuf-c-dev \
+    curl \
+    tar
+
+RUN curl -fsSL \
+    https://download.osgeo.org/postgis/source/postgis-3.6.3.tar.gz \
+    -o /tmp/postgis.tar.gz \
+    && mkdir /tmp/postgis \
+    && tar -xzf /tmp/postgis.tar.gz \
+        -C /tmp/postgis --strip-components=1 \
+    && cd /tmp/postgis \
+    && ./configure \
+        --with-pgconfig=/usr/local/bin/pg_config \
+        --without-raster \
+        --without-topology \
+    && make -j2 \
+    && make install \
+    && rm -rf /tmp/postgis /tmp/postgis.tar.gz \
+    && apk del .build-deps
