@@ -138,8 +138,8 @@ function CensusPanel() {
         <p>Elige qué información quieres ver en el mapa.</p>
       </div>
       <p className="census-help">
-        Pasa el cursor por una zona para consultar todos sus datos. En móvil,
-        toca la zona.
+        Acerca el mapa y mantén el cursor sobre una zona durante 5 segundos, o
+        haz clic para consultar sus datos al momento.
       </p>
       <label className="metric-option">
         <input

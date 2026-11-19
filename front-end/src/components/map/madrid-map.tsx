@@ -58,6 +58,10 @@ import {
   CensusHoverTooltip,
 } from "./census-layers";
 import { useCensus, useCensusMetrics } from "@/hooks/use-census";
+import {
+  createCensusHoverIntent,
+  CENSUS_DETAIL_MIN_ZOOM,
+} from "@/lib/census-hover-intent";
 import { mapHoverTarget } from "@/lib/map-interactions";
 import { LoadingStatus } from "../ui/loading-status";
 const constrainCamera: maplibregl.TransformConstrainFunction = (
@@ -80,6 +84,13 @@ export default function MadridMap() {
     longitude: number;
     latitude: number;
   }>();
+  const censusHoverIntent = useMemo(
+    () =>
+      createCensusHoverIntent(setHoveredCensus, () =>
+        setHoveredCensus(undefined),
+      ),
+    [],
+  );
   const [reload, setReload] = useState(0);
   const selected = useAtlas((s) => s.selectedId);
   const action = useAtlas((s) => s.mapAction);
@@ -88,6 +99,7 @@ export default function MadridMap() {
   const visibleLayers = useAtlas((s) => s.visibleLayers);
   const pendingChat = useAtlas((s) => s.pending);
   const censusVisible = useAtlas((s) => s.censusVisible);
+  const activeMetric = useAtlas((s) => s.activeCensusMetric);
   const listingsVisible = useAtlas((s) => s.listingsVisible);
   const fittedKey = useAtlas((s) => s.fittedResultKey);
   const census = useCensus(censusVisible);
@@ -105,6 +117,10 @@ export default function MadridMap() {
     queryKey: ["layers"],
     queryFn: ({ signal }) => api.layers(signal),
   });
+  useEffect(
+    () => () => censusHoverIntent.cancel(),
+    [censusHoverIntent, censusVisible, activeMetric, listingsVisible, reload],
+  );
   const selectedFeature = geo?.features.find(
     (f) => f.properties.id === selected,
   );
@@ -252,6 +268,8 @@ export default function MadridMap() {
   async function onClick(e: MapLayerMouseEvent) {
     const target = mapHoverTarget(e.features, listingsVisible);
     if (target?.type === "section" && censusVisible) {
+      if ((map.current?.getZoom() ?? 0) < CENSUS_DETAIL_MIN_ZOOM) return;
+      censusHoverIntent.cancel();
       useAtlas.getState().selectCensus(target.id);
       setHoveredCensus(undefined);
       setPopupId(undefined);
@@ -304,7 +322,13 @@ export default function MadridMap() {
       "text-allow-overlap": false,
     },
     paint: {
-      "text-color": "#17211B",
+      "text-color": [
+        "case",
+        ["==", ["get", "id"], hoveredId ?? ""],
+        "#16803c",
+        "#17211B",
+      ],
+      "text-color-transition": { duration: 0, delay: 0 },
       "text-halo-color": "#ffffff",
       "text-halo-width": 0,
       "text-halo-blur": 0,
@@ -314,6 +338,7 @@ export default function MadridMap() {
     <>
       <Map
         mapLib={maplibregl}
+        fadeDuration={0}
         key={reload}
         ref={map}
         initialViewState={viewport}
@@ -361,13 +386,12 @@ export default function MadridMap() {
         }
         onClick={(e) => void onClick(e)}
         interactiveLayerIds={[
-          ...(listingsVisible
-            ? ["clusters", "prices", "selected-price", "hovered-price"]
-            : []),
+          ...(listingsVisible ? ["clusters", "prices", "selected-price"] : []),
           ...(censusVisible && census.data ? ["census-fill"] : []),
         ]}
         onMouseMove={(e) => {
           if (e.originalEvent.buttons) {
+            censusHoverIntent.cancel();
             setHoveredCensus(undefined);
             setHoveredId(undefined);
             setOverListing(false);
@@ -376,7 +400,7 @@ export default function MadridMap() {
           const target = mapHoverTarget(e.features, listingsVisible);
           setOverListing(target?.type === "listing");
           setHoveredId(target?.type === "listing" ? target.id : undefined);
-          setHoveredCensus(
+          censusHoverIntent.update(
             target?.type === "section" && censusVisible
               ? {
                   id: target.id,
@@ -384,9 +408,15 @@ export default function MadridMap() {
                   latitude: e.lngLat.lat,
                 }
               : undefined,
+            map.current?.getZoom() ?? 0,
           );
         }}
+        onMoveStart={() => {
+          censusHoverIntent.cancel();
+          useAtlas.getState().selectCensus(undefined);
+        }}
         onDragStart={() => {
+          censusHoverIntent.cancel();
           setHoveredCensus(undefined);
           setHoveredId(undefined);
           setOverListing(false);
@@ -396,6 +426,7 @@ export default function MadridMap() {
           if (canvas) canvas.style.cursor = "pointer";
         }}
         onMouseLeave={() => {
+          censusHoverIntent.cancel();
           setHoveredId(undefined);
           setHoveredCensus(undefined);
           setOverListing(false);
@@ -447,17 +478,6 @@ export default function MadridMap() {
               paint={{ "text-color": "#fff" }}
             />
             <Layer {...priceLayer} />
-            <Layer
-              {...priceLayer}
-              id="hovered-price"
-              filter={["==", ["get", "id"], hoveredId ?? ""]}
-              layout={{
-                ...priceLayer.layout,
-                "text-allow-overlap": true,
-                "icon-allow-overlap": true,
-              }}
-              paint={{ "text-color": "#16803c" }}
-            />
             <Layer
               {...priceLayer}
               id="selected-price"
