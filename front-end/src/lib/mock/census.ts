@@ -1,12 +1,6 @@
 import type { CensusCollection, CensusMetric } from "@/types";
 /** Demonstration values only. Real INE geometry is kept separate from synthetic environmental data. */
-export async function mockCensusMetrics(
-  signal?: AbortSignal,
-): Promise<CensusMetric[]> {
-  const response = await fetch("/geo/madrid-census-2025.geojson", { signal });
-  if (!response.ok)
-    throw new Error("No se pudieron cargar las variables de ejemplo.");
-  const sections = (await response.json()) as CensusCollection;
+export function mockCensusMetrics(sections: CensusCollection): CensusMetric[] {
   const values = (min: number, span: number) =>
     Object.fromEntries(
       sections.features.map((f, i) => [

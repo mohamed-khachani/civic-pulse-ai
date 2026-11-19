@@ -178,6 +178,23 @@ export const censusMetricSchema = z.object({
 });
 export type CensusCollection = z.infer<typeof censusCollectionSchema>;
 export type CensusMetric = z.infer<typeof censusMetricSchema>;
+export const censusSectionInfoSchema = z.object({
+  id: z.string(),
+  municipality: z.string(),
+  metrics: z.array(
+    z.object({
+      id: z.string(),
+      name: z.string(),
+      unit: z.string(),
+      value: z.number().nullable(),
+      kind: z.enum(["observed", "estimated", "synthetic"]),
+      source: z.string(),
+      description: z.string().optional(),
+      year: z.number().optional(),
+    }),
+  ),
+});
+export type CensusSectionInfo = z.infer<typeof censusSectionInfoSchema>;
 export const geographicLayerSchema = z.object({
   id: z.string(),
   name: z.string(),

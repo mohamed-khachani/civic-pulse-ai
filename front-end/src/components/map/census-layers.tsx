@@ -2,9 +2,13 @@
 import { useMemo } from "react";
 import { Source, Layer, Popup } from "react-map-gl/maplibre";
 import { Layers, MapPin, X, Eye, EyeOff } from "lucide-react";
-import { useCensus, useCensusMetrics } from "@/hooks/use-census";
+import {
+  useCensus,
+  useCensusMetrics,
+  useCensusSection,
+} from "@/hooks/use-census";
 import { useAtlas } from "@/stores/atlas-store";
-import { censusDisplayData, censusPaint, sectionMetrics } from "@/lib/census";
+import { censusDisplayData, censusPaint } from "@/lib/census";
 import { numbers } from "@/lib/utils";
 import { Popover } from "../ui/popover";
 import { Button } from "../ui/button";
@@ -138,8 +142,8 @@ function CensusPanel() {
         <p>Elige qué información quieres ver en el mapa.</p>
       </div>
       <p className="census-help">
-        Acerca el mapa y mantén el cursor sobre una zona durante 5 segundos, o
-        haz clic para consultar sus datos al momento.
+        Acerca el mapa y pasa el cursor sobre una zona para consultar sus datos.
+        También puedes hacer clic para fijar la tarjeta.
       </p>
       <label className="metric-option">
         <input
@@ -241,12 +245,15 @@ function CensusPanel() {
     </div>
   );
 }
-function CensusSectionInfo({ id }: { id: string }) {
+function CensusSectionInfo({
+  id,
+  interaction,
+}: {
+  id: string;
+  interaction: "hover" | "click";
+}) {
   const active = useAtlas((s) => s.activeCensusMetric);
-  const { data } = useCensus();
-  const metrics = useCensusMetrics();
-  const section = data?.features.find((f) => f.properties.id === id);
-  if (!section) return null;
+  const details = useCensusSection(id, interaction);
   return (
     <>
       <span className="eyebrow">
@@ -254,16 +261,27 @@ function CensusSectionInfo({ id }: { id: string }) {
         SECCIÓN CENSAL
       </span>
       <h3>{id}</h3>
-      <p>{section.properties.municipality}</p>
-      {metrics.isPending ? (
-        <LoadingStatus compact title="Cargando información de la zona" />
-      ) : metrics.error ? (
-        <p className="census-error">
-          No se pudieron cargar los datos de la zona.
-        </p>
+      {details.data && <p>{details.data.municipality}</p>}
+      {details.isPending ? (
+        <LoadingStatus
+          compact
+          title="Consultando información de la zona"
+          detail="Estamos obteniendo los datos de esta sección."
+        />
+      ) : details.error ? (
+        <div className="census-error" role="alert">
+          <p>No se pudieron cargar los datos de la zona.</p>
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={() => void details.refetch()}
+          >
+            Reintentar
+          </Button>
+        </div>
       ) : (
         <div className="section-metrics">
-          {sectionMetrics(metrics.data ?? [], id).map((metric) => (
+          {details.data?.metrics.map((metric) => (
             <div
               key={metric.id}
               className={`section-metric-row ${metric.id === active ? "section-metric-active" : ""}`}
@@ -285,7 +303,7 @@ function CensusSectionInfo({ id }: { id: string }) {
               </small>
             </div>
           ))}
-          {!metrics.data?.length && (
+          {!details.data?.metrics.length && (
             <p>No hay datos disponibles para esta zona.</p>
           )}
         </div>
@@ -297,48 +315,48 @@ export function CensusHoverTooltip({
   sectionId,
   longitude,
   latitude,
+  pinned = false,
+  onClose,
 }: {
   sectionId: string;
   longitude: number;
   latitude: number;
+  pinned?: boolean;
+  onClose?: () => void;
 }) {
   return (
     <Popup
       longitude={longitude}
       latitude={latitude}
-      offset={18}
+      padding={{ top: 12, right: 12, bottom: 12, left: 12 }}
+      offset={24}
       closeButton={false}
       closeOnClick={false}
       focusAfterOpen={false}
       maxWidth="290px"
-      className="census-hover-popup"
-      style={{ pointerEvents: "none" }}
+      className={`census-zone-popup ${pinned ? "census-pinned-popup" : "census-hover-popup"}`}
+      style={{ pointerEvents: pinned ? "auto" : "none" }}
     >
       <div
         className="census-hover-info"
-        role="tooltip"
+        role={pinned ? "region" : "tooltip"}
         aria-label={`Información de la sección censal ${sectionId}`}
       >
-        <CensusSectionInfo id={sectionId} />
+        {pinned && (
+          <button
+            className="inspector-close"
+            aria-label="Cerrar sección seleccionada"
+            onClick={onClose}
+          >
+            <X size={15} />
+          </button>
+        )}
+        <CensusSectionInfo
+          id={sectionId}
+          interaction={pinned ? "click" : "hover"}
+        />
       </div>
     </Popup>
-  );
-}
-export function CensusInspector() {
-  const id = useAtlas((s) => s.selectedCensusId);
-  const visible = useAtlas((s) => s.censusVisible);
-  if (!visible || !id) return null;
-  return (
-    <div className="census-inspector">
-      <button
-        className="inspector-close"
-        aria-label="Cerrar sección seleccionada"
-        onClick={() => useAtlas.getState().selectCensus(undefined)}
-      >
-        <X size={15} />
-      </button>
-      <CensusSectionInfo id={id} />
-    </div>
   );
 }
 export function CensusLegend({ hidden = false }: { hidden?: boolean }) {

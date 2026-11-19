@@ -53,7 +53,6 @@ import {
 import {
   CensusMapLayers,
   MapLayersPanel,
-  CensusInspector,
   CensusLegend,
   CensusHoverTooltip,
 } from "./census-layers";
@@ -84,6 +83,12 @@ export default function MadridMap() {
     longitude: number;
     latitude: number;
   }>();
+  const [pinnedCensus, setPinnedCensus] = useState<{
+    id: string;
+    longitude: number;
+    latitude: number;
+  }>();
+  const selectedCensusId = useAtlas((s) => s.selectedCensusId);
   const censusHoverIntent = useMemo(
     () =>
       createCensusHoverIntent(setHoveredCensus, () =>
@@ -271,6 +276,11 @@ export default function MadridMap() {
       if ((map.current?.getZoom() ?? 0) < CENSUS_DETAIL_MIN_ZOOM) return;
       censusHoverIntent.cancel();
       useAtlas.getState().selectCensus(target.id);
+      setPinnedCensus({
+        id: target.id,
+        longitude: e.lngLat.lng,
+        latitude: e.lngLat.lat,
+      });
       setHoveredCensus(undefined);
       setPopupId(undefined);
       return;
@@ -306,6 +316,13 @@ export default function MadridMap() {
       bounds: [b.getWest(), b.getSouth(), b.getEast(), b.getNorth()] as Bounds,
     });
   }
+  const showPinnedCensus = Boolean(
+    censusVisible &&
+    !overListing &&
+    pinnedCensus &&
+    selectedCensusId === pinnedCensus.id &&
+    (!hoveredCensus || hoveredCensus.id === pinnedCensus.id),
+  );
   const priceLayer: LayerProps = {
     id: "prices",
     type: "symbol",
@@ -524,11 +541,23 @@ export default function MadridMap() {
             (l) => l.available && l.geojson && visibleLayers.includes(l.id),
           )
           .map((l) => ready && <GeographicMapLayer key={l.id} layer={l} />)}
-        {censusVisible && hoveredCensus && (
+        {censusVisible && hoveredCensus && !showPinnedCensus && (
           <CensusHoverTooltip
             sectionId={hoveredCensus.id}
             longitude={hoveredCensus.longitude}
             latitude={hoveredCensus.latitude}
+          />
+        )}
+        {showPinnedCensus && pinnedCensus && (
+          <CensusHoverTooltip
+            sectionId={pinnedCensus.id}
+            longitude={pinnedCensus.longitude}
+            latitude={pinnedCensus.latitude}
+            pinned
+            onClose={() => {
+              setPinnedCensus(undefined);
+              useAtlas.getState().selectCensus(undefined);
+            }}
           />
         )}
         {listingsVisible && popupFeature && (
@@ -627,7 +656,6 @@ export default function MadridMap() {
         </button>
       </div>
       <MapLayersPanel />
-      {!hoveredCensus && !overListing && <CensusInspector />}
       <CensusLegend hidden={Boolean(hoveredCensus) || overListing} />
       <div className="map-legends">
         {layers

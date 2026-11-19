@@ -14,11 +14,10 @@ export const endpoints = {
   census: "/api/geo/census-sections",
   layers: "/api/geo/layers",
   censusMetrics: "/api/geo/census-metrics",
+  censusSection: (id: string) =>
+    `/api/geo/census-sections/${encodeURIComponent(id)}/insights`,
   insights: (id: string) => `/api/listings/${encodeURIComponent(id)}/insights`,
 };
-const base = (
-  process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:8000"
-).replace(/\/$/, "");
 export async function request(
   path: string,
   init: RequestInit = {},
@@ -35,7 +34,7 @@ export async function request(
     ? AbortSignal.any([init.signal, timeout])
     : timeout;
   try {
-    const response = await fetch(base + path, {
+    const response = await fetch(path, {
       ...init,
       signal,
       headers: { Accept: "application/json", ...init.headers },

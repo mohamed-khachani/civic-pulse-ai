@@ -46,7 +46,13 @@ export function censusPaint(
 /** All available indicators for one section, independent of the variable used to color the map. */
 export function sectionMetrics(metrics: CensusMetric[], sectionId: string) {
   return metrics.map((metric) => ({
-    ...metric,
+    id: metric.id,
+    name: metric.name,
+    unit: metric.unit,
+    kind: metric.kind,
+    source: metric.source,
+    description: metric.description,
+    year: metric.year,
     value: metric.values[sectionId] ?? null,
   }));
 }

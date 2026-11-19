@@ -3,6 +3,7 @@ import {
   geographicLayerSchema,
   censusCollectionSchema,
   censusMetricSchema,
+  censusSectionInfoSchema,
   geoResponseSchema,
   listingSchema,
   optionsSchema,
@@ -11,34 +12,26 @@ import {
   type ListingSearchFilters,
   type SortOrder,
 } from "@/types";
-import { isMock, endpoints, json, request } from "./client";
+import { endpoints, json, request } from "./client";
 import { readChatResponse } from "./chat";
 import { serializeFilters } from "@/lib/search";
-export { isMock };
-const mock = () => import("@/lib/mock/adapter").then((m) => m.mockApi);
+export { isMock } from "./client";
 export const api = {
-  census: async (signal?: AbortSignal) => {
-    const url =
-      process.env.NEXT_PUBLIC_CENSUS_GEOJSON_URL ||
-      "/geo/madrid-census-2025.geojson";
-    const response = await fetch(url, {
-      signal: signal
-        ? AbortSignal.any([signal, AbortSignal.timeout(60000)])
-        : AbortSignal.timeout(60000),
-    });
-    if (!response.ok)
-      throw new Error(
-        "No se pudieron cargar las secciones censales de Madrid.",
-      );
-    const parsed = censusCollectionSchema.safeParse(await response.json());
-    if (!parsed.success)
-      throw new Error("La cartografía censal no tiene el formato esperado.");
-    return parsed.data;
-  },
-  censusMetrics: async (signal?: AbortSignal) =>
-    isMock
-      ? (await import("@/lib/mock/census")).mockCensusMetrics(signal)
-      : json(endpoints.censusMetrics, z.array(censusMetricSchema), { signal }),
+  census: (signal?: AbortSignal) =>
+    json(endpoints.census, censusCollectionSchema, { signal }),
+  censusMetrics: (signal?: AbortSignal) =>
+    json(endpoints.censusMetrics, z.array(censusMetricSchema), { signal }),
+  censusSection: (
+    id: string,
+    interaction: "hover" | "click",
+    metric: string | undefined,
+    signal?: AbortSignal,
+  ) =>
+    json(
+      `${endpoints.censusSection(id)}?${new URLSearchParams({ interaction, ...(metric ? { metric } : {}) })}`,
+      censusSectionInfoSchema,
+      { signal },
+    ),
   listings: async (
     f: ListingSearchFilters,
     s: SortOrder,
@@ -46,68 +39,54 @@ export const api = {
     signal?: AbortSignal,
     resultSetId?: string,
   ) =>
-    isMock
-      ? (await mock()).listings(f, s, p, signal)
-      : json(
-          `${endpoints.listings}?${serializeFilters(f, { sort: s, page: p, page_size: 8, result_set_id: resultSetId })}`,
-          searchResponseSchema,
-          { signal },
-        ),
+    json(
+      `${endpoints.listings}?${serializeFilters(f, { sort: s, page: p, page_size: 8, result_set_id: resultSetId })}`,
+      searchResponseSchema,
+      { signal },
+    ),
   detail: async (id: string, signal?: AbortSignal) =>
-    isMock
-      ? (await mock()).detail(id, signal)
-      : json(endpoints.detail(id), listingSchema, { signal }),
+    json(endpoints.detail(id), listingSchema, { signal }),
   geo: async (
     f: ListingSearchFilters,
     signal?: AbortSignal,
     resultSetId?: string,
   ) =>
-    isMock
-      ? (await mock()).geo(f, signal)
-      : json(
-          `${endpoints.geo}?${serializeFilters(f, { result_set_id: resultSetId })}`,
-          geoResponseSchema,
-          { signal },
-        ),
+    json(
+      `${endpoints.geo}?${serializeFilters(f, { result_set_id: resultSetId })}`,
+      geoResponseSchema,
+      { signal },
+    ),
   options: async (signal?: AbortSignal) =>
-    isMock
-      ? (await mock()).options(signal)
-      : json(endpoints.options, optionsSchema, { signal }),
+    json(endpoints.options, optionsSchema, { signal }),
   layers: async (signal?: AbortSignal) =>
-    isMock
-      ? (await mock()).layers(signal)
-      : json(endpoints.layers, z.array(geographicLayerSchema), { signal }),
+    json(endpoints.layers, z.array(geographicLayerSchema), { signal }),
   chat: async (
     data: ChatRequest,
     signal?: AbortSignal,
     onDelta?: (text: string) => void,
   ) =>
-    isMock
-      ? (await mock()).chat(data, signal)
-      : readChatResponse(
-          await request(endpoints.chat, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Accept: "application/json, text/event-stream",
-            },
-            body: JSON.stringify(data),
-            signal,
-          }),
-          onDelta,
-        ),
+    readChatResponse(
+      await request(endpoints.chat, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json, text/event-stream",
+        },
+        body: JSON.stringify(data),
+        signal,
+      }),
+      onDelta,
+    ),
   export: async (
     f: ListingSearchFilters,
     s: SortOrder,
     signal?: AbortSignal,
     resultSetId?: string,
   ) =>
-    isMock
-      ? (await mock()).export(f, s, signal)
-      : (
-          await request(
-            `${endpoints.export}?${serializeFilters(f, { sort: s, result_set_id: resultSetId })}`,
-            { signal, headers: { Accept: "text/csv" } },
-          )
-        ).blob(),
+    (
+      await request(
+        `${endpoints.export}?${serializeFilters(f, { sort: s, result_set_id: resultSetId })}`,
+        { signal, headers: { Accept: "text/csv" } },
+      )
+    ).blob(),
 };

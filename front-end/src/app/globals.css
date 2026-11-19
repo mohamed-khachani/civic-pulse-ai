@@ -2677,3 +2677,21 @@ select {
     max-height: calc(100% - 225px);
   }
 }
+
+.census-zone-popup .maplibregl-popup-content {
+  border: 1px solid #dce5df;
+  box-shadow: 0 6px 24px #17211b20 !important;
+}
+.census-zone-popup .census-hover-info {
+  position: relative;
+  max-height: min(410px, calc(100dvh - 150px));
+  overflow: auto;
+  scrollbar-width: thin;
+}
+.census-pinned-popup {
+  z-index: 8;
+  pointer-events: auto;
+}
+.census-pinned-popup .maplibregl-popup-content {
+  pointer-events: auto;
+}
