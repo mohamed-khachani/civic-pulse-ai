@@ -1,0 +1,716 @@
+ATLAS — INVENTARIO DE DATOS UTILIZADOS
+Fecha del inventario: 20 de noviembre de 2026.
+
+Alcance: inventario de fuentes, archivos, cobertura y campos del proyecto. No es una copia de cada anuncio ni de cada observación.
+Los recuentos proceden de los informes locales y del manifiesto del proyecto; las cifras de importación son una instantánea, no un recuento del mercado completo.
+
+1. RESUMEN
+19 datasets locales originales configurados en el ETL: 17 integrados y 2 pendientes.
+2 referencias adicionales para localizar estaciones (aire y ruido).
+2 portales inmobiliarios obtenidos mediante web scraping: Fotocasa y pisos.com.
+Cartografía adicional del INE 2025 para navegación del mapa; se documenta aparte del recuento del ETL.
+10.610 anuncios importados: 7.628 de Fotocasa y 2.982 de pisos.com.
+2.462 secciones censales de Madrid municipio; 528 campos por fila de salida.
+520 definiciones de métricas y 1.280.240 filas de métricas, incluidas las que tienen valor NULL.
+Los 528 campos incluyen identificadores y otros campos no numéricos: no equivalen a 528 métricas numéricas.
+Los datos enriquecidos cubren Madrid municipio (28079), no toda la Comunidad de Madrid.
+
+2. DATASETS LOCALES DEL ETL
+
+01. Secciones censales
+Archivo: datos/geografia/seccionado-censa.json
+Estado: INTEGRADO
+Uso: Geometrías y códigos para asignar anuncios y observaciones a su sección censal.
+
+02. Distritos
+Archivo: datos/geografia/distritos.csv
+Estado: INTEGRADO
+Uso: Códigos, nombres y superficies de los distritos de Madrid.
+
+03. Barrios
+Archivo: datos/geografia/Barrios.csv
+Estado: INTEGRADO
+Uso: Códigos, nombres y superficies de barrios; delimitación de búsquedas por barrio.
+
+04. Padrón
+Archivo: datos/padron/padron.csv
+Estado: INTEGRADO
+Uso: Población y variables agregadas del padrón vinculadas territorialmente.
+
+05. Estudio de distritos y barrios 2026
+Archivo: datos/padron/estudio-2026.xlsx
+Estado: INTEGRADO
+Uso: Indicadores agregados de distritos y barrios; conserva las fechas y fuentes disponibles por indicador.
+
+06. Referencia de alquiler por sección 2024
+Archivo: datos/alquiler/referencia-precio-alquiler-seccion-censa;.xlsx
+Estado: INTEGRADO
+Uso: Referencias históricas de alquiler por sección censal, incluidos cuantiles disponibles.
+
+07. Referencia de alquiler por distrito 2024
+Archivo: datos/alquiler/referencias-precio-alquiler-distrito.xlsx
+Estado: INTEGRADO
+Uso: Referencias históricas de alquiler por distrito, heredadas por sus secciones.
+
+08. Alquiler por código postal 2023
+Archivo: datos/alquiler/alquiler-medio.csv
+Estado: PENDIENTE DE INTEGRACIÓN
+Uso: Referencia de alquiler por código postal; no incorporada al enriquecimiento censal.
+Pendiente: Falta correspondencia sección/código postal.
+
+09. Centros educativos
+Archivo: datos/calidad-vida/centros-educativos.csv
+Estado: INTEGRADO
+Uso: Ubicación de centros educativos; distancias y recuentos de proximidad.
+
+10. Centros sanitarios
+Archivo: datos/calidad-vida/centros-atencion-medica.csv
+Estado: INTEGRADO
+Uso: Ubicación de centros sanitarios; distancias y recuentos de proximidad.
+
+11. Instalaciones deportivas
+Archivo: datos/calidad-vida/instalaciones-deportivas.csv
+Estado: INTEGRADO
+Uso: Ubicación de instalaciones deportivas; distancias y recuentos de proximidad.
+
+12. Bibliotecas
+Archivo: datos/calidad-vida/bibliotecas.csv
+Estado: INTEGRADO
+Uso: Ubicación de bibliotecas y métricas de proximidad.
+
+13. Parques y jardines
+Archivo: datos/zonas_verdes/parques-y-jardines.csv
+Estado: INTEGRADO
+Uso: Ubicación de parques y jardines; distancias y recuentos de proximidad.
+
+14. Catálogo de superficie de parques
+Archivo: datos/zonas_verdes/arbolado-superficie.csv
+Estado: INTEGRADO
+Uso: Catálogo de superficie y arbolado de zonas verdes.
+
+15. Accidentes de tráfico
+Archivo: datos/accidentes/accidentes-trafico.xlsx
+Estado: INTEGRADO
+Uso: Accidentes de tráfico georreferenciados y agregados por sección.
+
+16. Accidentes de bicicleta
+Archivo: datos/accidentes/accidentes-bici.xlsx
+Estado: INTEGRADO
+Uso: Accidentes de bicicleta georreferenciados y agregados por sección.
+
+17. Contaminación acústica
+Archivo: datos/calidad-vida/contaminacion-acustica.csv
+Estado: INTEGRADO
+Uso: Observaciones acústicas locales, con fechas y estaciones; estimaciones de ruido por sección.
+
+18. Calidad del aire
+Archivo: datos/calidad-vida/calidad-aire.csv
+Estado: INTEGRADO
+Uso: Observaciones locales de contaminantes, fechas y estaciones; estimaciones de aire por sección.
+
+19. Tráfico octubre 2026
+Archivo: datos/accidentes/trafico-2026.zip
+Estado: PENDIENTE DE INTEGRACIÓN
+Uso: Lecturas de intensidad de tráfico de octubre de 2026; pendientes de unión geográfica.
+Pendiente: Faltan coordenadas verificadas de sensores.
+
+3. ANUNCIOS INMOBILIARIOS — WEB SCRAPING
+Fotocasa: 7.628 anuncios importados. Portal: https://www.fotocasa.es/
+Extracción/normalización: datos/alquileres/fotocasa.py
+Importación: datos/alquileres/ingest-psql-fotocasa.py
+pisos.com: 2.982 anuncios importados de 2.990 intentos; 8 importaciones fallidas según ingest.log. Portal: https://www.pisos.com/
+Extracción/normalización: datos/alquileres/pisoscom.py
+Importación: datos/alquileres/ingest-psql-pisoscom.py
+Almacenamiento normalizado: PostgreSQL, tabla housing.listings y tablas relacionadas.
+Datos recogidos cuando el anuncio los proporciona: URL e identificador original, título, descripción, precio y periodicidad, tipología, superficies, habitaciones, baños, planta, antigüedad, orientación, estado, barrio, distrito, código postal, calle, coordenadas y su precisión, fotografías y equipamientos.
+Los campos ausentes no se inventan. Un anuncio importado no implica disponibilidad actual ni coordenadas exactas.
+La búsqueda activa excluye precios cero o no válidos. La instantánea verificada del manifiesto contiene 10.595 anuncios buscables: 7.614 de Fotocasa y 2.981 de pisos.com; los filtros de vivienda completa pueden reducirlos más.
+
+4. REFERENCIAS DE ESTACIONES Y CARTOGRAFÍA ADICIONAL
+
+Estaciones de calidad del aire
+Archivo: datos/_etl_/reference_data/air_stations.csv
+Procedencia: datos/_etl_/reference_data/air_stations.csv.source.json
+Registros de coordenadas: 27
+Fuente: https://air.discomap.eea.europa.eu/arcgis/rest/services/AirQuality/AirQualityDownloadServiceEUMonitoringStations/MapServer/0/query
+Metadatos oficiales de la Agencia Europea de Medio Ambiente; las mediciones proceden del CSV local, no de esta referencia.
+
+Estaciones de ruido
+Archivo: datos/_etl_/reference_data/noise_stations.csv
+Procedencia: datos/_etl_/reference_data/noise_stations.csv.source.json
+Registros de coordenadas: 28
+Fuente: https://www.madrid.es/UnidadesDescentralizadas/Sostenibilidad/Ruido/PlanAccionContaminacionAcustica/2025/PAMCA2025Memoria.pdf
+Tabla de estaciones fijas del PAMCA 2025 del Ayuntamiento de Madrid.
+Se excluyeron los IDs 16, 24 y 54 por inconsistencias evidentes en sus coordenadas publicadas; no se inventaron correcciones.
+
+Cartografía INE 2025 para la interfaz:
+Fuente: https://www.ine.es/servergis/rest/services/Hosted/Censo_2025___Número_de_personas/FeatureServer
+Archivos: front-end/public/geo/madrid-census-2025.geojson y front-end/public/geo/madrid-boundary.geojson.
+Cobertura documentada: 4.518 secciones de 179 municipios de la Comunidad de Madrid. Se utiliza para navegación y visualización administrativa, no para atribuir a toda la región los datos ambientales de Madrid municipio.
+Detalles y atribución: front-end/public/geo/README.md.
+
+5. COBERTURA, TRANSFORMACIONES Y LIMITACIONES
+El ETL produce una fila por sección censal y une datos de puntos, secciones, barrios y distritos. Las variables de barrio o distrito heredadas conservan ese nivel de origen; no son mediciones independientes en cada sección.
+El aire y el ruido se estiman con la estación más cercana al punto representativo de la sección, a una distancia máxima de 2.000 metros.
+Año más reciente de observaciones locales utilizado: 2026; puede ser un año incompleto.
+Cobertura de al menos un indicador de aire: 1.983 secciones. Ruido: 1.906 secciones. La cobertura puede variar entre contaminantes.
+El ruido LAeq se promedia energéticamente para observaciones de igual duración; no se hace una media aritmética directa de decibelios.
+El inspector censal de la interfaz expone NO2, PM2.5, PM10, ozono, ruido total y nocturno. El almacenamiento conserva más variables que las visibles en el inspector.
+Los valores desconocidos permanecen NULL; no equivalen a cero.
+Las variables demográficas y de salud almacenadas no se utilizan para puntuar idoneidad de viviendas o recomendar zonas por características protegidas.
+Las estimaciones de trayectos proceden de Claude para el MVP: no son un dataset de rutas, horarios o tiempos verificados.
+Los anuncios y los datasets originales no se contabilizan otra vez por cada CSV derivado. Tampoco se cuentan los informes, tests o estimaciones de IA como fuentes de observaciones.
+
+Cobertura de equipamientos asignados dentro de Madrid:
+- centros educativos: 1617.
+- centros sanitarios: 279.
+- instalaciones deportivas: 605.
+- bibliotecas: 52.
+- parques y jardines: 203.
+Accidentes únicos asignados a secciones:
+- Tráfico: 16232 de 16318.
+- Bicicleta: 989 de 998.
+
+6. ARCHIVOS DERIVADOS Y EVIDENCIAS
+Configuración e inventario de entradas: datos/_etl_/paths.json.
+Tabla completa por sección: datos/_etl_/output/sections_master.csv.
+CSV individuales: datos/_etl_/output/by_section/ (2.462 archivos de una fila).
+Índice: datos/_etl_/output/section_index.csv.
+Geometrías derivadas: datos/_etl_/output/sections.geojson.
+Diccionario original del estudio: datos/_etl_/output/study_metric_dictionary.csv.
+Cobertura por campo y etapas: datos/_etl_/output/coverage_report.json.
+Validación: datos/_etl_/output/validation_report.json (último informe: pass=true).
+Manifiesto y recuentos: presentation/facts.json.
+Esquemas/importación: db/schema.sql, db/migrations/ y db/ingest-sections.py.
+Las salidas censales se cargan en madrid.section_data y madrid.section_metrics; las geometrías en madrid.census_sections.
+
+7. CAMPOS COMPLETOS DE LA FILA CENSAL (528)
+Orden exacto de sections_master.csv. Se indica cobertura no nula del informe; las etiquetas originales del estudio se añaden cuando existe correspondencia en su diccionario.
+001. section_code | no nulos: 2462/2462
+002. district_code | no nulos: 2462/2462
+003. district_name | no nulos: 2462/2462
+004. barrio_code | no nulos: 2462/2462
+005. barrio_name | no nulos: 2462/2462
+006. section_area_km2 | no nulos: 2462/2462
+007. section_centroid_lat | no nulos: 2462/2462
+008. section_centroid_lon | no nulos: 2462/2462
+009. district_area_km2 | no nulos: 2462/2462
+010. barrio_area_km2 | no nulos: 2462/2462
+011. air_magnitude_10_2026_nearest_station_daily_mean | no nulos: 1314/2462
+012. air_magnitude_10_2026_nearest_station_valid_days | no nulos: 1314/2462
+013. air_magnitude_12_2026_nearest_station_daily_mean | no nulos: 1983/2462
+014. air_magnitude_12_2026_nearest_station_valid_days | no nulos: 1983/2462
+015. air_magnitude_14_2026_nearest_station_daily_mean | no nulos: 981/2462
+016. air_magnitude_14_2026_nearest_station_valid_days | no nulos: 981/2462
+017. air_magnitude_1_2026_nearest_station_daily_mean | no nulos: 318/2462
+018. air_magnitude_1_2026_nearest_station_valid_days | no nulos: 318/2462
+019. air_magnitude_20_2026_nearest_station_daily_mean | no nulos: 464/2462
+020. air_magnitude_20_2026_nearest_station_valid_days | no nulos: 464/2462
+021. air_magnitude_30_2026_nearest_station_daily_mean | no nulos: 464/2462
+022. air_magnitude_30_2026_nearest_station_valid_days | no nulos: 464/2462
+023. air_magnitude_35_2026_nearest_station_daily_mean | no nulos: 464/2462
+024. air_magnitude_35_2026_nearest_station_valid_days | no nulos: 464/2462
+025. air_magnitude_6_2026_nearest_station_daily_mean | no nulos: 420/2462
+026. air_magnitude_6_2026_nearest_station_valid_days | no nulos: 420/2462
+027. air_magnitude_7_2026_nearest_station_daily_mean | no nulos: 1983/2462
+028. air_magnitude_7_2026_nearest_station_valid_days | no nulos: 1983/2462
+029. air_magnitude_8_2026_nearest_station_daily_mean | no nulos: 1983/2462
+030. air_magnitude_8_2026_nearest_station_valid_days | no nulos: 1983/2462
+031. air_magnitude_9_2026_nearest_station_daily_mean | no nulos: 907/2462
+032. air_magnitude_9_2026_nearest_station_valid_days | no nulos: 907/2462
+033. air_nearest_station_distance_m | no nulos: 1983/2462
+034. air_nearest_station_id | no nulos: 1983/2462
+035. barrio_study_1_5_1_poblacion_en_etapas_educativas_0c8c21 | no nulos: 2462/2462 | 1.5.1. Población en etapas educativas
+036. barrio_study_1_5_3_nivel_de_estudios_de_la_poblacion_mayor_o_igual_a_25_anos_3377ac | no nulos: 2462/2462 | 1.5.3. Nivel de estudios de la población mayor o igual a 25 años
+037. barrio_study_absentismo_0d6547 | no nulos: 1209/2462 | ABSENTISMO
+038. barrio_study_actividades_culturales_2eaff4 | no nulos: 1209/2462 | ACTIVIDADES CULTURALES
+039. barrio_study_actuaciones_deportivas_en_distritos_ecdc5a | no nulos: 1209/2462 | ACTUACIONES DEPORTIVAS EN DISTRITOS
+040. barrio_study_apartamentos_municipales_para_mayores_76007d | no nulos: 2462/2462 | Apartamentos municipales para mayores
+041. barrio_study_asociaciones_culturales_y_casas_regionales_330184 | no nulos: 2462/2462 | Asociaciones culturales y casas regionales
+042. barrio_study_asociaciones_de_mujeres_f6396a | no nulos: 2462/2462 | Asociaciones de mujeres
+043. barrio_study_asociaciones_seccion_1a_1e5b15 | no nulos: 2462/2462 | Asociaciones (Sección 1ª)
+044. barrio_study_asociaciones_vecinales_1c4b9b | no nulos: 2462/2462 | Asociaciones vecinales
+045. barrio_study_bibliotecas_comunidad_madrid_ad8ede | no nulos: 2462/2462 | Bibliotecas Comunidad Madrid
+046. barrio_study_bibliotecas_municipales_f39888 | no nulos: 2462/2462 | Bibliotecas municipales
+047. barrio_study_centro_de_dia_de_atencion_a_ninos_y_ninas_de_3_a_12_anos_7cf5e3 | no nulos: 2462/2462 | Centro de día de atención a niños y niñas (de 3 a 12 años)
+048. barrio_study_centros_de_adolescentes_y_jovenes_aspa_c68bfb | no nulos: 2462/2462 | Centros de adolescentes y jóvenes (ASPA)
+049. barrio_study_centros_de_apoyo_a_las_familias_caf_ec4942 | no nulos: 2462/2462 | Centros de apoyo a las familias (CAF)
+050. barrio_study_centros_de_atencion_a_la_infancia_cai_1fd1a2 | no nulos: 2462/2462 | Centros de atención a la infancia (CAI)
+051. barrio_study_centros_de_atencion_a_las_adicciones_cad_y_ccad_20c2cf | no nulos: 2462/2462 | Centros de atención a las adicciones (CAD y CCAD)
+052. barrio_study_centros_de_dia_de_alzheimer_y_fisicos_fca5ab | no nulos: 2462/2462 | Centros de día de alzheimer y físicos
+053. barrio_study_centros_de_servicios_sociales_ea5435 | no nulos: 2462/2462 | Centros de servicios sociales
+054. barrio_study_centros_deportivos_municipales_d326b4 | no nulos: 2462/2462 | Centros deportivos municipales
+055. barrio_study_centros_docentes_ensenanza_infantil_y_primaria_3ee385 | no nulos: 1209/2462 | CENTROS DOCENTES ENSEÑANZA INFANTIL Y PRIMARIA
+056. barrio_study_centros_municipales_de_mayores_925c6a | no nulos: 2462/2462 | Centros municipales de mayores
+057. barrio_study_centros_municipales_de_salud_comunitaria_cmsc_d74814 | no nulos: 2462/2462 | Centros municipales de salud comunitaria (CMSC)
+058. barrio_study_centros_para_personas_sin_hogar_c841ac | no nulos: 2462/2462 | Centros para personas sin hogar
+059. barrio_study_centros_y_espacios_culturales_15e475 | no nulos: 2462/2462 | Centros y espacios culturales
+060. barrio_study_colegios_privados_inf_o_pri_o_inf_y_pri_ea856d | no nulos: 4/2462 | Colegios privados inf. o pri. o inf. y pri.
+061. barrio_study_colegios_privados_inf_pri_y_sec_o_pri_y_sec_6280ee | no nulos: 4/2462 | Colegios privados inf., pri. y sec. o pri. y sec.
+062. barrio_study_colegios_publicos_infantil_y_primaria_a08e18 | no nulos: 2331/2462 | Colegios públicos infantil y primaria
+063. barrio_study_comercio_1b2571 | no nulos: 1209/2462 | COMERCIO
+064. barrio_study_concejalia_presidencia_del_distrito_b7e40d | no nulos: 1209/2462 | CONCEJALÍA-PRESIDENCIA DEL DISTRITO
+065. barrio_study_consumo_d69b2b | no nulos: 1209/2462 | CONSUMO
+066. barrio_study_direc_y_gestion_admtva_del_distrito_110b69 | no nulos: 1209/2462 | DIREC. Y GESTIÓN ADMTVA. DEL DISTRITO
+067. barrio_study_duracion_media_del_credito_meses_en_transaccion_de_vivienda_29d9b9 | no nulos: 2462/2462 | Duración media del crédito (meses) en transacción de vivienda
+068. barrio_study_edificios_c19f89 | no nulos: 1209/2462 | EDIFICIOS
+069. barrio_study_equipamiento_de_zonas_ajardinadas_464abf | no nulos: 1209/2462 | EQUIPAMIENTO DE ZONAS AJARDINADAS
+070. barrio_study_escuelas_infantiles_municipales_6a413a | no nulos: 2462/2462 | Escuelas infantiles municipales
+071. barrio_study_escuelas_infantiles_privadas_276cac | no nulos: 14/2462 | Escuelas infantiles privadas
+072. barrio_study_escuelas_infantiles_publicas_33c118 | no nulos: 14/2462 | Escuelas infantiles públicas
+073. barrio_study_espacios_de_igualdad_b7f7e8 | no nulos: 2462/2462 | Espacios de igualdad
+074. barrio_study_etapas_educativas_total_ninas_f784f9 | no nulos: 2462/2462 | Etapas educativas. Total niñas
+075. barrio_study_etapas_educativas_total_ninos_a54784 | no nulos: 2462/2462 | Etapas educativas. Total niños
+076. barrio_study_familia_e_infancia_7601b0 | no nulos: 1209/2462 | FAMILIA E INFANCIA
+077. barrio_study_fundaciones_seccion_2a_c3da66 | no nulos: 2462/2462 | Fundaciones (sección 2ª)
+078. barrio_study_hogares_con_un_hombre_solo_mayor_de_65_anos_bddeba | no nulos: 2462/2462 | Hogares con un hombre solo mayor de 65 años
+079. barrio_study_hogares_con_una_mujer_sola_mayor_de_65_anos_fa36fa | no nulos: 2462/2462 | Hogares con una mujer sola mayor de 65 años
+080. barrio_study_hogares_monoparentales_un_hombre_adulto_con_uno_o_mas_menores_291ace | no nulos: 2462/2462 | Hogares monoparentales: un hombre adulto con uno o más menores
+081. barrio_study_hogares_monoparentales_una_mujer_adulta_con_uno_o_mas_menores_e22562 | no nulos: 2462/2462 | Hogares monoparentales: una mujer adulta con uno o más menores
+082. barrio_study_indice_de_dependencia_poblacion_de_0_15_poblacion_65_anos_y_mas_pob_16_64_f46a06 | no nulos: 2462/2462 | Índice de dependencia (Población de 0-15 + población 65 años y más / Pob. 16-64)
+083. barrio_study_instalaciones_deportivas_89d72d | no nulos: 1209/2462 | INSTALACIONES DEPORTIVAS
+084. barrio_study_instalaciones_deportivas_basicas_dc8b8d | no nulos: 2462/2462 | Instalaciones deportivas básicas
+085. barrio_study_institutos_publicos_de_educacion_secundaria_4e3094 | no nulos: 4/2462 | Institutos públicos de educación secundaria
+086. barrio_study_mayores_e81114 | no nulos: 1209/2462 | MAYORES
+087. barrio_study_mercados_municipales_75e6e0 | no nulos: 2462/2462 | Mercados Municipales
+088. barrio_study_ngeu_convenio_servicios_sociales_b3dbdb | no nulos: 1209/2462 | NGEU. CONVENIO  SERVICIOS SOCIALES
+089. barrio_study_numero_de_inmuebles_de_uso_residencial_40ed69 | no nulos: 2462/2462 | Número de inmuebles de uso residencial
+090. barrio_study_numero_de_locales_dados_de_alta_abiertos_f21045 | no nulos: 2462/2462 | Número de locales dados de alta abiertos
+091. barrio_study_numero_de_locales_dados_de_alta_cerrados_d8afd2 | no nulos: 2462/2462 | Número de locales dados de alta cerrados
+092. barrio_study_numero_de_locales_dados_de_alta_en_uso_como_vivienda_ba1806 | no nulos: 2462/2462 | Número de locales dados de alta en uso como vivienda
+093. barrio_study_numero_de_locales_dados_de_alta_totales_34c7a9 | no nulos: 2462/2462 | Número de locales dados de alta totales
+094. barrio_study_numero_habitantes_e7f0b0 | no nulos: 2462/2462 | Número Habitantes
+095. barrio_study_otras_actuaciones_en_vias_publicas_c20a45 | no nulos: 1209/2462 | OTRAS ACTUACIONES EN VÍAS PÚBLICAS
+096. barrio_study_paro_registrado_numero_de_personas_registradas_en_sepe_en_febrero_b97b4f | no nulos: 2462/2462 | Paro registrado (número de personas registradas en SEPE en febrero)
+097. barrio_study_paro_registrado_numero_de_personas_registradas_en_sepe_en_febrero_hombres_d4357b | no nulos: 2462/2462 | Paro registrado (número de personas registradas en SEPE en febrero) hombres
+098. barrio_study_paro_registrado_numero_de_personas_registradas_en_sepe_en_febrero_mujeres_0706f3 | no nulos: 2462/2462 | Paro registrado (número de personas registradas en SEPE en febrero) mujeres
+099. barrio_study_participacion_ciudadana_661204 | no nulos: 1209/2462 | PARTICIPACIÓN CIUDADANA
+100. barrio_study_pension_media_mensual_hombres_804faf | no nulos: 2462/2462 | Pensión media mensual hombres
+101. barrio_study_pension_media_mensual_mujeres_738f69 | no nulos: 2462/2462 | Pensión media mensual mujeres
+102. barrio_study_personas_con_nacionalidad_espanola_64cce1 | no nulos: 2462/2462 | Personas con nacionalidad española
+103. barrio_study_personas_con_nacionalidad_espanola_hombres_f43ee1 | no nulos: 2462/2462 | Personas con nacionalidad española hombres
+104. barrio_study_personas_con_nacionalidad_espanola_mujeres_71478a | no nulos: 2462/2462 | Personas con nacionalidad española mujeres
+105. barrio_study_personas_con_nacionalidad_extranjera_2f6cc6 | no nulos: 2462/2462 | Personas con nacionalidad extranjera
+106. barrio_study_personas_con_nacionalidad_extranjera_hombres_fdc45d | no nulos: 2462/2462 | Personas con nacionalidad extranjera hombres
+107. barrio_study_personas_con_nacionalidad_extranjera_mujeres_a8f85f | no nulos: 2462/2462 | Personas con nacionalidad extranjera mujeres
+108. barrio_study_piscinas_cubiertas_17dd72 | no nulos: 2462/2462 | Piscinas cubiertas
+109. barrio_study_piscinas_de_verano_a2fb97 | no nulos: 2462/2462 | Piscinas de verano
+110. barrio_study_pista_de_atletismo_4f6afa | no nulos: 2462/2462 | Pista de atletismo
+111. barrio_study_poblacion_de_0_a_14_anos_a5e494 | no nulos: 2462/2462 | Población de 0 a 14 años
+112. barrio_study_poblacion_de_15_a_29_anos_255808 | no nulos: 2462/2462 | Población de 15 a 29 años
+113. barrio_study_poblacion_de_30_a_44_anos_2f35d5 | no nulos: 2462/2462 | Población de 30 a 44 años
+114. barrio_study_poblacion_de_45_a_64_anos_db856d | no nulos: 2462/2462 | Población de 45 a 64 años
+115. barrio_study_poblacion_de_65_a_79_anos_135d85 | no nulos: 2462/2462 | Población de 65 a 79 años
+116. barrio_study_poblacion_de_65_anos_y_mas_724f94 | no nulos: 2462/2462 | Población de 65 años y más
+117. barrio_study_poblacion_de_80_anos_y_mas_77f61b | no nulos: 2462/2462 | Población de 80 años y más
+118. barrio_study_poblacion_densidad_hab_ha_3525f3 | no nulos: 2462/2462 | Población densidad (hab./ha.)
+119. barrio_study_poblacion_en_etapa_educativa_de_0_a_2_anos_c03ae3 | no nulos: 2462/2462 | Población en etapa educativa de 0 a 2 años
+120. barrio_study_poblacion_en_etapa_educativa_de_12_a_15_anos_319625 | no nulos: 2462/2462 | Población en etapa educativa de 12 a 15 años
+121. barrio_study_poblacion_en_etapa_educativa_de_3_a_5_anos_88db62 | no nulos: 2462/2462 | Población en etapa educativa de 3 a 5 años
+122. barrio_study_poblacion_en_etapa_educativa_de_6_a_11_anos_ec0e2c | no nulos: 2462/2462 | Población en etapa educativa de 6 a 11 años
+123. barrio_study_poblacion_en_etapa_educativa_poblacion_de_0_a_16_anos_16_no_incluidos_3e518b | no nulos: 2462/2462 | Población en etapa educativa (Población de 0 a 16 años <16 no incluidos)
+124. barrio_study_poblacion_hombres_f7783a | no nulos: 2462/2462 | Población Hombres
+125. barrio_study_poblacion_infantil_femenina_en_etapa_educativa_de_0_a_2_anos_d0f8f0 | no nulos: 2462/2462 | Población infantil femenina en etapa educativa de 0 a 2 años
+126. barrio_study_poblacion_infantil_femenina_en_etapa_educativa_de_12_a_15_anos_80c6db | no nulos: 2462/2462 | Población infantil femenina en etapa educativa de 12 a 15 años
+127. barrio_study_poblacion_infantil_femenina_en_etapa_educativa_de_3_a_5_anos_89ea30 | no nulos: 2462/2462 | Población infantil femenina en etapa educativa de 3 a 5 años
+128. barrio_study_poblacion_infantil_femenina_en_etapa_educativa_de_6_a_11_anos_c4a08d | no nulos: 2462/2462 | Población infantil femenina en etapa educativa de 6 a 11 años
+129. barrio_study_poblacion_infantil_masculina_en_etapa_educativa_de_0_a_2_anos_18d6e6 | no nulos: 2462/2462 | Población infantil masculina en etapa educativa de 0 a 2 años
+130. barrio_study_poblacion_infantil_masculina_en_etapa_educativa_de_12_a_15_anos_cc18e0 | no nulos: 2462/2462 | Población infantil masculina en etapa educativa de 12 a 15 años
+131. barrio_study_poblacion_infantil_masculina_en_etapa_educativa_de_3_a_5_anos_617dd7 | no nulos: 2462/2462 | Población infantil masculina en etapa educativa de 3 a 5 años
+132. barrio_study_poblacion_infantil_masculina_en_etapa_educativa_de_6_a_11_anos_1c0059 | no nulos: 2462/2462 | Población infantil masculina en etapa educativa de 6 a 11 años
+133. barrio_study_poblacion_mayor_igual_de_25_anos_con_bachiller_elemental_graduado_escolar_0cd622 | no nulos: 2462/2462 | Población mayor/igual de 25 años con bachiller elemental, graduado escolar, ESO, formación profesional 1º grado
+134. barrio_study_poblacion_mayor_igual_de_25_anos_con_ensenanza_primaria_incompleta_76d9e3 | no nulos: 2462/2462 | Población mayor/igual de 25 años con enseñanza primaria incompleta
+135. barrio_study_poblacion_mayor_igual_de_25_anos_con_estudios_superiores_licenciatura_arq_ca2c82 | no nulos: 2462/2462 | Población mayor/igual de 25 años con estudios superiores, licenciatura, arquitectura, ingeniería sup., estudios sup. no universitarios, doctorado,  postgraduado
+136. barrio_study_poblacion_mayor_igual_de_25_anos_con_formacion_profesional_2o_grado_bachi_b380fb | no nulos: 2462/2462 | Población mayor/igual de 25 años con formación profesional 2º grado, bachiller superior o BUP
+137. barrio_study_poblacion_mayor_igual_de_25_anos_con_nivel_de_estudios_desconocido_y_o_no_b4fc1f | no nulos: 2462/2462 | Población mayor/igual de 25 años con Nivel de estudios desconocido y/o no consta
+138. barrio_study_poblacion_mayor_igual_de_25_anos_con_titulacion_media_diplomatura_arquite_d29228 | no nulos: 2462/2462 | Población mayor/igual de 25 años con titulación media, diplomatura, arquitectura o ingeniería técnica
+139. barrio_study_poblacion_mayor_igual_de_25_anos_que_no_sabe_leer_ni_escribir_o_sin_estud_4ee68d | no nulos: 2462/2462 | Población mayor/igual de 25 años que no sabe leer ni escribir o sin estudios
+140. barrio_study_poblacion_mujeres_d9844b | no nulos: 2462/2462 | Población Mujeres
+141. barrio_study_porcentaje_de_envejecimiento_poblacion_mayor_de_65_anos_poblacion_total_ec1146 | no nulos: 2462/2462 | Porcentaje de envejecimiento (Población mayor de 65 años / Población total)
+142. barrio_study_porcentaje_de_sobre_envejecimiento_poblacion_mayor_de_80_anos_poblacion_m_52fed3 | no nulos: 2462/2462 | Porcentaje de sobre-envejecimiento (Población mayor de 80 años / Población mayor de 65 años)
+143. barrio_study_primera_y_segunda_nacionalidad_extranjera_en_el_distrito_china_poblacion__8a100d | no nulos: 93/2462 | Primera y segunda nacionalidad extranjera en el Distrito: CHINA (Población total Distrito)
+144. barrio_study_primera_y_segunda_nacionalidad_extranjera_en_el_distrito_colombia_poblaci_a84a4a | no nulos: 1489/2462 | Primera y segunda nacionalidad extranjera en el Distrito: COLOMBIA (Población total Distrito)
+145. barrio_study_primera_y_segunda_nacionalidad_extranjera_en_el_distrito_filipinas_poblac_e8f5d4 | no nulos: 117/2462 | Primera y segunda nacionalidad extranjera en el Distrito: FILIPINAS (Población total Distrito)
+146. barrio_study_primera_y_segunda_nacionalidad_extranjera_en_el_distrito_italia_poblacion_0e77c6 | no nulos: 876/2462 | Primera y segunda nacionalidad extranjera en el Distrito: ITALIA (Población total Distrito)
+147. barrio_study_primera_y_segunda_nacionalidad_extranjera_en_el_distrito_paraguay_poblaci_33bbb2 | no nulos: 192/2462 | Primera y segunda nacionalidad extranjera en el Distrito: PARAGUAY (Población total Distrito)
+148. barrio_study_primera_y_segunda_nacionalidad_extranjera_en_el_distrito_peru_poblacion_t_cfb9e0 | no nulos: 637/2462 | Primera y segunda nacionalidad extranjera en el Distrito: PERÚ (Población total Distrito)
+149. barrio_study_primera_y_segunda_nacionalidad_extranjera_en_el_distrito_rumania_poblacio_bbda84 | no nulos: 131/2462 | Primera y segunda nacionalidad extranjera en el Distrito: RUMANÍA (Población total Distrito)
+150. barrio_study_primera_y_segunda_nacionalidad_extranjera_en_el_distrito_venezuela_poblac_2dd498 | no nulos: 1539/2462 | Primera y segunda nacionalidad extranjera en el Distrito: VENEZUELA (Población total Distrito)
+151. barrio_study_proporcion_de_personas_migrantes_poblacion_extranjera_menos_ue_y_resto_pa_4ae379 | no nulos: 2462/2462 | Proporción de personas migrantes (Población extranjera menos UE y resto países de OCDE / Población total)
+152. barrio_study_renta_media_disponible_por_persona_0970f1 | no nulos: 2462/2462 | Renta media disponible por persona
+153. barrio_study_renta_neta_media_anual_de_los_hogares_urban_audit_eb29c9 | no nulos: 2462/2462 | Renta neta media anual de los hogares (Urban Audit)
+154. barrio_study_residencias_para_personas_mayores_13d6e4 | no nulos: 2462/2462 | Residencias para personas mayores
+155. barrio_study_salubridad_publica_2658a9 | no nulos: 1209/2462 | SALUBRIDAD PÚBLICA
+156. barrio_study_seccion_201_836011 | no nulos: 65/2462 | SECCIÓN 201
+157. barrio_study_seccion_202_320445 | no nulos: 60/2462 | SECCIÓN 202
+158. barrio_study_seccion_203_0ed8d5 | no nulos: 59/2462 | SECCIÓN 203
+159. barrio_study_seccion_204_432048 | no nulos: 58/2462 | SECCIÓN 204
+160. barrio_study_seccion_205_7ce33e | no nulos: 53/2462 | SECCIÓN 205
+161. barrio_study_seccion_206_72aa20 | no nulos: 67/2462 | SECCIÓN 206
+162. barrio_study_seccion_207_af0a09 | no nulos: 64/2462 | SECCIÓN 207
+163. barrio_study_seccion_208_2238a1 | no nulos: 43/2462 | SECCIÓN 208
+164. barrio_study_seccion_209_05693f | no nulos: 44/2462 | SECCIÓN 209
+165. barrio_study_seccion_210_6ea763 | no nulos: 79/2462 | SECCIÓN 210
+166. barrio_study_seccion_211_9513ee | no nulos: 70/2462 | SECCIÓN 211
+167. barrio_study_seccion_212_45a0ac | no nulos: 41/2462 | SECCIÓN 212
+168. barrio_study_seccion_213_dec969 | no nulos: 87/2462 | SECCIÓN 213
+169. barrio_study_seccion_214_7af02c | no nulos: 35/2462 | SECCIÓN 214
+170. barrio_study_seccion_215_fd45be | no nulos: 107/2462 | SECCIÓN 215
+171. barrio_study_seccion_216_64ddfa | no nulos: 42/2462 | SECCIÓN 216
+172. barrio_study_seccion_217_0330ba | no nulos: 56/2462 | SECCIÓN 217
+173. barrio_study_seccion_218_486e90 | no nulos: 75/2462 | SECCIÓN 218
+174. barrio_study_seccion_219_5d42d3 | no nulos: 47/2462 | SECCIÓN 219
+175. barrio_study_seccion_220_4d5bd7 | no nulos: 37/2462 | SECCIÓN 220
+176. barrio_study_seccion_221_b5aa4a | no nulos: 20/2462 | SECCIÓN 221
+177. barrio_study_servicios_complementarios_educacion_36a8ba | no nulos: 1209/2462 | SERVICIOS COMPLEMENTARIOS EDUCACIÓN
+178. barrio_study_servicios_sociales_y_emergencia_social_ad8835 | no nulos: 1209/2462 | SERVICIOS SOCIALES Y EMERGENCIA SOCIAL
+179. barrio_study_superficie_ha_a9d5c4 | no nulos: 2462/2462 | Superficie (ha.)
+180. barrio_study_superficie_media_construida_m2_inmuebles_de_uso_residencial_819ddd | no nulos: 2462/2462 | Superficie media construida (m2) inmuebles de uso residencial
+181. barrio_study_superficie_media_de_la_vivienda_m2_en_transaccion_e72390 | no nulos: 2462/2462 | Superficie media de la vivienda (m2) en transacción
+182. barrio_study_tasa_absoluta_de_paro_registrado_febrero_5ddb63 | no nulos: 2462/2462 | Tasa absoluta de paro registrado (febrero)
+183. barrio_study_tasa_absoluta_de_paro_registrado_hombres_7b527f | no nulos: 2462/2462 | Tasa absoluta de paro registrado hombres
+184. barrio_study_tasa_absoluta_de_paro_registrado_mujeres_bb1f64 | no nulos: 2462/2462 | Tasa absoluta de paro registrado mujeres
+185. barrio_study_tasa_de_desempleo_en_hombres_de_16_a_24_anos_8b6591 | no nulos: 2462/2462 | Tasa de desempleo en hombres de 16 a 24 años
+186. barrio_study_tasa_de_desempleo_en_hombres_de_25_a_44_anos_d00f7c | no nulos: 2462/2462 | Tasa de desempleo en hombres de 25 a 44 años
+187. barrio_study_tasa_de_desempleo_en_hombres_de_45_a_64_anos_7f19a6 | no nulos: 2462/2462 | Tasa de desempleo en hombres de 45 a 64 años
+188. barrio_study_tasa_de_desempleo_en_mujeres_de_16_a_24_anos_a9609d | no nulos: 2462/2462 | Tasa de desempleo en mujeres de 16 a 24 años
+189. barrio_study_tasa_de_desempleo_en_mujeres_de_25_a_44_anos_f16355 | no nulos: 2462/2462 | Tasa de desempleo en mujeres de 25 a 44 años
+190. barrio_study_tasa_de_desempleo_en_mujeres_de_45_a_64_anos_c5ec36 | no nulos: 2462/2462 | Tasa de desempleo en mujeres de 45 a 64 años
+191. barrio_study_total_hogares_05d0db | no nulos: 2462/2462 | Total hogares
+192. barrio_study_valor_catastral_medio_por_inmueble_de_uso_residencial_a1b238 | no nulos: 2462/2462 | Valor catastral medio por inmueble de uso residencial
+193. barrio_study_zonas_verdes_10a81b | no nulos: 1209/2462 | ZONAS VERDES
+194. bike_accidents_2026_count | no nulos: 2462/2462
+195. district_2024_rent_collective_eur_m2_p25 | no nulos: 2462/2462
+196. district_2024_rent_collective_eur_m2_p50 | no nulos: 2462/2462
+197. district_2024_rent_collective_eur_m2_p75 | no nulos: 2462/2462
+198. district_2024_rent_collective_month_eur_p25 | no nulos: 2462/2462
+199. district_2024_rent_collective_month_eur_p50 | no nulos: 2462/2462
+200. district_2024_rent_collective_month_eur_p75 | no nulos: 2462/2462
+201. district_2024_rent_collective_size_m2_p25 | no nulos: 2462/2462
+202. district_2024_rent_collective_size_m2_p50 | no nulos: 2462/2462
+203. district_2024_rent_collective_size_m2_p75 | no nulos: 2462/2462
+204. district_2024_rent_house_eur_m2_p25 | no nulos: 2462/2462
+205. district_2024_rent_house_eur_m2_p50 | no nulos: 2462/2462
+206. district_2024_rent_house_eur_m2_p75 | no nulos: 2462/2462
+207. district_2024_rent_house_month_eur_p25 | no nulos: 2462/2462
+208. district_2024_rent_house_month_eur_p50 | no nulos: 2462/2462
+209. district_2024_rent_house_month_eur_p75 | no nulos: 2462/2462
+210. district_2024_rent_house_size_m2_p25 | no nulos: 2462/2462
+211. district_2024_rent_house_size_m2_p50 | no nulos: 2462/2462
+212. district_2024_rent_house_size_m2_p75 | no nulos: 2462/2462
+213. district_2024_rental_collective_units | no nulos: 2462/2462
+214. district_2024_rental_single_family_units | no nulos: 2462/2462
+215. district_2024_rental_units | no nulos: 2462/2462
+216. district_study_1_5_1_poblacion_en_etapas_educativas_0c8c21 | no nulos: 2462/2462 | 1.5.1. Población en etapas educativas
+217. district_study_1_5_2_escolarizacion_del_alumnado_por_tipo_de_centro_2719ed | no nulos: 2462/2462 | 1.5.2. Escolarización del alumnado por tipo de centro
+218. district_study_1_5_3_nivel_de_estudios_de_la_poblacion_mayor_o_igual_a_25_anos_3377ac | no nulos: 2462/2462 | 1.5.3. Nivel de estudios de la población mayor o igual a 25 años
+219. district_study_absentismo_0d6547 | no nulos: 2462/2462 | ABSENTISMO
+220. district_study_actividades_culturales_2eaff4 | no nulos: 2462/2462 | ACTIVIDADES CULTURALES
+221. district_study_actuaciones_deportivas_en_distritos_ecdc5a | no nulos: 2462/2462 | ACTUACIONES DEPORTIVAS EN DISTRITOS
+222. district_study_alguna_dependencia_funcional_hombres_aa3155 | no nulos: 2462/2462 | Alguna dependencia funcional hombres
+223. district_study_alguna_dependencia_funcional_mujeres_6d4b17 | no nulos: 2462/2462 | Alguna dependencia funcional mujeres
+224. district_study_alumnado_con_necesidades_de_apoyo_educativo_en_centros_privados_concertad_ef0645 | no nulos: 2462/2462 | Alumnado con necesidades de apoyo educativo en centros privados concertados
+225. district_study_alumnado_con_necesidades_de_apoyo_educativo_en_centros_privados_sin_conci_d1ef5f | no nulos: 2462/2462 | Alumnado con necesidades de apoyo educativo en centros privados sin concierto
+226. district_study_alumnado_con_necesidades_de_apoyo_educativo_en_centros_publicos_136f82 | no nulos: 2462/2462 | Alumnado con necesidades de apoyo educativo en centros públicos
+227. district_study_alumnado_en_centros_privados_concertados_20f83c | no nulos: 2462/2462 | Alumnado en centros privados concertados
+228. district_study_alumnado_en_centros_privados_sin_concierto_b36fc5 | no nulos: 2462/2462 | Alumnado en centros privados sin concierto
+229. district_study_alumnado_en_centros_publicos_c7f0ea | no nulos: 2462/2462 | Alumnado en centros públicos
+230. district_study_alumnado_extranjero_en_centros_privados_concertados_78f351 | no nulos: 2462/2462 | Alumnado extranjero en centros privados concertados
+231. district_study_alumnado_extranjero_en_centros_privados_sin_concierto_78337c | no nulos: 2462/2462 | Alumnado extranjero en centros privados sin concierto
+232. district_study_alumnado_extranjero_en_centros_publicos_086a7e | no nulos: 2462/2462 | Alumnado extranjero en centros públicos
+233. district_study_apartamentos_municipales_para_mayores_76007d | no nulos: 2462/2462 | Apartamentos municipales para mayores
+234. district_study_asociaciones_culturales_y_casas_regionales_330184 | no nulos: 2462/2462 | Asociaciones culturales y casas regionales
+235. district_study_asociaciones_de_mujeres_f6396a | no nulos: 2462/2462 | Asociaciones de mujeres
+236. district_study_asociaciones_seccion_1a_1e5b15 | no nulos: 2462/2462 | Asociaciones (Sección 1ª)
+237. district_study_asociaciones_vecinales_1c4b9b | no nulos: 2462/2462 | Asociaciones vecinales
+238. district_study_atestados_partes_de_accidentes_de_trafico_confeccionados_07045e | no nulos: 2462/2462 | Atestados/partes de accidentes de tráfico confeccionados
+239. district_study_autopercepcion_de_buen_estado_de_salud_hombres_7c5c43 | no nulos: 2462/2462 | Autopercepción de buen estado de salud hombres
+240. district_study_autopercepcion_de_buen_estado_de_salud_mujeres_958e6b | no nulos: 2462/2462 | Autopercepción de buen estado de salud mujeres
+241. district_study_autopercepcion_de_buen_estado_de_salud_respuesta_muy_buena_buena_464c05 | no nulos: 2462/2462 | Autopercepción de buen estado de salud (% respuesta muy buena + buena)
+242. district_study_bibliotecas_comunidad_madrid_ad8ede | no nulos: 2462/2462 | Bibliotecas Comunidad Madrid
+243. district_study_bibliotecas_municipales_f39888 | no nulos: 2462/2462 | Bibliotecas municipales
+244. district_study_calidad_de_vida_relacionada_con_la_salud_cvrs_b4f451 | no nulos: 2462/2462 | Calidad de vida relacionada con la salud (CVRS)
+245. district_study_calidad_de_vida_relacionada_con_la_salud_cvrs_hombres_dde178 | no nulos: 2462/2462 | Calidad de vida relacionada con la salud (CVRS) hombres
+246. district_study_calidad_de_vida_relacionada_con_la_salud_cvrs_mujeres_cfa680 | no nulos: 2462/2462 | Calidad de vida relacionada con la salud (CVRS) mujeres
+247. district_study_campos_de_futbol_11_e4126f | no nulos: 2462/2462 | Campos de fútbol 11
+248. district_study_casos_trabajados_por_el_programa_de_absentismo_municipal_7ee3a3 | no nulos: 2462/2462 | Casos trabajados por el programa de absentismo municipal
+249. district_study_casos_trabajados_por_el_programa_de_absentismo_municipal_hombres_ccfd75 | no nulos: 2462/2462 | Casos trabajados por el programa de absentismo municipal hombres
+250. district_study_casos_trabajados_por_el_programa_de_absentismo_municipal_mujeres_ebb83e | no nulos: 2462/2462 | Casos trabajados por el programa de absentismo municipal mujeres
+251. district_study_centro_de_dia_de_atencion_a_ninos_y_ninas_de_3_a_12_anos_7cf5e3 | no nulos: 2462/2462 | Centro de día de atención a niños y niñas (de 3 a 12 años)
+252. district_study_centros_de_adolescentes_y_jovenes_aspa_c68bfb | no nulos: 2462/2462 | Centros de adolescentes y jóvenes (ASPA)
+253. district_study_centros_de_apoyo_a_las_familias_caf_ec4942 | no nulos: 2462/2462 | Centros de apoyo a las familias (CAF)
+254. district_study_centros_de_atencion_a_la_infancia_cai_1fd1a2 | no nulos: 2462/2462 | Centros de atención a la infancia (CAI)
+255. district_study_centros_de_atencion_a_las_adicciones_cad_y_ccad_20c2cf | no nulos: 2462/2462 | Centros de atención a las adicciones (CAD y CCAD)
+256. district_study_centros_de_dia_de_alzheimer_y_fisicos_fca5ab | no nulos: 2462/2462 | Centros de día de alzheimer y físicos
+257. district_study_centros_de_servicios_sociales_ea5435 | no nulos: 2462/2462 | Centros de servicios sociales
+258. district_study_centros_deportivos_municipales_d326b4 | no nulos: 2462/2462 | Centros deportivos municipales
+259. district_study_centros_docentes_ensenanza_infantil_y_primaria_3ee385 | no nulos: 2462/2462 | CENTROS DOCENTES ENSEÑANZA INFANTIL Y PRIMARIA
+260. district_study_centros_municipales_de_mayores_925c6a | no nulos: 2462/2462 | Centros municipales de mayores
+261. district_study_centros_municipales_de_salud_comunitaria_cmsc_d74814 | no nulos: 2462/2462 | Centros municipales de salud comunitaria (CMSC)
+262. district_study_centros_para_personas_sin_hogar_c841ac | no nulos: 2462/2462 | Centros para personas sin hogar
+263. district_study_centros_y_espacios_culturales_15e475 | no nulos: 2462/2462 | Centros y espacios culturales
+264. district_study_colegios_privados_inf_o_pri_o_inf_y_pri_ea856d | no nulos: 2462/2462 | Colegios privados inf. o pri. o inf. y pri.
+265. district_study_colegios_privados_inf_pri_y_sec_o_pri_y_sec_6280ee | no nulos: 2462/2462 | Colegios privados inf., pri. y sec. o pri. y sec.
+266. district_study_colegios_publicos_infantil_y_primaria_a08e18 | no nulos: 2462/2462 | Colegios públicos infantil y primaria
+267. district_study_comercio_1b2571 | no nulos: 2462/2462 | COMERCIO
+268. district_study_concejalia_presidencia_del_distrito_b7e40d | no nulos: 2462/2462 | CONCEJALÍA-PRESIDENCIA DEL DISTRITO
+269. district_study_consumo_d69b2b | no nulos: 2462/2462 | CONSUMO
+270. district_study_consumo_de_medicamentos_4ee47d | no nulos: 2462/2462 | Consumo de medicamentos
+271. district_study_consumo_de_medicamentos_hombres_c0b665 | no nulos: 2462/2462 | Consumo de medicamentos hombres
+272. district_study_consumo_de_medicamentos_mujeres_666228 | no nulos: 2462/2462 | Consumo de medicamentos mujeres
+273. district_study_consumo_de_tabaco_diario_63d129 | no nulos: 2462/2462 | Consumo de tabaco diario
+274. district_study_consumo_de_tabaco_diario_hombres_95d177 | no nulos: 2462/2462 | Consumo de tabaco diario hombres
+275. district_study_consumo_de_tabaco_diario_mujeres_dd2627 | no nulos: 2462/2462 | Consumo de tabaco diario mujeres
+276. district_study_demandas_de_intervencion_en_los_centros_de_atencion_a_la_infancia_cai_0c3cdc | no nulos: 2462/2462 | Demandas de intervención en los centros de atención a la infancia (CAI)
+277. district_study_diabetes_mellitus_983bb7 | no nulos: 2462/2462 | Diabetes Mellitus
+278. district_study_diabetes_mellitus_hombres_0d4b6b | no nulos: 2462/2462 | Diabetes Mellitus hombres
+279. district_study_diabetes_mellitus_mujeres_5a2dbc | no nulos: 2462/2462 | Diabetes Mellitus mujeres
+280. district_study_direc_y_gestion_admtva_del_distrito_110b69 | no nulos: 2462/2462 | DIREC. Y GESTIÓN ADMTVA. DEL DISTRITO
+281. district_study_duracion_media_del_credito_meses_en_transaccion_de_vivienda_29d9b9 | no nulos: 2462/2462 | Duración media del crédito (meses) en transacción de vivienda
+282. district_study_edificios_c19f89 | no nulos: 2462/2462 | EDIFICIOS
+283. district_study_equipamiento_de_zonas_ajardinadas_464abf | no nulos: 2462/2462 | EQUIPAMIENTO DE ZONAS AJARDINADAS
+284. district_study_escuelas_infantiles_municipales_6a413a | no nulos: 2462/2462 | Escuelas infantiles municipales
+285. district_study_escuelas_infantiles_privadas_276cac | no nulos: 2462/2462 | Escuelas infantiles privadas
+286. district_study_escuelas_infantiles_publicas_33c118 | no nulos: 2462/2462 | Escuelas infantiles públicas
+287. district_study_espacios_de_igualdad_b7f7e8 | no nulos: 2462/2462 | Espacios de igualdad
+288. district_study_etapas_educativas_total_ninas_f784f9 | no nulos: 2462/2462 | Etapas educativas. Total niñas
+289. district_study_etapas_educativas_total_ninos_a54784 | no nulos: 2462/2462 | Etapas educativas. Total niños
+290. district_study_expedientes_instruidos_por_agentes_tutores_fb61d5 | no nulos: 2462/2462 | Expedientes instruidos por agentes tutores
+291. district_study_familia_e_infancia_7601b0 | no nulos: 2462/2462 | FAMILIA E INFANCIA
+292. district_study_familias_atendidas_por_el_equipo_de_trabajo_con_menores_y_familia_etmf_41828a | no nulos: 2462/2462 | Familias atendidas por el equipo de trabajo con menores y familia (ETMF)
+293. district_study_fundaciones_seccion_2a_c3da66 | no nulos: 2462/2462 | Fundaciones (sección 2ª)
+294. district_study_hipertension_arterial_90fdfc | no nulos: 2462/2462 | Hipertensión arterial
+295. district_study_hipertension_arterial_hombres_0d3552 | no nulos: 2462/2462 | Hipertensión arterial hombres
+296. district_study_hipertension_arterial_mujeres_b1a60f | no nulos: 2462/2462 | Hipertensión arterial mujeres
+297. district_study_hogares_con_un_hombre_solo_mayor_de_65_anos_bddeba | no nulos: 2462/2462 | Hogares con un hombre solo mayor de 65 años
+298. district_study_hogares_con_una_mujer_sola_mayor_de_65_anos_fa36fa | no nulos: 2462/2462 | Hogares con una mujer sola mayor de 65 años
+299. district_study_hogares_monoparentales_un_hombre_adulto_con_uno_o_mas_menores_291ace | no nulos: 2462/2462 | Hogares monoparentales: un hombre adulto con uno o más menores
+300. district_study_hogares_monoparentales_una_mujer_adulta_con_uno_o_mas_menores_e22562 | no nulos: 2462/2462 | Hogares monoparentales: una mujer adulta con uno o más menores
+301. district_study_indice_de_dependencia_poblacion_de_0_15_poblacion_65_anos_y_mas_pob_16_64_f46a06 | no nulos: 2462/2462 | Índice de dependencia (Población de 0-15 + población 65 años y más / Pob. 16-64)
+302. district_study_inspecciones_y_actuaciones_en_locales_de_espectaculos_publicos_y_activida_1636cd | no nulos: 2462/2462 | Inspecciones y actuaciones en locales de espectáculos públicos y actividades recreativas
+303. district_study_instalaciones_deportivas_89d72d | no nulos: 2462/2462 | INSTALACIONES DEPORTIVAS
+304. district_study_instalaciones_deportivas_basicas_dc8b8d | no nulos: 2462/2462 | Instalaciones deportivas básicas
+305. district_study_institutos_publicos_de_educacion_secundaria_4e3094 | no nulos: 2462/2462 | Institutos públicos de educación secundaria
+306. district_study_intervenciones_de_la_policia_municipal_en_materia_de_seguridad_delitos_re_0b9b74 | no nulos: 2462/2462 | Intervenciones de la policía municipal en materia de seguridad: delitos relacionados con las personas
+307. district_study_intervenciones_de_la_policia_municipal_en_materia_de_seguridad_relacionad_ad3304 | no nulos: 2462/2462 | Intervenciones de la policía municipal en materia de seguridad: relacionadas con el patrimonio
+308. district_study_intervenciones_de_la_policia_municipal_en_materia_de_seguridad_relacionad_e23f33 | no nulos: 2462/2462 | Intervenciones de la policía municipal en materia de seguridad: relacionadas con la tenencia de armas
+309. district_study_intervenciones_de_la_policia_municipal_en_materia_de_seguridad_relacionad_e574ca | no nulos: 2462/2462 | Intervenciones de la policía municipal en materia de seguridad: relacionadas con la tenencia y consumo de drogas
+310. district_study_mayores_e81114 | no nulos: 2462/2462 | MAYORES
+311. district_study_menores_atendidos_por_el_servicio_de_conciliacion_y_de_apoyo_a_familias_c_869eee | no nulos: 2462/2462 | Menores atendidos por el Servicio de conciliación y de apoyo a familias con menores (SERCAF-Menores)
+312. district_study_mercados_municipales_75e6e0 | no nulos: 2462/2462 | Mercados Municipales
+313. district_study_ngeu_convenio_servicios_sociales_b3dbdb | no nulos: 2462/2462 | NGEU. CONVENIO  SERVICIOS SOCIALES
+314. district_study_numero_de_inmuebles_de_uso_residencial_40ed69 | no nulos: 2462/2462 | Número de inmuebles de uso residencial
+315. district_study_numero_de_locales_dados_de_alta_abiertos_f21045 | no nulos: 2462/2462 | Número de locales dados de alta abiertos
+316. district_study_numero_de_locales_dados_de_alta_cerrados_d8afd2 | no nulos: 2462/2462 | Número de locales dados de alta cerrados
+317. district_study_numero_de_locales_dados_de_alta_en_uso_como_vivienda_ba1806 | no nulos: 2462/2462 | Número de locales dados de alta en uso como vivienda
+318. district_study_numero_de_locales_dados_de_alta_totales_34c7a9 | no nulos: 2462/2462 | Número de locales dados de alta totales
+319. district_study_numero_de_personas_con_grado_de_discapacidad_reconocido_ee1089 | no nulos: 2462/2462 | Número de personas con grado de discapacidad reconocido
+320. district_study_numero_de_personas_con_grado_de_discapacidad_reconocido_hombres_b5c76b | no nulos: 2462/2462 | Número de personas con grado de discapacidad reconocido hombres
+321. district_study_numero_de_personas_con_grado_de_discapacidad_reconocido_mujeres_85442f | no nulos: 2462/2462 | Número de personas con grado de discapacidad reconocido mujeres
+322. district_study_numero_habitantes_e7f0b0 | no nulos: 2462/2462 | Número Habitantes
+323. district_study_otras_actuaciones_en_vias_publicas_c20a45 | no nulos: 2462/2462 | OTRAS ACTUACIONES EN VÍAS PÚBLICAS
+324. district_study_paro_registrado_numero_de_personas_registradas_en_sepe_en_febrero_b97b4f | no nulos: 2462/2462 | Paro registrado (número de personas registradas en SEPE en febrero)
+325. district_study_paro_registrado_numero_de_personas_registradas_en_sepe_en_febrero_hombres_d4357b | no nulos: 2462/2462 | Paro registrado (número de personas registradas en SEPE en febrero) hombres
+326. district_study_paro_registrado_numero_de_personas_registradas_en_sepe_en_febrero_mujeres_0706f3 | no nulos: 2462/2462 | Paro registrado (número de personas registradas en SEPE en febrero) mujeres
+327. district_study_participacion_ciudadana_661204 | no nulos: 2462/2462 | PARTICIPACIÓN CIUDADANA
+328. district_study_pension_media_mensual_hombres_804faf | no nulos: 2462/2462 | Pensión media mensual hombres
+329. district_study_pension_media_mensual_mujeres_738f69 | no nulos: 2462/2462 | Pensión media mensual mujeres
+330. district_study_personas_atendidas_en_la_unidad_de_primera_atencion_en_centros_de_servici_d42039 | no nulos: 2462/2462 | Personas atendidas en la Unidad de Primera Atención en centros de servicios sociales
+331. district_study_personas_beneficiarias_de_prestaciones_sociales_de_caracter_economico_67fb7b | no nulos: 2462/2462 | Personas beneficiarias de prestaciones sociales de carácter económico
+332. district_study_personas_con_nacionalidad_espanola_64cce1 | no nulos: 2462/2462 | Personas con nacionalidad española
+333. district_study_personas_con_nacionalidad_espanola_hombres_f43ee1 | no nulos: 2462/2462 | Personas con nacionalidad española hombres
+334. district_study_personas_con_nacionalidad_espanola_mujeres_71478a | no nulos: 2462/2462 | Personas con nacionalidad española mujeres
+335. district_study_personas_con_nacionalidad_extranjera_2f6cc6 | no nulos: 2462/2462 | Personas con nacionalidad extranjera
+336. district_study_personas_con_nacionalidad_extranjera_hombres_fdc45d | no nulos: 2462/2462 | Personas con nacionalidad extranjera hombres
+337. district_study_personas_con_nacionalidad_extranjera_mujeres_a8f85f | no nulos: 2462/2462 | Personas con nacionalidad extranjera mujeres
+338. district_study_personas_con_obesidad_0f00a6 | no nulos: 2462/2462 | Personas con obesidad
+339. district_study_personas_con_obesidad_hombres_c166bc | no nulos: 2462/2462 | Personas con obesidad hombres
+340. district_study_personas_con_obesidad_mujeres_f86326 | no nulos: 2462/2462 | Personas con obesidad mujeres
+341. district_study_personas_con_servicio_de_ayuda_a_domicilio_modalidad_auxiliar_de_hogar_3c1606 | no nulos: 2462/2462 | Personas con Servicio de Ayuda a Domicilio (modalidad auxiliar de hogar)
+342. district_study_personas_con_servicio_de_ayuda_a_domicilio_modalidad_auxiliar_de_hogar_ho_278e4e | no nulos: 2462/2462 | Personas con Servicio de ayuda a domicilio (modalidad auxiliar de hogar) hombres
+343. district_study_personas_con_servicio_de_ayuda_a_domicilio_modalidad_auxiliar_de_hogar_mu_2b24dd | no nulos: 2462/2462 | Personas con Servicio de ayuda a domicilio (modalidad auxiliar de hogar) mujeres
+344. district_study_personas_con_sobrepeso_21c2f7 | no nulos: 2462/2462 | Personas con sobrepeso
+345. district_study_personas_con_sobrepeso_hombres_e3f78c | no nulos: 2462/2462 | Personas con sobrepeso hombres
+346. district_study_personas_con_sobrepeso_mujeres_734c3c | no nulos: 2462/2462 | Personas con sobrepeso mujeres
+347. district_study_personas_detenidas_e_investigadas_por_la_policia_municipal_en_materia_de__867a21 | no nulos: 2462/2462 | Personas detenidas e investigadas por la Policía Municipal en materia de seguridad: total  personas detenidas e investigadas
+348. district_study_personas_mayores_de_65_anos_con_alguna_dependencia_funcional_0607be | no nulos: 2462/2462 | Personas mayores de 65 años con alguna dependencia funcional
+349. district_study_personas_paradas_de_larga_duracion_febrero_464a7c | no nulos: 2462/2462 | Personas paradas de larga duración (febrero)
+350. district_study_personas_paradas_de_larga_duracion_febrero_hombres_45ee11 | no nulos: 2462/2462 | Personas paradas de larga duración (febrero) hombres
+351. district_study_personas_paradas_de_larga_duracion_febrero_mujeres_de88f5 | no nulos: 2462/2462 | Personas paradas de larga duración (febrero) mujeres
+352. district_study_personas_paradas_que_no_perciben_prestaciones_febrero_db0dd3 | no nulos: 2462/2462 | Personas paradas que NO perciben prestaciones (febrero)
+353. district_study_personas_paradas_que_no_perciben_prestaciones_febrero_hombres_b86d15 | no nulos: 2462/2462 | Personas paradas que NO perciben prestaciones (febrero) hombres
+354. district_study_personas_paradas_que_no_perciben_prestaciones_febrero_mujeres_3fa133 | no nulos: 2462/2462 | Personas paradas que NO perciben prestaciones (febrero) mujeres
+355. district_study_personas_paradas_que_si_perciben_prestaciones_febrero_3ad52d | no nulos: 2462/2462 | Personas paradas que SÍ perciben prestaciones (febrero)
+356. district_study_personas_paradas_que_si_perciben_prestaciones_febrero_hombres_73b3c2 | no nulos: 2462/2462 | Personas paradas que SÍ perciben prestaciones (febrero) hombres
+357. district_study_personas_paradas_que_si_perciben_prestaciones_febrero_mujeres_36664a | no nulos: 2462/2462 | Personas paradas que SÍ perciben prestaciones (febrero) mujeres
+358. district_study_personas_perceptoras_de_prestacion_de_la_renta_minima_de_insercion_2f02d7 | no nulos: 2462/2462 | Personas perceptoras de prestación de la Renta mínima de inserción
+359. district_study_personas_socias_de_los_centros_municipales_de_mayores_5d7ea7 | no nulos: 2462/2462 | Personas socias de los Centros Municipales de Mayores
+360. district_study_personas_socias_de_los_centros_municipales_de_mayores_hombres_c3e78e | no nulos: 2462/2462 | Personas socias de los centros municipales de mayores hombres
+361. district_study_personas_socias_de_los_centros_municipales_de_mayores_mujeres_d19ba4 | no nulos: 2462/2462 | Personas socias de los centros municipales de mayores mujeres
+362. district_study_piscinas_cubiertas_17dd72 | no nulos: 2462/2462 | Piscinas cubiertas
+363. district_study_piscinas_de_verano_a2fb97 | no nulos: 2462/2462 | Piscinas de verano
+364. district_study_pista_de_atletismo_4f6afa | no nulos: 2462/2462 | Pista de atletismo
+365. district_study_poblacion_de_0_a_14_anos_a5e494 | no nulos: 2462/2462 | Población de 0 a 14 años
+366. district_study_poblacion_de_15_a_29_anos_255808 | no nulos: 2462/2462 | Población de 15 a 29 años
+367. district_study_poblacion_de_30_a_44_anos_2f35d5 | no nulos: 2462/2462 | Población de 30 a 44 años
+368. district_study_poblacion_de_45_a_64_anos_db856d | no nulos: 2462/2462 | Población de 45 a 64 años
+369. district_study_poblacion_de_65_a_79_anos_135d85 | no nulos: 2462/2462 | Población de 65 a 79 años
+370. district_study_poblacion_de_65_anos_y_mas_724f94 | no nulos: 2462/2462 | Población de 65 años y más
+371. district_study_poblacion_de_80_anos_y_mas_77f61b | no nulos: 2462/2462 | Población de 80 años y más
+372. district_study_poblacion_densidad_hab_ha_3525f3 | no nulos: 2462/2462 | Población densidad (hab./ha.)
+373. district_study_poblacion_en_etapa_educativa_de_0_a_2_anos_c03ae3 | no nulos: 2462/2462 | Población en etapa educativa de 0 a 2 años
+374. district_study_poblacion_en_etapa_educativa_de_12_a_15_anos_319625 | no nulos: 2462/2462 | Población en etapa educativa de 12 a 15 años
+375. district_study_poblacion_en_etapa_educativa_de_3_a_5_anos_88db62 | no nulos: 2462/2462 | Población en etapa educativa de 3 a 5 años
+376. district_study_poblacion_en_etapa_educativa_de_6_a_11_anos_ec0e2c | no nulos: 2462/2462 | Población en etapa educativa de 6 a 11 años
+377. district_study_poblacion_en_etapa_educativa_poblacion_de_0_a_16_anos_16_no_incluidos_3e518b | no nulos: 2462/2462 | Población en etapa educativa (Población de 0 a 16 años <16 no incluidos)
+378. district_study_poblacion_hombres_f7783a | no nulos: 2462/2462 | Población Hombres
+379. district_study_poblacion_infantil_femenina_en_etapa_educativa_de_0_a_2_anos_d0f8f0 | no nulos: 2462/2462 | Población infantil femenina en etapa educativa de 0 a 2 años
+380. district_study_poblacion_infantil_femenina_en_etapa_educativa_de_12_a_15_anos_80c6db | no nulos: 2462/2462 | Población infantil femenina en etapa educativa de 12 a 15 años
+381. district_study_poblacion_infantil_femenina_en_etapa_educativa_de_3_a_5_anos_89ea30 | no nulos: 2462/2462 | Población infantil femenina en etapa educativa de 3 a 5 años
+382. district_study_poblacion_infantil_femenina_en_etapa_educativa_de_6_a_11_anos_c4a08d | no nulos: 2462/2462 | Población infantil femenina en etapa educativa de 6 a 11 años
+383. district_study_poblacion_infantil_masculina_en_etapa_educativa_de_0_a_2_anos_18d6e6 | no nulos: 2462/2462 | Población infantil masculina en etapa educativa de 0 a 2 años
+384. district_study_poblacion_infantil_masculina_en_etapa_educativa_de_12_a_15_anos_cc18e0 | no nulos: 2462/2462 | Población infantil masculina en etapa educativa de 12 a 15 años
+385. district_study_poblacion_infantil_masculina_en_etapa_educativa_de_3_a_5_anos_617dd7 | no nulos: 2462/2462 | Población infantil masculina en etapa educativa de 3 a 5 años
+386. district_study_poblacion_infantil_masculina_en_etapa_educativa_de_6_a_11_anos_1c0059 | no nulos: 2462/2462 | Población infantil masculina en etapa educativa de 6 a 11 años
+387. district_study_poblacion_mayor_igual_de_25_anos_con_bachiller_elemental_graduado_escolar_0cd622 | no nulos: 2462/2462 | Población mayor/igual de 25 años con bachiller elemental, graduado escolar, ESO, formación profesional 1º grado
+388. district_study_poblacion_mayor_igual_de_25_anos_con_ensenanza_primaria_incompleta_76d9e3 | no nulos: 2462/2462 | Población mayor/igual de 25 años con enseñanza primaria incompleta
+389. district_study_poblacion_mayor_igual_de_25_anos_con_estudios_superiores_licenciatura_arq_ca2c82 | no nulos: 2462/2462 | Población mayor/igual de 25 años con estudios superiores, licenciatura, arquitectura, ingeniería sup., estudios sup. no universitarios, doctorado,  postgraduado
+390. district_study_poblacion_mayor_igual_de_25_anos_con_formacion_profesional_2o_grado_bachi_b380fb | no nulos: 2462/2462 | Población mayor/igual de 25 años con formación profesional 2º grado, bachiller superior o BUP
+391. district_study_poblacion_mayor_igual_de_25_anos_con_nivel_de_estudios_desconocido_y_o_no_b4fc1f | no nulos: 2462/2462 | Población mayor/igual de 25 años con Nivel de estudios desconocido y/o no consta
+392. district_study_poblacion_mayor_igual_de_25_anos_con_titulacion_media_diplomatura_arquite_d29228 | no nulos: 2462/2462 | Población mayor/igual de 25 años con titulación media, diplomatura, arquitectura o ingeniería técnica
+393. district_study_poblacion_mayor_igual_de_25_anos_que_no_sabe_leer_ni_escribir_o_sin_estud_4ee68d | no nulos: 2462/2462 | Población mayor/igual de 25 años que no sabe leer ni escribir o sin estudios
+394. district_study_poblacion_mujeres_d9844b | no nulos: 2462/2462 | Población Mujeres
+395. district_study_porcentaje_de_envejecimiento_poblacion_mayor_de_65_anos_poblacion_total_ec1146 | no nulos: 2462/2462 | Porcentaje de envejecimiento (Población mayor de 65 años / Población total)
+396. district_study_porcentaje_de_sobre_envejecimiento_poblacion_mayor_de_80_anos_poblacion_m_52fed3 | no nulos: 2462/2462 | Porcentaje de sobre-envejecimiento (Población mayor de 80 años / Población mayor de 65 años)
+397. district_study_presencia_de_enfermedad_cronica_df29cf | no nulos: 2462/2462 | Presencia de enfermedad crónica
+398. district_study_presencia_de_enfermedad_cronica_hombres_ab6e71 | no nulos: 2462/2462 | Presencia de enfermedad crónica hombres
+399. district_study_presencia_de_enfermedad_cronica_mujeres_7b2b61 | no nulos: 2462/2462 | Presencia de enfermedad crónica mujeres
+400. district_study_primera_y_segunda_nacionalidad_extranjera_en_el_distrito_china_poblacion__8a100d | no nulos: 2313/2462 | Primera y segunda nacionalidad extranjera en el Distrito: CHINA (Población total Distrito)
+401. district_study_primera_y_segunda_nacionalidad_extranjera_en_el_distrito_colombia_poblaci_a84a4a | no nulos: 2252/2462 | Primera y segunda nacionalidad extranjera en el Distrito: COLOMBIA (Población total Distrito)
+402. district_study_primera_y_segunda_nacionalidad_extranjera_en_el_distrito_filipinas_poblac_e8f5d4 | no nulos: 2462/2462 | Primera y segunda nacionalidad extranjera en el Distrito: FILIPINAS (Población total Distrito)
+403. district_study_primera_y_segunda_nacionalidad_extranjera_en_el_distrito_italia_poblacion_0e77c6 | no nulos: 2406/2462 | Primera y segunda nacionalidad extranjera en el Distrito: ITALIA (Población total Distrito)
+404. district_study_primera_y_segunda_nacionalidad_extranjera_en_el_distrito_paraguay_poblaci_33bbb2 | no nulos: 2369/2462 | Primera y segunda nacionalidad extranjera en el Distrito: PARAGUAY (Población total Distrito)
+405. district_study_primera_y_segunda_nacionalidad_extranjera_en_el_distrito_peru_poblacion_t_cfb9e0 | no nulos: 2252/2462 | Primera y segunda nacionalidad extranjera en el Distrito: PERÚ (Población total Distrito)
+406. district_study_primera_y_segunda_nacionalidad_extranjera_en_el_distrito_rumania_poblacio_bbda84 | no nulos: 2276/2462 | Primera y segunda nacionalidad extranjera en el Distrito: RUMANÍA (Población total Distrito)
+407. district_study_primera_y_segunda_nacionalidad_extranjera_en_el_distrito_venezuela_poblac_2dd498 | no nulos: 2369/2462 | Primera y segunda nacionalidad extranjera en el Distrito: VENEZUELA (Población total Distrito)
+408. district_study_probabilidad_de_padecer_enfermedad_ghq_12_mujeres_d79da7 | no nulos: 2462/2462 | Probabilidad de padecer enfermedad (GHQ-12) mujeres
+409. district_study_probabilidad_de_padecer_enfermedad_mental_ghq_12_277f92 | no nulos: 2462/2462 | Probabilidad de padecer enfermedad mental (GHQ-12)
+410. district_study_probabilidad_de_padecer_enfermedad_mental_ghq_12_hombres_36f9a3 | no nulos: 2462/2462 | Probabilidad de padecer enfermedad mental (GHQ-12) hombres
+411. district_study_proporcion_de_personas_migrantes_poblacion_extranjera_menos_ue_y_resto_pa_4ae379 | no nulos: 2462/2462 | Proporción de personas migrantes (Población extranjera menos UE y resto países de OCDE / Población total)
+412. district_study_renta_media_disponible_por_persona_0970f1 | no nulos: 2462/2462 | Renta media disponible por persona
+413. district_study_renta_neta_media_anual_de_los_hogares_urban_audit_eb29c9 | no nulos: 2462/2462 | Renta neta media anual de los hogares (Urban Audit)
+414. district_study_residencias_para_personas_mayores_13d6e4 | no nulos: 2462/2462 | Residencias para personas mayores
+415. district_study_salubridad_publica_2658a9 | no nulos: 2462/2462 | SALUBRIDAD PÚBLICA
+416. district_study_seccion_201_836011 | no nulos: 110/2462 | SECCIÓN 201
+417. district_study_seccion_202_320445 | no nulos: 111/2462 | SECCIÓN 202
+418. district_study_seccion_203_0ed8d5 | no nulos: 93/2462 | SECCIÓN 203
+419. district_study_seccion_204_432048 | no nulos: 124/2462 | SECCIÓN 204
+420. district_study_seccion_205_7ce33e | no nulos: 101/2462 | SECCIÓN 205
+421. district_study_seccion_206_72aa20 | no nulos: 117/2462 | SECCIÓN 206
+422. district_study_seccion_207_af0a09 | no nulos: 121/2462 | SECCIÓN 207
+423. district_study_seccion_208_2238a1 | no nulos: 187/2462 | SECCIÓN 208
+424. district_study_seccion_209_05693f | no nulos: 90/2462 | SECCIÓN 209
+425. district_study_seccion_210_6ea763 | no nulos: 196/2462 | SECCIÓN 210
+426. district_study_seccion_211_9513ee | no nulos: 182/2462 | SECCIÓN 211
+427. district_study_seccion_212_45a0ac | no nulos: 93/2462 | SECCIÓN 212
+428. district_study_seccion_213_dec969 | no nulos: 176/2462 | SECCIÓN 213
+429. district_study_seccion_214_7af02c | no nulos: 83/2462 | SECCIÓN 214
+430. district_study_seccion_215_fd45be | no nulos: 168/2462 | SECCIÓN 215
+431. district_study_seccion_216_64ddfa | no nulos: 126/2462 | SECCIÓN 216
+432. district_study_seccion_217_0330ba | no nulos: 109/2462 | SECCIÓN 217
+433. district_study_seccion_218_486e90 | no nulos: 75/2462 | SECCIÓN 218
+434. district_study_seccion_219_5d42d3 | no nulos: 56/2462 | SECCIÓN 219
+435. district_study_seccion_220_4d5bd7 | no nulos: 112/2462 | SECCIÓN 220
+436. district_study_seccion_221_b5aa4a | no nulos: 32/2462 | SECCIÓN 221
+437. district_study_sedentarismo_828437 | no nulos: 2462/2462 | Sedentarismo
+438. district_study_sedentarismo_hombres_5b643a | no nulos: 2462/2462 | Sedentarismo hombres
+439. district_study_sedentarismo_mujeres_86497b | no nulos: 2462/2462 | Sedentarismo mujeres
+440. district_study_servicios_complementarios_educacion_36a8ba | no nulos: 2462/2462 | SERVICIOS COMPLEMENTARIOS EDUCACIÓN
+441. district_study_servicios_sociales_y_emergencia_social_ad8835 | no nulos: 2462/2462 | SERVICIOS SOCIALES Y EMERGENCIA SOCIAL
+442. district_study_solicitudes_tramitadas_de_renta_minima_de_insercion_104938 | no nulos: 2462/2462 | Solicitudes tramitadas de Renta Mínima de Inserción
+443. district_study_superficie_de_zonas_verdes_y_parques_de_distrito_ha_02b074 | no nulos: 2462/2462 | Superficie de zonas verdes y parques de distrito (ha.)
+444. district_study_superficie_de_zonas_verdes_y_parques_de_distrito_ha_no_de_habitantes_10_0_72934c | no nulos: 2462/2462 | Superficie de zonas verdes y parques de distrito (ha.) / nº de habitantes *10.000
+445. district_study_superficie_deportiva_m2_85fc1b | no nulos: 2462/2462 | Superficie deportiva m2
+446. district_study_superficie_ha_a9d5c4 | no nulos: 2462/2462 | Superficie (ha.)
+447. district_study_superficie_media_construida_m2_inmuebles_de_uso_residencial_819ddd | no nulos: 2462/2462 | Superficie media construida (m2) inmuebles de uso residencial
+448. district_study_superficie_media_de_la_vivienda_m2_en_transaccion_e72390 | no nulos: 2462/2462 | Superficie media de la vivienda (m2) en transacción
+449. district_study_superficie_parques_historicos_singulares_y_forestales_distrito_ha_no_habi_4f1cee | no nulos: 2462/2462 | Superficie parques históricos, singulares y forestales distrito (ha.) / nº habitantes *10.000
+450. district_study_superficie_parques_historicos_singulares_y_forestales_por_distrito_ha_074a17 | no nulos: 2462/2462 | Superficie parques históricos, singulares y forestales por distrito (ha.)
+451. district_study_tasa_absoluta_de_paro_registrado_febrero_5ddb63 | no nulos: 2462/2462 | Tasa absoluta de paro registrado (febrero)
+452. district_study_tasa_absoluta_de_paro_registrado_hombres_7b527f | no nulos: 2462/2462 | Tasa absoluta de paro registrado hombres
+453. district_study_tasa_absoluta_de_paro_registrado_mujeres_bb1f64 | no nulos: 2462/2462 | Tasa absoluta de paro registrado mujeres
+454. district_study_tasa_de_desempleo_en_hombres_de_16_a_24_anos_8b6591 | no nulos: 2462/2462 | Tasa de desempleo en hombres de 16 a 24 años
+455. district_study_tasa_de_desempleo_en_hombres_de_25_a_44_anos_d00f7c | no nulos: 2462/2462 | Tasa de desempleo en hombres de 25 a 44 años
+456. district_study_tasa_de_desempleo_en_hombres_de_45_a_64_anos_7f19a6 | no nulos: 2462/2462 | Tasa de desempleo en hombres de 45 a 64 años
+457. district_study_tasa_de_desempleo_en_mujeres_de_16_a_24_anos_a9609d | no nulos: 2462/2462 | Tasa de desempleo en mujeres de 16 a 24 años
+458. district_study_tasa_de_desempleo_en_mujeres_de_25_a_44_anos_f16355 | no nulos: 2462/2462 | Tasa de desempleo en mujeres de 25 a 44 años
+459. district_study_tasa_de_desempleo_en_mujeres_de_45_a_64_anos_c5ec36 | no nulos: 2462/2462 | Tasa de desempleo en mujeres de 45 a 64 años
+460. district_study_total_alumnado_con_necesidades_de_apoyo_educativo_1a6b72 | no nulos: 2462/2462 | Total alumnado con necesidades de apoyo educativo
+461. district_study_total_alumnado_extranjero_9dd422 | no nulos: 2462/2462 | Total alumnado extranjero
+462. district_study_total_hogares_05d0db | no nulos: 2462/2462 | Total hogares
+463. district_study_total_prestaciones_sociales_de_caracter_economico_686262 | no nulos: 2462/2462 | Total prestaciones sociales de carácter económico (€)
+464. district_study_valor_catastral_medio_por_inmueble_de_uso_residencial_a1b238 | no nulos: 2462/2462 | Valor catastral medio por inmueble de uso residencial
+465. district_study_zonas_verdes_10a81b | no nulos: 2462/2462 | ZONAS VERDES
+466. education_count_1000m | no nulos: 2462/2462
+467. education_count_500m | no nulos: 2462/2462
+468. education_count_in_section | no nulos: 2462/2462
+469. education_nearest_m | no nulos: 2462/2462
+470. health_count_1000m | no nulos: 2462/2462
+471. health_count_500m | no nulos: 2462/2462
+472. health_count_in_section | no nulos: 2462/2462
+473. health_nearest_m | no nulos: 2462/2462
+474. libraries_count_1000m | no nulos: 2462/2462
+475. libraries_count_500m | no nulos: 2462/2462
+476. libraries_count_in_section | no nulos: 2462/2462
+477. libraries_nearest_m | no nulos: 2462/2462
+478. noise_laeq_d_2026_nearest_station_db_energy_mean | no nulos: 1906/2462
+479. noise_laeq_d_2026_nearest_station_observations | no nulos: 1906/2462
+480. noise_laeq_e_2026_nearest_station_db_energy_mean | no nulos: 1906/2462
+481. noise_laeq_e_2026_nearest_station_observations | no nulos: 1906/2462
+482. noise_laeq_n_2026_nearest_station_db_energy_mean | no nulos: 1906/2462
+483. noise_laeq_n_2026_nearest_station_observations | no nulos: 1906/2462
+484. noise_laeq_t_2026_nearest_station_db_energy_mean | no nulos: 1906/2462
+485. noise_laeq_t_2026_nearest_station_observations | no nulos: 1906/2462
+486. noise_nearest_station_distance_m | no nulos: 1906/2462
+487. noise_nearest_station_id | no nulos: 1906/2462
+488. padron_distinct_ages | no nulos: 2462/2462
+489. padron_reference_date | no nulos: 2462/2462
+490. parks_catalogued_area_ha_at_points | no nulos: 7/2462
+491. parks_count_1000m | no nulos: 2462/2462
+492. parks_count_500m | no nulos: 2462/2462
+493. parks_count_in_section | no nulos: 2462/2462
+494. parks_nearest_m | no nulos: 2462/2462
+495. population_age_0_17 | no nulos: 2462/2462
+496. population_age_18_34 | no nulos: 2462/2462
+497. population_age_35_64 | no nulos: 2462/2462
+498. population_age_65_plus | no nulos: 2462/2462
+499. population_density_km2 | no nulos: 2462/2462
+500. population_men | no nulos: 2462/2462
+501. population_total | no nulos: 2462/2462
+502. population_women | no nulos: 2462/2462
+503. road_accidents_2026_count | no nulos: 2462/2462
+504. section_2024_rent_collective_eur_m2_p25 | no nulos: 2390/2462
+505. section_2024_rent_collective_eur_m2_p50 | no nulos: 2390/2462
+506. section_2024_rent_collective_eur_m2_p75 | no nulos: 2390/2462
+507. section_2024_rent_collective_month_eur_p25 | no nulos: 2390/2462
+508. section_2024_rent_collective_month_eur_p50 | no nulos: 2390/2462
+509. section_2024_rent_collective_month_eur_p75 | no nulos: 2390/2462
+510. section_2024_rent_collective_size_m2_p25 | no nulos: 2390/2462
+511. section_2024_rent_collective_size_m2_p50 | no nulos: 2390/2462
+512. section_2024_rent_collective_size_m2_p75 | no nulos: 2390/2462
+513. section_2024_rent_house_eur_m2_p25 | no nulos: 108/2462
+514. section_2024_rent_house_eur_m2_p50 | no nulos: 108/2462
+515. section_2024_rent_house_eur_m2_p75 | no nulos: 108/2462
+516. section_2024_rent_house_month_eur_p25 | no nulos: 108/2462
+517. section_2024_rent_house_month_eur_p50 | no nulos: 108/2462
+518. section_2024_rent_house_month_eur_p75 | no nulos: 108/2462
+519. section_2024_rent_house_size_m2_p25 | no nulos: 108/2462
+520. section_2024_rent_house_size_m2_p50 | no nulos: 108/2462
+521. section_2024_rent_house_size_m2_p75 | no nulos: 108/2462
+522. section_2024_rental_collective_units | no nulos: 2408/2462
+523. section_2024_rental_single_family_units | no nulos: 2408/2462
+524. section_2024_rental_units | no nulos: 2408/2462
+525. sports_count_1000m | no nulos: 2462/2462
+526. sports_count_500m | no nulos: 2462/2462
+527. sports_count_in_section | no nulos: 2462/2462
+528. sports_nearest_m | no nulos: 2462/2462
