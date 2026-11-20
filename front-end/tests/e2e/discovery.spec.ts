@@ -115,14 +115,18 @@ test("waiting content and listing cards open original adverts in another tab", a
   const waiting = new Promise<void>((resolve) => { finishChat = resolve; });
   await page.route("**/api/chat", async (route) => {
     await waiting;
-    await route.fulfill({ json: { message: "Búsqueda preparada.", conversation_id: "test", filters: {}, suggestions: [] } });
+    await route.fulfill({ json: { message: "Búsqueda preparada.", conversation_id: "test", result_set_id: "search-1", filters: {}, suggestions: [] } });
   });
   await context.route("https://www.pisos.com/test", (route) => route.fulfill({ contentType: "text/html", body: "<title>Anuncio original</title>" }));
   await page.goto("/");
   await page.getByRole("textbox", { name: "Cuéntanos qué vivienda buscas" }).fill("Busco piso.");
   await page.getByRole("button", { name: "Enviar mensaje", exact: true }).click();
-  const discovery = page.getByRole("complementary", { name: "Un anuncio mientras buscas" });
+  const discovery = page.getByRole("complementary", { name: "Curiosidades mientras buscas" });
   await expect(discovery).toBeVisible();
+  await expect(page.getByRole("region", { name: "Viviendas encontradas" })).toHaveCount(0);
+  await discovery.getByRole("button", { name: "Curiosidad 2", exact: true }).click();
+  await expect(discovery.getByText("Un anuncio con la mayor superficie de nuestra base")).toBeVisible();
+  await discovery.getByRole("button", { name: "Curiosidad 1", exact: true }).click();
   const link = discovery.getByRole("link", { name: "Abrir anuncio: Piso en Centro" });
   await expect(link).toHaveAttribute("target", "_blank");
   const opened = context.waitForEvent("page");

@@ -24,7 +24,7 @@ export function WaitingListing() {
   })) });
   const cards = highlights.flatMap((highlight, i) => {
     const listing = queries[i].data?.listings[0];
-    return listing?.url ? [{ ...highlight, listing }] : [];
+    return listing?.url && (highlight.unit !== "surface" || listing.surface_m2 != null) ? [{ ...highlight, listing }] : [];
   });
   const total = queries[0].data?.total;
   const count = cards.length + (total ? 1 : 0);

@@ -18,7 +18,7 @@ Open http://localhost:3000. The browser calls same-origin `/api/...` routes. Nex
 
 ## Data flow
 
-Express provides listing search, details, map points, filter options, geographic layers, census sections and metrics, chat and CSV export. The gateway preserves response status, streamed chat, CSV headers and request IDs. Errors remain errors; previous results stay visible while a search is running.
+Express provides listing search, details, map points, filter options, geographic layers, census sections and metrics, chat and CSV export. The gateway preserves response status, streamed chat, CSV headers and request IDs. Errors remain errors. Previous cards and map points are hidden during chat; stale cached cards remain hidden until the new result set loads.
 
 Chat changes filters and returns a `result_set_id`. Cards, map points and exports use the same result set. Detail and map popups also pass that ID to retrieve the matching property assessment. Manual filter edits invalidate the result set; manual changes made while a chat request is pending take precedence when the response arrives. UI state is held in Zustand and query results in TanStack Query.
 
@@ -48,7 +48,7 @@ Listing/cluster interactions take precedence over census polygons. Hiding listin
 
 Click a cluster to browse all its listings immediately, six summaries per page. Only the visible summaries fetch property details. Zooming into the group is optional; it keeps the group indicator and open preview while the markers remain close, up to the maximum supported zoom. At close zoom, clicking a price marker also exposes listings at the same point or within its screen footprint, including labels hidden by symbol collisions.
 
-Listing titles and images open the original advert in a new tab. Separate detail buttons retain the in-app view. While chat is pending, a real advert from the database is shown; its price rank refers only to our loaded inventory.
+Listing titles and images open the original advert in a new tab. Separate detail buttons retain the in-app view. While chat is pending, real inventory curiosities rotate every eight seconds with a 180 ms fade (disabled for reduced-motion preferences): highest rent, largest surface, lowest rent, and searchable inventory count. All superlatives refer only to loaded inventory.
 
 Census inspection and thematic layers expose only NO2, PM2.5, PM10, ozone and total/night noise, with available sources and dates. Full section data remains available to backend search.
 
@@ -59,6 +59,7 @@ npm run typecheck
 npm run lint
 npm test
 npm run build
+npm start
 npm run test:e2e
 ```
 
