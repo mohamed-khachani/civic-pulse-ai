@@ -6,7 +6,7 @@ import { config } from "../src/config.js";
 
 process.env.NODE_ENV = "test";
 
-async function scenario(mode: "refill" | "empty" | "unknown" | "journey") {
+async function scenario(mode: "refill" | "empty" | "unknown" | "journey" | "geography") {
   const originalQuery = pool.query;
   const originalFetch = globalThis.fetch;
   const originalKey = config.apiKey;
@@ -22,7 +22,7 @@ async function scenario(mode: "refill" | "empty" | "unknown" | "journey") {
     if (text.startsWith("SELECT name FROM madrid.districts"))
       return { rows: [{ name: "Centro" }] };
     if (text.startsWith("SELECT name FROM madrid.neighborhoods"))
-      return { rows: [{ name: "Sol" }] };
+      return { rows: [{ name: "Sol" }, { name: "Ciudad Universitaria" }] };
     if (text.startsWith("SELECT count(*)")) return { rows: [{ total: 600 }] };
     if (text.includes("LIMIT $")) {
       const offset = Number(values.at(-1));
@@ -134,7 +134,7 @@ async function scenario(mode: "refill" | "empty" | "unknown" | "journey") {
   };
   try {
     const result = await chat(
-      { message: "Busco un piso completo", filters: {} },
+      { message: mode === "geography" ? "casas en ciudad universitaria" : "Busco un piso completo", filters: {} },
       "test-" + mode,
       new AbortController().signal,
     );
@@ -192,4 +192,10 @@ test("missing journeys trigger a small validated estimation request for the firs
     ),
   );
   assert.ok(result.message.includes("30–50min"));
+});
+
+test("casas en ciudad universitaria scopes housing even when the planner omits the geographic filter", async () => {
+  const { result } = await scenario("geography");
+  assert.equal(result.filters.neighborhood, "Ciudad Universitaria");
+  assert.equal(result.result_count, 50);
 });

@@ -167,3 +167,13 @@ export const plannerOutputSchema = planSchema.extend({
     }),
   ),
 });
+
+// Bind the model's vocabulary to the actual catalog for this request.
+// Geographic identifiers belong in filters, never in area metric conditions.
+export function plannerSchemaForMetrics(metricIds: string[]) {
+  const metric = z.enum(metricIds.length ? [...new Set(metricIds)] as [string, ...string[]] : ["__no_area_metrics__"]);
+  return plannerOutputSchema.extend({
+    area_filters: z.array(planSchema.shape.area_filters.element.extend({ metric })).max(12),
+    area_order: z.array(planSchema.shape.area_order.element.extend({ metric })).max(8),
+  });
+}

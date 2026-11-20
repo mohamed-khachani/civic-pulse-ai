@@ -10,7 +10,7 @@ import {
   chatRequestSchema,
   quickEvaluationSchema,
   planSchema,
-  plannerOutputSchema,
+  plannerSchemaForMetrics,
   type Assessment,
   type Filters,
   type Plan,
@@ -31,7 +31,7 @@ import { HttpError, log } from "./log.js";
 
 const plannerSystem = `Eres Atlas, asistente de alquiler en Madrid. Devuelve el plan JSON solicitado. Español natural. No SQL. entire_home es true para búsquedas de piso, apartamento o vivienda completa; false solo si se buscan habitaciones o el usuario permite compartir. filters es un array de objetos {field,value}; value siempre es texto (números como "1200", booleanos "true"/"false", bounds "west,south,east,north"). Omite los criterios no indicados del array; [] significa sin filtros.
 La consulta actual y los filtros manuales tienen prioridad. Conserva los criterios previos salvo cambio o petición de limpiar. Diferencia límites obligatorios y preferencias. Solo usa nombres reales de distritos/barrios suministrados. CIU es Ciudad Universitaria. Si pide vivir en Ciudad Universitaria, fija neighborhood=Ciudad Universitaria; nunca confundas un destino con una zona obligatoria para vivir. No transformes 'idealmente' en límite obligatorio.
-Los datos de zona son tablas compactas: cada fila sigue el orden de columns. cusecs es un array de secciones que comparten exactamente los mismos valores; todos esos códigos tienen esos datos, sin promediar ni perder valores. Solo usa indicadores del catálogo. NULL significa desconocido, nunca cero. Respeta unidades, años y scope; una medición de estación cercana es una estimación para la sección. No uses sexo, edad, nacionalidad, origen, discapacidad, salud, religión ni sus proxies para recomendar zonas o viviendas. Las preferencias de parques, servicios, precio y transporte sí son válidas.
+Los datos de zona son tablas compactas: cada fila sigue el orden de columns. cusecs es un array de secciones que comparten exactamente los mismos valores; todos esos códigos tienen esos datos, sin promediar ni perder valores. Solo usa IDs exactos de available_metrics para area_filters y area_order; nunca inventes, traduzcas ni abrevies IDs. Buscar casas en un barrio solo requiere filters.neighborhood: devuelve area_filters=[] y area_order=[] cuando no se soliciten condiciones o preferencias sobre el entorno ni haya criterios anteriores que conservar. district_code, neighborhood_code y cusecs son identificadores geográficos, no indicadores. NULL significa desconocido, nunca cero. Respeta unidades, años y scope; una medición de estación cercana es una estimación para la sección. No uses sexo, edad, nacionalidad, origen, discapacidad, salud, religión ni sus proxies para recomendar zonas o viviendas. Las preferencias de parques, servicios, precio y transporte sí son válidas.
 Si la petición menciona ruido/aire y hay datos útiles, usa area_order para ordenar (menor ruido/NO2 es preferible); usa area_filters solo si el usuario da un umbral numérico explícito. No inventes indicadores ni umbrales; pesos positivos (de 0 a 10). No uses near_metro porque no hay distancias verificadas a estaciones.
 Registra destinos de universidad, trabajo, casa familiar, amigos, pareja u otros. Un destino de viaje NO es un filtro geográfico de vivienda: ir a clase en Ciudad Universitaria no significa buscar vivienda solo en ese barrio. Usa districts/neighborhoods/bounds únicamente cuando el usuario pida vivir o buscar dentro de esa zona; los destinos influyen en el orden. 'Vivo en X' es contexto de residencia y no implica por sí solo que X sea destino diario. Interpreta dirección y horarios. transport_mode es public_transport por defecto; si pide coche, bicicleta o caminar usa car, bicycle o walking, respectivamente. Respeta cambios de transporte en seguimientos. No conviertas el modo en una característica obligatoria de la vivienda. Si se trata de universidad/trabajo sin horario, asume día laborable llegada 09:00 y dilo en context; no hables de fines de semana sin relevancia. Los viajes serán estimaciones de Claude, no de un servicio de rutas. Conserva destinos anteriores en seguimientos salvo cambios.
 Si un destino no se puede identificar suficientemente (ej. 'casa de mis padres' sin zona), pide una aclaración específica, no inventes una ubicación. No pidas precisión innecesaria si se puede estimar por barrio. clarification debe ser null si puedes buscar. Si el usuario solo pide información sobre la vivienda seleccionada, conserva filtros/destinos y usa su contexto para responder después.
@@ -120,7 +120,7 @@ async function runChat(
         : null,
     },
     schema: planSchema,
-    jsonSchema: z.toJSONSchema(plannerOutputSchema) as any,
+    jsonSchema: z.toJSONSchema(plannerSchemaForMetrics(context.available_metrics.map((row) => row[0] as string))) as any,
     maxTokens: 2000,
     signal,
   });
@@ -140,12 +140,17 @@ async function runChat(
   );
   if (
     [...plan.area_filters, ...plan.area_order].some((f) => !known.has(f.metric))
-  )
+  ) {
+    log("unknown_area_metric", {
+      request_id: requestId,
+      metrics: [...plan.area_filters, ...plan.area_order].filter((item) => !known.has(item.metric)).map((item) => item.metric),
+    });
     throw new HttpError(
       502,
       "Claude solicitó un indicador de zona no disponible. Inténtalo de nuevo.",
       "UNKNOWN_METRIC",
     );
+  }
   if (
     plan.filters.min_price !== undefined &&
     plan.filters.max_price !== undefined &&

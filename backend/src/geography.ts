@@ -6,9 +6,9 @@ export function canonicalNeighborhood(value: string, names: string[]) {
 // Scope only an explicit residential request, never a place mentioned as a destination.
 export function requestedNeighborhood(message: string, names: string[]) {
   const text = foldArea(message);
-  const match = text.match(/(?:vivir|residir|mudarme)\s+(?:solo\s+)?(?:en|a)\s+(.+)|(?:busco|quiero|buscar)\s+(?:un[ao]?\s+)?(?:piso|casa|vivienda|apartamento|habitacion)\b[^.!?]{0,70}?\s+en\s+(.+)/);
+  const match = text.match(/(?:vivir|residir|mudarme)\s+(?:solo\s+)?(?:en|a)\s+(.+)|(?:busco|quiero|buscar)\s+(?:un[ao]?\s+)?(?:pisos?|casas?|viviendas?|apartamentos?|habitacion(?:es)?)\b[^.!?]{0,70}?\s+en\s+(.+)|^\s*(?:pisos?|casas?|viviendas?|apartamentos?|habitacion(?:es)?)\s+(?:de alquiler\s+)?en\s+(.+)/);
   if (!match) return undefined;
-  const clause = (match[1] || match[2]).split(/[,;.!?]|\b(?:pero|porque|para ir|voy a|trabajo en|estudio en)\b/)[0];
+  const clause = (match[1] || match[2] || match[3]).split(/[,;.!?]|\b(?:pero|porque|para ir|voy a|trabajo en|estudio en)\b/)[0];
   return [...names].sort((a, b) => b.length - a.length).find((name) => {
     const target = foldArea(name);
     return clause.startsWith(target) && !/[a-z]/.test(clause[target.length] || "");
