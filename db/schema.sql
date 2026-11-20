@@ -1,6 +1,6 @@
 -- CIVIC / HABITAT AI - PostgreSQL schema
--- Sources: supplied Pisos.com and Fotocasa listing JSON examples ONLY.
--- One table; one canonical portal listing URL; no price history/snapshots;
+-- Base listing schema. Apply db/migrate.sql afterwards for Madrid geography.
+-- One canonical portal listing URL; no price history/snapshots;
 -- no database-side ingestion (Python parses and upserts).
 -- All portal JSON content, including fields without a dedicated column,
 -- is preserved in raw_data JSONB. NULL means 'unknown/not supplied'.
