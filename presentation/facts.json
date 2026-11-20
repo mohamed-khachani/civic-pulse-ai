@@ -1,0 +1,206 @@
+{
+  "updated": "2026-11-20T10:33:08.032Z",
+  "project": "Atlas",
+  "data_generated_at": "2026-11-20T09:57:53.925242+00:00",
+  "counts": {
+    "listings": 10610,
+    "fotocasa": 7628,
+    "pisoscom": 2982,
+    "census_sections": 2462,
+    "fields_per_section": 528,
+    "metric_definitions": 520,
+    "metric_rows": 1280240,
+    "available_local_datasets": 19,
+    "integrated_local_datasets": 17,
+    "station_metadata_references": 2,
+    "air_sections": 1983,
+    "noise_sections": 1906
+  },
+  "dataset_count_definition": "Se cuentan los ficheros locales configurados, excluyendo correspondencias y referencias de estaciones. Solo se consideran integrados si el informe de cobertura confirma valores o una etapa completada. Las referencias de estaciones y los portales de anuncios se cuentan por separado.",
+  "datasets": [
+    {
+      "id": "census_topojson",
+      "name": "Secciones censales",
+      "file": "datos/geografia/seccionado-censa.json",
+      "integrated": true,
+      "status": "integrated",
+      "reason": null
+    },
+    {
+      "id": "districts",
+      "name": "Distritos",
+      "file": "datos/geografia/distritos.csv",
+      "integrated": true,
+      "status": "integrated",
+      "reason": null
+    },
+    {
+      "id": "neighbourhoods",
+      "name": "Barrios",
+      "file": "datos/geografia/Barrios.csv",
+      "integrated": true,
+      "status": "integrated",
+      "reason": null
+    },
+    {
+      "id": "padron",
+      "name": "Padrón",
+      "file": "datos/padron/padron.csv",
+      "integrated": true,
+      "status": "integrated",
+      "reason": null
+    },
+    {
+      "id": "district_study_2026",
+      "name": "Estudio de distritos y barrios 2026",
+      "file": "datos/padron/estudio-2026.xlsx",
+      "integrated": true,
+      "status": "integrated",
+      "reason": null
+    },
+    {
+      "id": "rental_section_2024",
+      "name": "Referencia de alquiler por sección 2024",
+      "file": "datos/alquiler/referencia-precio-alquiler-seccion-censa;.xlsx",
+      "integrated": true,
+      "status": "integrated",
+      "reason": null
+    },
+    {
+      "id": "rental_district_2024",
+      "name": "Referencia de alquiler por distrito 2024",
+      "file": "datos/alquiler/referencias-precio-alquiler-distrito.xlsx",
+      "integrated": true,
+      "status": "integrated",
+      "reason": null
+    },
+    {
+      "id": "rental_postal_2023",
+      "name": "Alquiler por código postal 2023",
+      "file": "datos/alquiler/alquiler-medio.csv",
+      "integrated": false,
+      "status": "pending",
+      "reason": "Falta correspondencia sección/código postal"
+    },
+    {
+      "id": "schools",
+      "name": "Centros educativos",
+      "file": "datos/calidad-vida/centros-educativos.csv",
+      "integrated": true,
+      "status": "integrated",
+      "reason": null
+    },
+    {
+      "id": "medical_centres",
+      "name": "Centros sanitarios",
+      "file": "datos/calidad-vida/centros-atencion-medica.csv",
+      "integrated": true,
+      "status": "integrated",
+      "reason": null
+    },
+    {
+      "id": "sports_facilities",
+      "name": "Instalaciones deportivas",
+      "file": "datos/calidad-vida/instalaciones-deportivas.csv",
+      "integrated": true,
+      "status": "integrated",
+      "reason": null
+    },
+    {
+      "id": "libraries",
+      "name": "Bibliotecas",
+      "file": "datos/calidad-vida/bibliotecas.csv",
+      "integrated": true,
+      "status": "integrated",
+      "reason": null
+    },
+    {
+      "id": "parks",
+      "name": "Parques y jardines",
+      "file": "datos/zonas_verdes/parques-y-jardines.csv",
+      "integrated": true,
+      "status": "integrated",
+      "reason": null
+    },
+    {
+      "id": "park_area_catalogue",
+      "name": "Catálogo de superficie de parques",
+      "file": "datos/zonas_verdes/arbolado-superficie.csv",
+      "integrated": true,
+      "status": "integrated",
+      "reason": null
+    },
+    {
+      "id": "traffic_accidents",
+      "name": "Accidentes de tráfico",
+      "file": "datos/accidentes/accidentes-trafico.xlsx",
+      "integrated": true,
+      "status": "integrated",
+      "reason": null
+    },
+    {
+      "id": "bike_accidents",
+      "name": "Accidentes de bicicleta",
+      "file": "datos/accidentes/accidentes-bici.xlsx",
+      "integrated": true,
+      "status": "integrated",
+      "reason": null
+    },
+    {
+      "id": "noise",
+      "name": "Contaminación acústica",
+      "file": "datos/calidad-vida/contaminacion-acustica.csv",
+      "integrated": true,
+      "status": "integrated",
+      "reason": null
+    },
+    {
+      "id": "air_quality",
+      "name": "Calidad del aire",
+      "file": "datos/calidad-vida/calidad-aire.csv",
+      "integrated": true,
+      "status": "integrated",
+      "reason": null
+    },
+    {
+      "id": "traffic_zip",
+      "name": "Tráfico octubre 2026",
+      "file": "datos/accidentes/trafico-2026.zip",
+      "integrated": false,
+      "status": "pending",
+      "reason": "Faltan coordenadas verificadas de sensores"
+    }
+  ],
+  "station_metadata": [
+    {
+      "name": "air_station_locations",
+      "provenance": "datos/_etl_/reference_data/air_stations.csv.source.json"
+    },
+    {
+      "name": "noise_station_locations",
+      "provenance": "datos/_etl_/reference_data/noise_stations.csv.source.json"
+    }
+  ],
+  "sources": [
+    "datos/_etl_/output/coverage_report.json",
+    "datos/_etl_/output/validation_report.json",
+    "datos/alquileres/ingest.log",
+    "datos/alquileres/ingest-fotocasa.log",
+    "db/README.md",
+    "backend/README.md"
+  ],
+  "integration_status": "Búsqueda con datos reales y Claude conectada",
+  "metric_count_basis": "Campos numéricos del informe de cobertura. Filas largas esperadas: campos numéricos × secciones, incluidos NULLs. Revisar contra PostgreSQL cuando cambie el importador.",
+  "live_searchable_counts": [
+    {
+      "source": "Fotocasa",
+      "total": 7614
+    },
+    {
+      "source": "pisos.com",
+      "total": 2981
+    }
+  ],
+  "live_checked_at": "2026-11-20T10:13:43.362Z",
+  "database_checked_at": "2026-11-20T10:13:43.950Z"
+}

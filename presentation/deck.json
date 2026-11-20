@@ -1,0 +1,354 @@
+{
+  "output": "/Users/mohamedkhachaniupm/civic/presentation/output/Atlas-pitch-4min.pptx",
+  "revision_output": "/Users/mohamedkhachaniupm/civic/presentation/output/Atlas-pitch-4min-v4.pptx",
+  "revision": "v4",
+  "slides": 7,
+  "seconds": 240,
+  "script_words": 542,
+  "font": "Helvetica Neue",
+  "notes": [
+    {
+      "title": "Atlas",
+      "seconds": 20,
+      "script": "Buscar piso en Madrid implica comparar anuncios y, después, intentar entender la zona. ¿Encaja el precio? ¿Hay servicios cerca? ¿Cómo afecta a mi rutina? Atlas reúne ambas partes en una misma búsqueda: viviendas reales y datos públicos del entorno, con una conversación en español y un mapa para explorar los resultados.",
+      "sources": [
+        "README.md",
+        "front-end/src/components/app-shell.tsx"
+      ]
+    },
+    {
+      "title": "Web scraping",
+      "seconds": 35,
+      "script": "Los anuncios proceden de Fotocasa y Pisos.com. Primero descargamos las páginas de resultados y extraemos sus enlaces. Después obtenemos el detalle de cada anuncio y lo convertimos en JSON con precio, características, fotografías y coordenadas. La base contiene 7628 registros de Fotocasa y 2982 de Pisos.com: 10.610 en total. Conservamos el JSON original y evitamos duplicar el mismo identificador dentro de cada portal. Esta cifra cuenta anuncios, no viviendas únicas entre portales.",
+      "sources": [
+        "tools/fotocasa/listings-extractor/src/scraper.ts",
+        "tools/pisos.com/listings-extractor/src/scraper.ts",
+        "tools/process-listings/",
+        "tools/scraper/",
+        "datos/alquileres/ingest.log",
+        "datos/alquileres/ingest-fotocasa.log",
+        "db/schema.sql"
+      ]
+    },
+    {
+      "title": "Datasets públicos",
+      "seconds": 40,
+      "script": "Además de los portales, partimos de 19 datasets locales. Integramos 17: geografía, padrón y estudio municipal, referencias de alquiler, servicios, zonas verdes, accidentes, aire y ruido. Las mediciones ya estaban descargadas en la carpeta datos. Añadimos dos referencias externas únicamente para situar las estaciones. Distinguimos lo disponible de lo realmente unido. Quedan 2 fuentes pendientes de revisar o completar geográficamente: Alquiler por código postal 2023 y Tráfico octubre 2026. Por eso mostramos el número de datasets integrados separado del número de ficheros disponibles.",
+      "sources": [
+        "datos/_etl_/paths.json",
+        "datos/_etl_/output/coverage_report.json",
+        "presentation/facts.json",
+        "datos/_etl_/reference_data/air_stations.csv.source.json",
+        "datos/_etl_/reference_data/noise_stations.csv.source.json",
+        "https://air.discomap.eea.europa.eu/arcgis/rest/services/AirQuality/AirQualityDownloadServiceEUMonitoringStations/MapServer/0/query",
+        "https://www.madrid.es/UnidadesDescentralizadas/Sostenibilidad/Ruido/PlanAccionContaminacionAcustica/2025/PAMCA2025Memoria.pdf"
+      ]
+    },
+    {
+      "title": "Integración por sección censal",
+      "seconds": 40,
+      "script": "La sección censal es la unidad común. Transformamos los formatos y las coordenadas, situamos los puntos de interés y vinculamos cada anuncio con su sección. Obtenemos 2462 filas, con 528 campos por fila. Los indicadores conservan su año, unidad y escala original, incluso cuando proceden del distrito o del barrio. Para el ambiente usamos las mediciones locales y la estación más cercana dentro de dos kilómetros. Así tenemos NO₂ para 1983 secciones y ruido para 1906. Son aproximaciones para el área y las zonas sin cobertura siguen sin datos.",
+      "sources": [
+        "datos/_etl_/main.py",
+        "datos/_etl_/monitoring.py",
+        "datos/_etl_/output/coverage_report.json",
+        "db/ingest-sections.py",
+        "db/migrations/003_section_data.sql"
+      ]
+    },
+    {
+      "title": "API y conversación",
+      "seconds": 50,
+      "script": "La interfaz de Next.js consulta una API propia en Express y TypeScript. En la primera etapa, Claude Haiku 5.5 recibe los criterios y los datos relevantes de las secciones en arrays compactos. Devuelve un plan estructurado. El backend valida los campos y construye consultas parametrizadas para aplicar límites de precio, características y condiciones del entorno. En la segunda etapa, Claude valora lotes de hasta 300 anuncios. Si acepta menos de 50, el sistema consulta otro lote, respetando un presupuesto de tiempo y consumo. Dos etapas no significa siempre dos peticiones. El servidor registra tokens, coste estimado, latencia y los motivos de parada.",
+      "sources": [
+        "backend/src/chat.ts",
+        "backend/src/claude.ts",
+        "backend/src/search.ts",
+        "backend/src/log.ts",
+        "front-end/src/lib/server/atlas-api.ts"
+      ]
+    },
+    {
+      "title": "Experiencia de uso",
+      "seconds": 35,
+      "script": "La selección recibe un identificador común. Las fichas, el mapa y la exportación muestran ese mismo conjunto, y una conversación posterior conserva el contexto. Al pulsar un grupo del mapa aparecen sus anuncios, sin tener que localizar cada punto haciendo zoom. También puede explicar su rutina: ir a clase, visitar a la familia o ver a sus amigos. La frecuencia manda: los viajes diarios pesan más que las visitas ocasionales, salvo prioridad expresa. Para responder antes, Claude estima tiempos y recorridos de las cinco primeras viviendas. Son aproximaciones de IA, sin horarios ni conexiones comprobados.",
+      "sources": [
+        "backend/src/db.ts",
+        "backend/src/chat.ts",
+        "front-end/src/stores/conversation-slice.ts",
+        "front-end/src/components/map/madrid-map.tsx"
+      ]
+    },
+    {
+      "title": "Cierre",
+      "seconds": 20,
+      "script": "Atlas cruza anuncios reales con información del entorno para ayudar a decidir dónde vivir. El siguiente paso es verificar trayectos con un servicio de rutas y completar las uniones pendientes. La base del MVP ya conecta los datos de vivienda y de la ciudad con una interfaz común para explorarlos.",
+      "sources": [
+        "README.md",
+        "backend/README.md",
+        "datos/_etl_/output/coverage_report.json"
+      ]
+    }
+  ],
+  "validation": {
+    "finalPath": "/Users/mohamedkhachaniupm/civic/presentation/output/Atlas-pitch-4min-v4.pptx",
+    "receiptPath": "/Users/mohamedkhachaniupm/civic/presentation/.build/v4/validation.json",
+    "schemaVersion": "presentation-finalization.v1",
+    "finalSha256": "923c62c10257bda24980dce086c4adbd433c3f322ada1390786ff7cb484d3861",
+    "byteCount": 51274,
+    "packageIntegrity": {
+      "chart_count": 2,
+      "claim_boundary": "Structural package checks only; no slide text, notes, formulas, chart values, or native PowerPoint execution were inspected.",
+      "finding_count": 0,
+      "findings": [],
+      "notes_parts_skipped": 7,
+      "relationship_part_count": 26,
+      "slide_count": 7,
+      "status": "pass",
+      "exitCode": 0,
+      "findingCount": 0,
+      "warnings": []
+    },
+    "presentationLayout": {
+      "finding_count": 0,
+      "findings": [],
+      "font_policy": {
+        "checked_text_script_count": 79,
+        "native_font_rendering_verified": false,
+        "observed_font_families": [
+          "Helvetica Neue"
+        ],
+        "observed_font_use_counts": {
+          "Helvetica Neue": 79
+        },
+        "passed": true,
+        "performed": true
+      },
+      "slide_count": 7,
+      "slide_size_in": [
+        13.3333,
+        7.5
+      ],
+      "warning_count": 0,
+      "warnings": [],
+      "exitCode": 0,
+      "findingCount": 0,
+      "fontPolicy": {
+        "checked_text_script_count": 79,
+        "native_font_rendering_verified": false,
+        "observed_font_families": [
+          "Helvetica Neue"
+        ],
+        "observed_font_use_counts": {
+          "Helvetica Neue": 79
+        },
+        "passed": true,
+        "performed": true
+      }
+    },
+    "fontSelection": {
+      "basis": "design",
+      "approvedFamilies": [
+        "Helvetica Neue"
+      ],
+      "scriptFonts": {},
+      "referenceSha256": null,
+      "referenceFontsVerifiedInEncodedText": false,
+      "checked_text_script_count": 79,
+      "native_font_rendering_verified": false,
+      "observed_font_families": [
+        "Helvetica Neue"
+      ],
+      "observed_font_use_counts": {
+        "Helvetica Neue": 79
+      },
+      "passed": true,
+      "performed": true
+    },
+    "firstPartyImport": {
+      "performed": true,
+      "passed": true,
+      "slideCount": 7,
+      "sha256": "923c62c10257bda24980dce086c4adbd433c3f322ada1390786ff7cb484d3861",
+      "runtimeNodeModules": "/Users/mohamedkhachaniupm/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules",
+      "nodeExecutable": "/Users/mohamedkhachaniupm/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node"
+    },
+    "nativeTableArithmetic": {
+      "performed": true,
+      "checked_column_count": 0,
+      "checks": [],
+      "claim_boundary": "Displayed-value arithmetic with rounding tolerance; not source-data verification.",
+      "eligible_table_count": 0,
+      "finding_count": 0,
+      "findings": [],
+      "native_table_count": 0,
+      "passed": true,
+      "schema_version": "presentation-native-table-arithmetic.v1",
+      "skipped_tables": [],
+      "slide_count": 7,
+      "warning_count": 0,
+      "warnings": []
+    },
+    "nativeChartTitles": {
+      "performed": true,
+      "checks": [
+        {
+          "chart": 1,
+          "slide": 3,
+          "status": "absent"
+        },
+        {
+          "chart": 1,
+          "slide": 4,
+          "status": "absent"
+        }
+      ],
+      "finding_count": 0,
+      "findings": [],
+      "native_chart_count": 2,
+      "native_powerpoint_verified": false,
+      "passed": true,
+      "presentation_sha256": "923c62c10257bda24980dce086c4adbd433c3f322ada1390786ff7cb484d3861",
+      "schema_version": "presentation-native-chart-titles.v1",
+      "slide_count": 7,
+      "source_text_emitted": false,
+      "unresolved_linked_title_count": 0
+    },
+    "sourceDerivedPolicyFlags": [
+      "--expected-slide-size-emu",
+      "12192000,6858000",
+      "--validate-bullet-geometry",
+      "--validate-heading-fit",
+      "--cover-role",
+      "none",
+      "--expected-slide-count",
+      "7",
+      "--approved-font-family",
+      "Helvetica Neue"
+    ],
+    "nativeChartValidation": {
+      "detectedOwnerSlides": [
+        3,
+        4
+      ],
+      "detectedChartCount": 2,
+      "targetApplication": "portable",
+      "sourceChartOwnersExplicitlyDeclared": true,
+      "validatorRan": true,
+      "passed": true
+    },
+    "nativeQuantitativeCharts": {
+      "report": {
+        "claim_boundary": "OOXML/workbook structural validation only; source provenance and native PowerPoint opening remain separate checks.",
+        "expected_quantitative_chart_slides": [
+          3,
+          4
+        ],
+        "failed_slide_count": 0,
+        "failed_slides": [],
+        "formal_human_reviewed": false,
+        "native_application_open_verified": false,
+        "package_sha256": "923c62c10257bda24980dce086c4adbd433c3f322ada1390786ff7cb484d3861",
+        "passed": true,
+        "results": [
+          {
+            "approved_source_figure_exception": false,
+            "charts": [
+              {
+                "cache_reference_ranges_verified": true,
+                "embedded_workbook_count": 1,
+                "embedded_workbook_sheet_count": 1,
+                "native_chart_types": [
+                  "barChart"
+                ],
+                "numeric_cache_point_count": 7,
+                "series_formula_count": 2,
+                "workbook_numeric_cell_count": 7
+              }
+            ],
+            "failure_codes": [],
+            "native_chart_count": 1,
+            "raster_picture_count": 0,
+            "required_native_chart_count": 1,
+            "slide_number": 3,
+            "status": "passed"
+          },
+          {
+            "approved_source_figure_exception": false,
+            "charts": [
+              {
+                "cache_reference_ranges_verified": true,
+                "embedded_workbook_count": 1,
+                "embedded_workbook_sheet_count": 1,
+                "native_chart_types": [
+                  "barChart"
+                ],
+                "numeric_cache_point_count": 2,
+                "series_formula_count": 2,
+                "workbook_numeric_cell_count": 2
+              }
+            ],
+            "failure_codes": [],
+            "native_chart_count": 1,
+            "raster_picture_count": 0,
+            "required_native_chart_count": 1,
+            "slide_number": 4,
+            "status": "passed"
+          }
+        ],
+        "schema_version": "owner-private.quantitative-chart-native-gate.v1",
+        "slide_count": 7,
+        "source_attachments_accessed": false,
+        "validated_slide_count": 2
+      },
+      "exitCode": 0,
+      "validatedSlideCount": 2,
+      "requiredOwnerSlides": [
+        3,
+        4
+      ],
+      "approvedSourceFigureExceptionSlides": []
+    },
+    "chartDataPackaging": {
+      "conversion": "chart_data_snapshot",
+      "converted_chart_count": 2,
+      "converted_charts": [
+        {
+          "chart_part": "ppt/slides/charts/chart1.xml",
+          "owner_slide": 3,
+          "point_count": 7,
+          "series_count": 1,
+          "workbook_part": "ppt/embeddings/chart-data-snapshot-001.xlsx"
+        },
+        {
+          "chart_part": "ppt/slides/charts/chart2.xml",
+          "owner_slide": 4,
+          "point_count": 2,
+          "series_count": 1,
+          "workbook_part": "ppt/embeddings/chart-data-snapshot-002.xlsx"
+        }
+      ],
+      "detected_chart_owner_slides": [
+        3,
+        4
+      ],
+      "experimental": true,
+      "input_sha256": "ae168793000a70b96f34d8084091bd50157186a5d0a1dada879b2e14e51b8206",
+      "new_formulas_describe_snapshot_only": true,
+      "output_bytes": 51274,
+      "output_sha256": "923c62c10257bda24980dce086c4adbd433c3f322ada1390786ff7cb484d3861",
+      "portable_chart_validation_passed": true,
+      "portable_validated_owner_slides": [
+        3,
+        4
+      ],
+      "preserved_existing_workbook_chart_count": 0,
+      "preserved_existing_workbook_charts": [],
+      "schema_version": "experimental.literal-chart-workbook-snapshot.v1",
+      "source_formula_required_slides": [],
+      "source_formulas_preserved": false,
+      "source_workbook_preserved": false,
+      "source_workbook_required_slides": []
+    }
+  }
+}
