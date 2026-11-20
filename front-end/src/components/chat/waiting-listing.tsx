@@ -11,7 +11,6 @@ import { ListingLink } from "../listings/listing-link";
 
 const highlights: { sort: SortOrder; label: string; unit: "price" | "surface" }[] = [
   { sort: "price_desc", label: "El alquiler más alto de nuestra base", unit: "price" },
-  { sort: "surface_desc", label: "Un anuncio con la mayor superficie de nuestra base", unit: "surface" },
   { sort: "price_asc", label: "El anuncio con menor alquiler de nuestra base", unit: "price" },
 ];
 export function WaitingListing() {

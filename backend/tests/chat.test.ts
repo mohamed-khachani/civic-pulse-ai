@@ -6,7 +6,7 @@ import { config } from "../src/config.js";
 
 process.env.NODE_ENV = "test";
 
-async function scenario(mode: "refill" | "empty" | "unknown" | "journey" | "geography") {
+async function scenario(mode: "refill" | "empty" | "unknown" | "journey" | "geography" | "qualitative" | "output-limit" | "slow-plan" | "slow-evaluate" | "slow-journeys" | "partial-evaluation") {
   const originalQuery = pool.query;
   const originalFetch = globalThis.fetch;
   const originalKey = config.apiKey;
@@ -54,6 +54,10 @@ async function scenario(mode: "refill" | "empty" | "unknown" | "journey" | "geog
   globalThis.fetch = async (_url, init) => {
     const body = JSON.parse(String(init?.body));
     let output: unknown;
+    if (mode === "partial-evaluation" && body.system.startsWith("Eres Atlas. Evalúa") && String(JSON.parse(body.messages[0].content).candidates[0][0]) === "151") throw new DOMException("Provider timed out", "TimeoutError");
+    if ((mode === "slow-plan" && body.system.startsWith("Eres Atlas, asistente")) ||
+      (mode === "slow-evaluate" && body.system.startsWith("Eres Atlas. Evalúa")) ||
+      (mode === "slow-journeys" && body.system.startsWith("Estima trayectos"))) throw new DOMException("Provider timed out", "TimeoutError");
     if (body.system.startsWith("Eres Atlas, asistente"))
       output = {
         entire_home: true,
@@ -61,9 +65,9 @@ async function scenario(mode: "refill" | "empty" | "unknown" | "journey" | "geog
         area_filters: [],
         area_order: [],
         sort: "recommended",
-        preferences: [],
+        preferences: mode === "geography" ? [] : ["zona tranquila"],
         destinations:
-          mode === "journey"
+          ["journey", "slow-journeys"].includes(mode)
             ? [
                 {
                   label: "Universidad",
@@ -110,12 +114,8 @@ async function scenario(mode: "refill" | "empty" | "unknown" | "journey" | "geog
                 .slice(0, evaluations <= 2 ? 10 : 15)
                 .map((row: unknown[]) => row[0]);
       output = {
-        accepted: ids.map((id: string) => ({
-          id,
-          score: 80,
-          reasons: ["Cumple los requisitos"],
-          routes: [],
-        })),
+        accepted_ids: ids,
+        scores: ids.map(() => 80),
         message: ids.length
           ? "He seleccionado opciones que encajan."
           : "No hay opciones compatibles.",
@@ -126,7 +126,7 @@ async function scenario(mode: "refill" | "empty" | "unknown" | "journey" | "geog
       JSON.stringify({
         model: "test-model",
         usage: { input_tokens: 1, output_tokens: 1 },
-        stop_reason: "end_turn",
+        stop_reason: mode === "output-limit" && body.system.startsWith("Eres Atlas. Evalúa") ? "max_tokens" : "end_turn",
         content: [{ type: "text", text: JSON.stringify(output) }],
       }),
       { status: 200, headers: { "content-type": "application/json" } },
@@ -195,7 +195,41 @@ test("missing journeys trigger a small validated estimation request for the firs
 });
 
 test("casas en ciudad universitaria scopes housing even when the planner omits the geographic filter", async () => {
-  const { result } = await scenario("geography");
+  const { result, persistedAssessments } = await scenario("geography");
   assert.equal(result.filters.neighborhood, "Ciudad Universitaria");
+  assert.ok(Object.values(persistedAssessments).every((assessment) => assessment.score === 100));
   assert.equal(result.result_count, 50);
+});
+
+test("qualitative preferences retain model assessment rather than receiving an automatic perfect score", async () => {
+  const { persistedAssessments } = await scenario("qualitative");
+  assert.ok(Object.values(persistedAssessments).every((assessment) => assessment.score === 80));
+});
+
+test("output limits and assessment timeouts return real filter-verified homes without invented compatibility", async () => {
+  for (const mode of ["output-limit", "slow-evaluate"] as const) {
+    const { result, persistedAssessments } = await scenario(mode);
+    assert.equal(result.result_count, 50);
+    assert.ok(result.message.includes("no tienen una puntuación"));
+    assert.ok(Object.values(persistedAssessments).every((assessment) => assessment.score === -1));
+  }
+});
+test("a planner timeout asks for clarification instead of surfacing a token/provider error", async () => {
+  const { result } = await scenario("slow-plan");
+  assert.equal(result.result_set_id, undefined);
+  assert.ok(result.message.includes("barrio y el presupuesto"));
+});
+test("a journey timeout preserves the completed housing selection", async () => {
+  const { result } = await scenario("slow-journeys");
+  assert.equal(result.result_count, 50);
+  assert.ok(result.message.includes("pendientes de estimación"));
+});
+
+test("completed parallel assessments survive another part timing out", async () => {
+  const { result, persistedAssessments } = await scenario("partial-evaluation");
+  assert.equal(result.result_count, 50);
+  const values = Object.values(persistedAssessments);
+  assert.ok(values.some((assessment) => assessment.score === 80));
+  assert.ok(values.some((assessment) => assessment.score === -1));
+  assert.ok(values.every((assessment) => assessment.score !== 100));
 });

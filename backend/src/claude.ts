@@ -1,4 +1,4 @@
-import { recordUsage } from "./chat-usage.js";
+import { recordUsage, recordCallStart } from "./chat-usage.js";
 import { config } from "./config.js";
 import { HttpError, log } from "./log.js";
 import type { z } from "zod";
@@ -66,7 +66,7 @@ export function normalizeDisplayFields(data: any): any {
       summary: normalized.message,
     };
   }
-  if (!Array.isArray(data.accepted)) return data;
+  if (!Array.isArray(data.accepted) || Array.isArray(data.accepted[0])) return data;
   const trim = (value: unknown, length: number) =>
     typeof value === "string" ? value.slice(0, length) : value;
   return {
@@ -121,6 +121,7 @@ export async function askClaude<T>(args: {
       part: args.part, input_chars: content.length });
   for (let attempt = 0; attempt < 3; attempt++) {
     args.signal.throwIfAborted();
+    recordCallStart();
     let response: Response;
     try {
       response = await fetch("https://api.anthropic.com/v1/messages", {
@@ -155,7 +156,7 @@ export async function askClaude<T>(args: {
         elapsed_ms: Date.now() - started,
         error: args.signal.aborted ? "aborted" : "network",
       });
-      if (args.signal.aborted) throw error;
+      if (args.signal.aborted || error instanceof Error && error.name === "TimeoutError") throw error;
       if (attempt === 2)
         throw new HttpError(
           502,
@@ -165,7 +166,12 @@ export async function askClaude<T>(args: {
       await delay(500 * (attempt + 1), args.signal);
       continue;
     }
-    const body = (await response.json()) as any;
+    let body: any;
+    try { body = await response.json(); }
+    catch (error) {
+      log("claude_response_failed", { request_id: args.requestId, stage: args.stage, batch: args.batch, part: args.part, usage_available: false, error: args.signal.aborted ? "aborted" : "invalid_json" });
+      throw error;
+    }
     if (!response.ok) {
       log("claude_request_failed", {
         request_id: args.requestId,

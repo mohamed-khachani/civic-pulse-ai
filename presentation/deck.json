@@ -1,10 +1,10 @@
 {
   "output": "/Users/mohamedkhachaniupm/civic/presentation/output/Atlas-pitch-4min.pptx",
-  "revision_output": "/Users/mohamedkhachaniupm/civic/presentation/output/Atlas-pitch-4min-v5.pptx",
-  "revision": "v5",
+  "revision_output": "/Users/mohamedkhachaniupm/civic/presentation/output/Atlas-pitch-4min-v6.pptx",
+  "revision": "v6",
   "slides": 7,
   "seconds": 240,
-  "script_words": 582,
+  "script_words": 551,
   "font": "Helvetica Neue",
   "notes": [
     {
@@ -59,7 +59,7 @@
     {
       "title": "API y conversación",
       "seconds": 50,
-      "script": "La interfaz de Next.js consulta una API propia en Express y TypeScript. En la primera etapa, Claude Haiku 5.5 recibe los criterios y los datos relevantes de las secciones en arrays compactos. Devuelve un plan estructurado. El backend valida los campos y construye consultas parametrizadas para aplicar límites de precio, características y condiciones del entorno. En la segunda etapa, Claude valora lotes de hasta 300 anuncios, repartidos en dos peticiones paralelas. Los valores censales repetidos se agrupan sin perder sus secciones; pedir vivir en un barrio restringe la búsqueda a sus censos. Si acepta menos de 50, el sistema consulta otro lote, respetando un presupuesto de tiempo y consumo. Dos etapas no significa siempre dos peticiones. El servidor registra tokens, coste estimado, latencia y los motivos de parada.",
+      "script": "Las consultas sencillas por barrio se resuelven directamente con SQL, sin esperar a Claude. Las viviendas que cumplen todos los filtros reciben cien de cien. Para peticiones más complejas, Claude interpreta criterios y preferencias con datos censales compactos; el backend valida el plan y aplica consultas parametrizadas. Después evalúa lotes de hasta trescientos anuncios en paralelo, devolviendo solo identificadores y puntuaciones. El trabajo del modelo tiene un presupuesto de tiempo: si no termina, se conservan viviendas con filtros verificados y la valoración pendiente se indica sin inventar una puntuación. Los logs registran tokens, coste estimado y duración.",
       "sources": [
         "backend/src/chat.ts",
         "backend/src/claude.ts",
@@ -91,11 +91,11 @@
     }
   ],
   "validation": {
-    "finalPath": "/Users/mohamedkhachaniupm/civic/presentation/output/Atlas-pitch-4min-v5.pptx",
-    "receiptPath": "/Users/mohamedkhachaniupm/civic/presentation/.build/v5/validation.json",
+    "finalPath": "/Users/mohamedkhachaniupm/civic/presentation/output/Atlas-pitch-4min-v6.pptx",
+    "receiptPath": "/Users/mohamedkhachaniupm/civic/presentation/.build/v6/validation.json",
     "schemaVersion": "presentation-finalization.v1",
-    "finalSha256": "719462a28c0a65436662846be154a4258546871268415a8a2b1a9ee78c7fc9e9",
-    "byteCount": 51407,
+    "finalSha256": "b42a35ce2491221386c5ac0b4eea37d27acf2d425b521b97f954f47ad309b1d0",
+    "byteCount": 51346,
     "packageIntegrity": {
       "chart_count": 2,
       "claim_boundary": "Structural package checks only; no slide text, notes, formulas, chart values, or native PowerPoint execution were inspected.",
@@ -169,7 +169,7 @@
       "performed": true,
       "passed": true,
       "slideCount": 7,
-      "sha256": "719462a28c0a65436662846be154a4258546871268415a8a2b1a9ee78c7fc9e9",
+      "sha256": "b42a35ce2491221386c5ac0b4eea37d27acf2d425b521b97f954f47ad309b1d0",
       "runtimeNodeModules": "/Users/mohamedkhachaniupm/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules",
       "nodeExecutable": "/Users/mohamedkhachaniupm/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node"
     },
@@ -208,7 +208,7 @@
       "native_chart_count": 2,
       "native_powerpoint_verified": false,
       "passed": true,
-      "presentation_sha256": "719462a28c0a65436662846be154a4258546871268415a8a2b1a9ee78c7fc9e9",
+      "presentation_sha256": "b42a35ce2491221386c5ac0b4eea37d27acf2d425b521b97f954f47ad309b1d0",
       "schema_version": "presentation-native-chart-titles.v1",
       "slide_count": 7,
       "source_text_emitted": false,
@@ -248,7 +248,7 @@
         "failed_slides": [],
         "formal_human_reviewed": false,
         "native_application_open_verified": false,
-        "package_sha256": "719462a28c0a65436662846be154a4258546871268415a8a2b1a9ee78c7fc9e9",
+        "package_sha256": "b42a35ce2491221386c5ac0b4eea37d27acf2d425b521b97f954f47ad309b1d0",
         "passed": true,
         "results": [
           {
@@ -333,10 +333,10 @@
         4
       ],
       "experimental": true,
-      "input_sha256": "382581ee6cdc2335ab039395819006ab2ba608bedc26e0396f0fdcdd9e515688",
+      "input_sha256": "cb62bd9f9af724140e16d3b9ea321ee2db5e9c9f4ebebed0a3c50975e5c13430",
       "new_formulas_describe_snapshot_only": true,
-      "output_bytes": 51407,
-      "output_sha256": "719462a28c0a65436662846be154a4258546871268415a8a2b1a9ee78c7fc9e9",
+      "output_bytes": 51346,
+      "output_sha256": "b42a35ce2491221386c5ac0b4eea37d27acf2d425b521b97f954f47ad309b1d0",
       "portable_chart_validation_passed": true,
       "portable_validated_owner_slides": [
         3,

@@ -1,4 +1,4 @@
-export const foldArea = (value: string) => value.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
+export const foldArea = (value: string) => value.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/\buniverstiaria\b/g, "universitaria").trim();
 export function canonicalNeighborhood(value: string, names: string[]) {
   const folded = foldArea(value).replace(/^ciu$/, "ciudad universitaria");
   return names.find((name) => foldArea(name) === folded);

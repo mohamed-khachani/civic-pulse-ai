@@ -10,6 +10,7 @@ test("explicit housing requests resolve CIU while commuting destinations do not 
   assert.equal(requestedNeighborhood("Busco piso barato. Voy a clase en Ciudad Universitaria", names), undefined);
   assert.equal(requestedNeighborhood("Vivo en Sol y voy a clase en CIU", names), undefined);
   assert.equal(requestedNeighborhood("casas en ciudad universitaria", names), "Ciudad Universitaria");
+  assert.equal(requestedNeighborhood("Casas en ciudad universtiaria", names), "Ciudad Universitaria");
   assert.equal(requestedNeighborhood("pisos en CIU", names), "Ciudad Universitaria");
   assert.equal(requestedNeighborhood("busco casas en Ciudad Universitaria", names), "Ciudad Universitaria");
   assert.equal(canonicalNeighborhood("CIU", names), "Ciudad Universitaria");

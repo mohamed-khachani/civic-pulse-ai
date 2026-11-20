@@ -125,7 +125,8 @@ test("waiting content and listing cards open original adverts in another tab", a
   await expect(discovery).toBeVisible();
   await expect(page.getByRole("region", { name: "Viviendas encontradas" })).toHaveCount(0);
   await discovery.getByRole("button", { name: "Curiosidad 2", exact: true }).click();
-  await expect(discovery.getByText("Un anuncio con la mayor superficie de nuestra base")).toBeVisible();
+  await expect(discovery.getByText("El anuncio con menor alquiler de nuestra base")).toBeVisible();
+  await expect(discovery.getByText("Un anuncio con la mayor superficie de nuestra base")).toHaveCount(0);
   await discovery.getByRole("button", { name: "Curiosidad 1", exact: true }).click();
   const link = discovery.getByRole("link", { name: "Abrir anuncio: Piso en Centro" });
   await expect(link).toHaveAttribute("target", "_blank");

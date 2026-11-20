@@ -127,12 +127,12 @@ function bar(s,categories,values,position,{max,unit=''}={}) {
  const sql=node(s,'Filtros validados\ny SQL parametrizado',475,355,330,100);
  const rank=node(s,'2. Claude valora\nlotes de 300, en paralelo',860,355,350,100);
  connect(s,p,sql);connect(s,sql,rank);
- text(s,'Claude Haiku 5.5 con datos de zona en arrays compactos',70,283,1110,43,20,colors.muted);
+ text(s,'Consultas simples: SQL directo. Preferencias: Claude con datos compactos.',70,283,1110,43,20,colors.muted);
  text(s,'Logs de tokens, coste y latencia',70,493,650,55,20,colors.muted);
  text(s,'Hasta 50 resultados aceptados',860,491,360,58,24,colors.green,true);
  text(s,'Si faltan resultados, se analiza el siguiente lote hasta agotar candidatos o presupuesto.',72,585,1100,57,19,colors.muted);
  note(s,'API y conversación',50,
- 'La interfaz de Next.js consulta una API propia en Express y TypeScript. En la primera etapa, Claude Haiku 5.5 recibe los criterios y los datos relevantes de las secciones en arrays compactos. Devuelve un plan estructurado. El backend valida los campos y construye consultas parametrizadas para aplicar límites de precio, características y condiciones del entorno. En la segunda etapa, Claude valora lotes de hasta 300 anuncios, repartidos en dos peticiones paralelas. Los valores censales repetidos se agrupan sin perder sus secciones; pedir vivir en un barrio restringe la búsqueda a sus censos. Si acepta menos de 50, el sistema consulta otro lote, respetando un presupuesto de tiempo y consumo. Dos etapas no significa siempre dos peticiones. El servidor registra tokens, coste estimado, latencia y los motivos de parada.',
+ 'Las consultas sencillas por barrio se resuelven directamente con SQL, sin esperar a Claude. Las viviendas que cumplen todos los filtros reciben cien de cien. Para peticiones más complejas, Claude interpreta criterios y preferencias con datos censales compactos; el backend valida el plan y aplica consultas parametrizadas. Después evalúa lotes de hasta trescientos anuncios en paralelo, devolviendo solo identificadores y puntuaciones. El trabajo del modelo tiene un presupuesto de tiempo: si no termina, se conservan viviendas con filtros verificados y la valoración pendiente se indica sin inventar una puntuación. Los logs registran tokens, coste estimado y duración.',
  ['backend/src/chat.ts','backend/src/claude.ts','backend/src/search.ts','backend/src/log.ts','front-end/src/lib/server/atlas-api.ts']);
 }
 // 6. Shared result set and routine.

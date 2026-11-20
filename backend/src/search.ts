@@ -232,7 +232,7 @@ export function toListing(row: Record<string, any>, assessment?: Assessment) {
     air_conditioning: row.air_conditioning,
     terrace: row.terrace,
     ...(updated ? { updated_at: new Date(updated).toISOString() } : {}),
-    ...(assessment
+    ...(assessment && assessment.score >= 0
       ? {
           compatibility: {
             score: assessment.score,

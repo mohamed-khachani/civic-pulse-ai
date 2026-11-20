@@ -177,3 +177,10 @@ export function plannerSchemaForMetrics(metricIds: string[]) {
     area_order: z.array(planSchema.shape.area_order.element.extend({ metric })).max(8),
   });
 }
+
+export const compactEvaluationSchema = z.object({
+  accepted_ids: z.array(z.string().regex(/^\d+$/)).max(100),
+  scores: z.array(z.number().min(0).max(100)).max(100),
+  message: z.string().max(2500),
+  suggestions: z.array(z.string().max(100)).max(4),
+}).refine((value) => value.accepted_ids.length === value.scores.length, "IDs and scores must align");
