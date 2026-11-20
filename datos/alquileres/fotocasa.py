@@ -375,41 +375,53 @@ def parse_file(path: Path, include_raw: bool = True) -> dict[str, Any]:
 
 
 def main() -> int:
-    cli = argparse.ArgumentParser(description="Convert saved Fotocasa listing HTML to typed JSON")
-    cli.add_argument("input", type=Path, help="A .html file or a directory of .html files")
-    cli.add_argument("-o", "--output", type=Path, help="Output .json path (single file) or output folder")
-    cli.add_argument("--compact", action="store_true", help="Omit raw Fotocasa property objects")
-    args = cli.parse_args()
+    base_dir = Path(__file__).resolve().parent
 
-    source = args.input.expanduser()
-    if not source.exists():
-        cli.error(f"Input not found: {source}")
+    input_dir = Path("/Users/mohamedkhachaniupm/civic/tools/scraper/fotocasa_output/source1/")
+    output_dir = base_dir / "fotocasa_json"
 
-    if source.is_file():
-        targets = [(source, args.output or source.with_suffix(".json"))]
-        if args.output and (args.output.is_dir() or not args.output.suffix):
-            targets = [(source, args.output / (source.stem + ".json"))]
-    else:
-        output_dir = args.output or source.parent / f"{source.name}_json"
-        html_files = sorted(p for p in source.rglob("*") if p.is_file() and p.suffix.lower() in {".html", ".htm"})
-        targets = [(p, output_dir / p.relative_to(source).with_suffix(".json")) for p in html_files]
-
-    if not targets:
-        print("No HTML files found", file=sys.stderr)
+    if not input_dir.is_dir():
+        print(f"[ERROR] Folder not found: {input_dir}", file=sys.stderr)
         return 1
 
-    succeeded = failed = 0
-    for html_path, json_path in targets:
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    paths = sorted(
+        p for p in input_dir.rglob("*")
+        if p.is_file() and p.suffix.lower() in {".html", ".htm"}
+    )
+
+    print(f"Found {len(paths)} HTML files")
+
+    success = 0
+    failed = 0
+
+    for i, path in enumerate(paths, start=1):
         try:
-            listing = parse_file(html_path, include_raw=not args.compact)
-            json_path.parent.mkdir(parents=True, exist_ok=True)
-            json_path.write_text(json.dumps(listing, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-            print(f"[OK] {html_path.name} -> {json_path} | id={listing['listing']['id']}")
-            succeeded += 1
-        except (OSError, ValueError, TypeError, json.JSONDecodeError) as error:
-            print(f"[ERROR] {html_path}: {error}", file=sys.stderr)
+            data = parse_file(path, include_raw=True)
+
+            relative_path = path.relative_to(input_dir)
+            output_path = output_dir / relative_path.with_suffix(".json")
+
+            output_path.parent.mkdir(parents=True, exist_ok=True)
+
+            output_path.write_text(
+                json.dumps(data, ensure_ascii=False, indent=2) + "\n",
+                encoding="utf-8"
+            )
+
+            success += 1
+            print(f"[{i}/{len(paths)}] [OK] {path.name}")
+
+        except Exception as exc:
             failed += 1
-    print(f"Done: {succeeded} converted, {failed} failed")
+            print(f"[{i}/{len(paths)}] [ERROR] {path.name}: {exc}")
+
+    print("\nProcessing completed")
+    print(f"Total:   {len(paths)}")
+    print(f"Success: {success}")
+    print(f"Failed:  {failed}")
+
     return 1 if failed else 0
 
 
