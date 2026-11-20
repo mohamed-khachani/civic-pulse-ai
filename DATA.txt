@@ -17,99 +17,128 @@ Los datos enriquecidos cubren Madrid municipio (28079), no toda la Comunidad de 
 
 2. DATASETS LOCALES DEL ETL
 
+URLs consultadas el 20/11/2026. Se enlaza el catálogo o la publicación oficial correspondiente; sus descargas actuales pueden haber cambiado respecto a la copia local. Una URL de catálogo no prueba que el archivo local sea idéntico a la versión actual. Las descargas exactas no documentadas se señalan expresamente.
+
 01. Secciones censales
 Archivo: datos/geografia/seccionado-censa.json
+URL original del JSON local: no registrada en el repositorio; no se ha verificado la descarga exacta.
+URL oficial de cartografía administrativa relacionada: https://datos.madrid.es/dataset/900012-0-limites-administrativos-mapas/downloads
 Estado: INTEGRADO
 Uso: Geometrías y códigos para asignar anuncios y observaciones a su sección censal.
 
 02. Distritos
 Archivo: datos/geografia/distritos.csv
+URL del catálogo oficial: https://datos.gob.es/es/catalogo/l01280796-distritos-municipales-de-madrid1
+URL de descarga CSV publicada: https://geoportal.madrid.es/fsdescargas/IDEAM_WBGEOPORTAL/LIMITES_ADMINISTRATIVOS/Distritos/Distritos.csv
 Estado: INTEGRADO
 Uso: Códigos, nombres y superficies de los distritos de Madrid.
 
 03. Barrios
 Archivo: datos/geografia/Barrios.csv
+URL del catálogo oficial: https://datos.gob.es/es/catalogo/l01280796-barrios-municipales-de-madrid1
+URL de descarga CSV publicada: https://geoportal.madrid.es/fsdescargas/IDEAM_WBGEOPORTAL/LIMITES_ADMINISTRATIVOS/Barrios/Barrios.csv
 Estado: INTEGRADO
 Uso: Códigos, nombres y superficies de barrios; delimitación de búsquedas por barrio.
 
 04. Padrón
 Archivo: datos/padron/padron.csv
+URL del catálogo oficial: https://datos.madrid.es/dataset/200076-0-padron
+URL del histórico de versiones: https://datos.madrid.es/dataset/209163-0-padron-municipal-historico/downloads
 Estado: INTEGRADO
 Uso: Población y variables agregadas del padrón vinculadas territorialmente.
 
 05. Estudio de distritos y barrios 2026
 Archivo: datos/padron/estudio-2026.xlsx
+URL del catálogo oficial: https://datos.madrid.es/dataset/300087-0-indicadores-distritos
 Estado: INTEGRADO
 Uso: Indicadores agregados de distritos y barrios; conserva las fechas y fuentes disponibles por indicador.
 
 06. Referencia de alquiler por sección 2024
 Archivo: datos/alquiler/referencia-precio-alquiler-seccion-censa;.xlsx
+URL de la publicación oficial: https://www.madrid.es/portales/munimadrid/es/Inicio/El-Ayuntamiento/Estadistica/Areas-de-informacion-estadistica/Edificacion-y-vivienda/Mercado-de-la-vivienda/Sistema-estatal-de-indices-de-referencia-del-precio-del-alquiler-de-viviendas/?vgnextchannel=22613c7ea422a210VgnVCM1000000b205a0aRCRD&vgnextfmt=default&vgnextoid=a386d9a1fe930910VgnVCM2000001f4a900aRCRD
+URL del XLSX de secciones 2024 enlazado por la publicación: https://www.madrid.es/UnidadesDescentralizadas/UDCEstadistica/Nuevaweb/Edificaci%C3%B3n%20y%20Vivienda/Mercado%20de%20la%20Vivienda/Sistema%20Estatal%20de%20%C3%8Dndices%20de%20Referencia%20del%20Precio%20del%20Alquiler%20de%20Vivienda/2022_2023_2024_2025/INDICE_ESTATAL_%20ALQUILER%20_secciones2024.xlsx
 Estado: INTEGRADO
 Uso: Referencias históricas de alquiler por sección censal, incluidos cuantiles disponibles.
 
 07. Referencia de alquiler por distrito 2024
 Archivo: datos/alquiler/referencias-precio-alquiler-distrito.xlsx
+URL de la publicación oficial: https://www.madrid.es/portales/munimadrid/es/Inicio/El-Ayuntamiento/Estadistica/Areas-de-informacion-estadistica/Edificacion-y-vivienda/Mercado-de-la-vivienda/Sistema-estatal-de-indices-de-referencia-del-precio-del-alquiler-de-viviendas/?vgnextchannel=22613c7ea422a210VgnVCM1000000b205a0aRCRD&vgnextfmt=default&vgnextoid=a386d9a1fe930910VgnVCM2000001f4a900aRCRD
+URL del XLSX de distritos 2024 enlazado por la publicación: https://www.madrid.es/UnidadesDescentralizadas/UDCEstadistica/Nuevaweb/Edificaci%C3%B3n%20y%20Vivienda/Mercado%20de%20la%20Vivienda/Sistema%20Estatal%20de%20%C3%8Dndices%20de%20Referencia%20del%20Precio%20del%20Alquiler%20de%20Vivienda/2022_2023_2024_2025/INDICE_ESTATAL_%20ALQUILER%20_distritos2024.xlsx
 Estado: INTEGRADO
 Uso: Referencias históricas de alquiler por distrito, heredadas por sus secciones.
 
 08. Alquiler por código postal 2023
 Archivo: datos/alquiler/alquiler-medio.csv
+URL original: no registrada en el repositorio y no verificada; pendiente de identificar la descarga exacta del CSV.
 Estado: PENDIENTE DE INTEGRACIÓN
 Uso: Referencia de alquiler por código postal; no incorporada al enriquecimiento censal.
 Pendiente: Falta correspondencia sección/código postal.
 
 09. Centros educativos
 Archivo: datos/calidad-vida/centros-educativos.csv
+URL del catálogo oficial: https://datos.madrid.es/dataset/300614-0-centros-educativos
 Estado: INTEGRADO
 Uso: Ubicación de centros educativos; distancias y recuentos de proximidad.
 
 10. Centros sanitarios
 Archivo: datos/calidad-vida/centros-atencion-medica.csv
+URL del catálogo oficial: https://datos.madrid.es/dataset/212769-0-atencion-medica
 Estado: INTEGRADO
 Uso: Ubicación de centros sanitarios; distancias y recuentos de proximidad.
 
 11. Instalaciones deportivas
 Archivo: datos/calidad-vida/instalaciones-deportivas.csv
+URL del catálogo oficial: https://datos.madrid.es/dataset/200215-0-instalaciones-deportivas/downloads
 Estado: INTEGRADO
 Uso: Ubicación de instalaciones deportivas; distancias y recuentos de proximidad.
 
 12. Bibliotecas
 Archivo: datos/calidad-vida/bibliotecas.csv
+URL del catálogo oficial: https://datos.gob.es/es/catalogo/l01280796-bibliotecas-de-madrid
 Estado: INTEGRADO
 Uso: Ubicación de bibliotecas y métricas de proximidad.
 
 13. Parques y jardines
 Archivo: datos/zonas_verdes/parques-y-jardines.csv
+URL del catálogo oficial: https://datos.madrid.es/dataset/200761-0-parques-jardines/information
 Estado: INTEGRADO
 Uso: Ubicación de parques y jardines; distancias y recuentos de proximidad.
 
 14. Catálogo de superficie de parques
 Archivo: datos/zonas_verdes/arbolado-superficie.csv
+URL del catálogo oficial: https://datos.madrid.es/dataset/300266-0-arbolado-superficie
 Estado: INTEGRADO
 Uso: Catálogo de superficie y arbolado de zonas verdes.
 
 15. Accidentes de tráfico
 Archivo: datos/accidentes/accidentes-trafico.xlsx
+URL del catálogo oficial: https://datos.madrid.es/dataset/300228-0-accidentes-trafico-detalle/information
 Estado: INTEGRADO
 Uso: Accidentes de tráfico georreferenciados y agregados por sección.
 
 16. Accidentes de bicicleta
 Archivo: datos/accidentes/accidentes-bici.xlsx
+URL del catálogo oficial: https://datos.madrid.es/dataset/300110-0-accidentes-bicicleta
 Estado: INTEGRADO
 Uso: Accidentes de bicicleta georreferenciados y agregados por sección.
 
 17. Contaminación acústica
 Archivo: datos/calidad-vida/contaminacion-acustica.csv
+URL del catálogo oficial: https://datos.madrid.es/dataset/215885-0-contaminacion-ruido
 Estado: INTEGRADO
 Uso: Observaciones acústicas locales, con fechas y estaciones; estimaciones de ruido por sección.
 
 18. Calidad del aire
 Archivo: datos/calidad-vida/calidad-aire.csv
+URL del catálogo oficial: https://datos.madrid.es/dataset/201410-0-calidad-aire-diario/downloads
 Estado: INTEGRADO
 Uso: Observaciones locales de contaminantes, fechas y estaciones; estimaciones de aire por sección.
 
 19. Tráfico octubre 2026
 Archivo: datos/accidentes/trafico-2026.zip
+URL del catálogo del histórico de lecturas: https://datos.gob.es/gl/catalogo/l01280796-trafico-historico-de-datos-del-trafico-desde-2013.xml
+URL del catálogo municipal referenciado: https://datos.madrid.es/dataset/208627-0-transporte-ptomedida-historico
+URL de coordenadas de sensores (conjunto complementario, no es el ZIP de lecturas): https://datos.madrid.es/dataset/202468-0-intensidad-trafico/information
 Estado: PENDIENTE DE INTEGRACIÓN
 Uso: Lecturas de intensidad de tráfico de octubre de 2026; pendientes de unión geográfica.
 Pendiente: Faltan coordenadas verificadas de sensores.
