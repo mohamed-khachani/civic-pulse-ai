@@ -9,7 +9,7 @@
     "padron": "../padron/padron.csv",
     "district_study_2026": "../padron/estudio-2026.xlsx",
     "rental_section_2024": "../alquiler/referencia-precio-alquiler-seccion-censa;.xlsx",
-    "rental_district_2024": "../ralquiler/eferencias-precio-alquiler-distrito.xlsx",
+    "rental_district_2024": "../alquiler/referencias-precio-alquiler-distrito.xlsx",
     "rental_postal_2023": "../alquiler/alquiler-medio.csv",
     "section_postal_crosswalk": "",
     "schools": "../calidad-vida/centros-educativos.csv",
@@ -22,9 +22,9 @@
     "bike_accidents": "../accidentes/accidentes-bici.xlsx",
     "noise": "../calidad-vida/contaminacion-acustica.csv",
     "air_quality": "../calidad-vida/calidad-aire.csv",
-    "traffic_zip": "../calidad-vida/trafico-2026.zip",
+    "traffic_zip": "../accidentes/trafico-2026.zip",
     "traffic_sensor_locations": "",
-    "air_station_locations": "",
-    "noise_station_locations": ""
+    "air_station_locations": "reference_data/air_stations.csv",
+    "noise_station_locations": "reference_data/noise_stations.csv"
   }
 }

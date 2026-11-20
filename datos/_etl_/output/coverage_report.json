@@ -48,14 +48,18 @@
   },
   "monitoring": {
     "air": {
-      "status": "missing_station_locations"
+      "stations_with_locations": 27,
+      "latest_year": 2026,
+      "sections_near_monitor": 1983
     },
     "noise": {
-      "status": "missing_station_locations"
+      "stations_with_locations": 28,
+      "latest_year": 2026,
+      "sections_near_monitor": 1906
     }
   },
   "traffic": {
-    "status": "traffic_zip_missing"
+    "status": "sensor_locations_missing"
   },
   "metrics": {
     "section_code": {
@@ -97,6 +101,102 @@
     "barrio_area_km2": {
       "non_null_sections": 2462,
       "fraction": 1.0
+    },
+    "air_magnitude_10_2026_nearest_station_daily_mean": {
+      "non_null_sections": 1314,
+      "fraction": 0.5337
+    },
+    "air_magnitude_10_2026_nearest_station_valid_days": {
+      "non_null_sections": 1314,
+      "fraction": 0.5337
+    },
+    "air_magnitude_12_2026_nearest_station_daily_mean": {
+      "non_null_sections": 1983,
+      "fraction": 0.8054
+    },
+    "air_magnitude_12_2026_nearest_station_valid_days": {
+      "non_null_sections": 1983,
+      "fraction": 0.8054
+    },
+    "air_magnitude_14_2026_nearest_station_daily_mean": {
+      "non_null_sections": 981,
+      "fraction": 0.3985
+    },
+    "air_magnitude_14_2026_nearest_station_valid_days": {
+      "non_null_sections": 981,
+      "fraction": 0.3985
+    },
+    "air_magnitude_1_2026_nearest_station_daily_mean": {
+      "non_null_sections": 318,
+      "fraction": 0.1292
+    },
+    "air_magnitude_1_2026_nearest_station_valid_days": {
+      "non_null_sections": 318,
+      "fraction": 0.1292
+    },
+    "air_magnitude_20_2026_nearest_station_daily_mean": {
+      "non_null_sections": 464,
+      "fraction": 0.1885
+    },
+    "air_magnitude_20_2026_nearest_station_valid_days": {
+      "non_null_sections": 464,
+      "fraction": 0.1885
+    },
+    "air_magnitude_30_2026_nearest_station_daily_mean": {
+      "non_null_sections": 464,
+      "fraction": 0.1885
+    },
+    "air_magnitude_30_2026_nearest_station_valid_days": {
+      "non_null_sections": 464,
+      "fraction": 0.1885
+    },
+    "air_magnitude_35_2026_nearest_station_daily_mean": {
+      "non_null_sections": 464,
+      "fraction": 0.1885
+    },
+    "air_magnitude_35_2026_nearest_station_valid_days": {
+      "non_null_sections": 464,
+      "fraction": 0.1885
+    },
+    "air_magnitude_6_2026_nearest_station_daily_mean": {
+      "non_null_sections": 420,
+      "fraction": 0.1706
+    },
+    "air_magnitude_6_2026_nearest_station_valid_days": {
+      "non_null_sections": 420,
+      "fraction": 0.1706
+    },
+    "air_magnitude_7_2026_nearest_station_daily_mean": {
+      "non_null_sections": 1983,
+      "fraction": 0.8054
+    },
+    "air_magnitude_7_2026_nearest_station_valid_days": {
+      "non_null_sections": 1983,
+      "fraction": 0.8054
+    },
+    "air_magnitude_8_2026_nearest_station_daily_mean": {
+      "non_null_sections": 1983,
+      "fraction": 0.8054
+    },
+    "air_magnitude_8_2026_nearest_station_valid_days": {
+      "non_null_sections": 1983,
+      "fraction": 0.8054
+    },
+    "air_magnitude_9_2026_nearest_station_daily_mean": {
+      "non_null_sections": 907,
+      "fraction": 0.3684
+    },
+    "air_magnitude_9_2026_nearest_station_valid_days": {
+      "non_null_sections": 907,
+      "fraction": 0.3684
+    },
+    "air_nearest_station_distance_m": {
+      "non_null_sections": 1983,
+      "fraction": 0.8054
+    },
+    "air_nearest_station_id": {
+      "non_null_sections": 1983,
+      "fraction": 0.8054
     },
     "barrio_study_1_5_1_poblacion_en_etapas_educativas_0c8c21": {
       "non_null_sections": 2462,
@@ -735,6 +835,90 @@
       "fraction": 0.4911
     },
     "bike_accidents_2026_count": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_2024_rent_collective_eur_m2_p25": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_2024_rent_collective_eur_m2_p50": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_2024_rent_collective_eur_m2_p75": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_2024_rent_collective_month_eur_p25": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_2024_rent_collective_month_eur_p50": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_2024_rent_collective_month_eur_p75": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_2024_rent_collective_size_m2_p25": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_2024_rent_collective_size_m2_p50": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_2024_rent_collective_size_m2_p75": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_2024_rent_house_eur_m2_p25": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_2024_rent_house_eur_m2_p50": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_2024_rent_house_eur_m2_p75": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_2024_rent_house_month_eur_p25": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_2024_rent_house_month_eur_p50": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_2024_rent_house_month_eur_p75": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_2024_rent_house_size_m2_p25": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_2024_rent_house_size_m2_p50": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_2024_rent_house_size_m2_p75": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_2024_rental_collective_units": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_2024_rental_single_family_units": {
+      "non_null_sections": 2462,
+      "fraction": 1.0
+    },
+    "district_2024_rental_units": {
       "non_null_sections": 2462,
       "fraction": 1.0
     },
@@ -1786,6 +1970,46 @@
       "non_null_sections": 2462,
       "fraction": 1.0
     },
+    "noise_laeq_d_2026_nearest_station_db_energy_mean": {
+      "non_null_sections": 1906,
+      "fraction": 0.7742
+    },
+    "noise_laeq_d_2026_nearest_station_observations": {
+      "non_null_sections": 1906,
+      "fraction": 0.7742
+    },
+    "noise_laeq_e_2026_nearest_station_db_energy_mean": {
+      "non_null_sections": 1906,
+      "fraction": 0.7742
+    },
+    "noise_laeq_e_2026_nearest_station_observations": {
+      "non_null_sections": 1906,
+      "fraction": 0.7742
+    },
+    "noise_laeq_n_2026_nearest_station_db_energy_mean": {
+      "non_null_sections": 1906,
+      "fraction": 0.7742
+    },
+    "noise_laeq_n_2026_nearest_station_observations": {
+      "non_null_sections": 1906,
+      "fraction": 0.7742
+    },
+    "noise_laeq_t_2026_nearest_station_db_energy_mean": {
+      "non_null_sections": 1906,
+      "fraction": 0.7742
+    },
+    "noise_laeq_t_2026_nearest_station_observations": {
+      "non_null_sections": 1906,
+      "fraction": 0.7742
+    },
+    "noise_nearest_station_distance_m": {
+      "non_null_sections": 1906,
+      "fraction": 0.7742
+    },
+    "noise_nearest_station_id": {
+      "non_null_sections": 1906,
+      "fraction": 0.7742
+    },
     "padron_distinct_ages": {
       "non_null_sections": 2462,
       "fraction": 1.0
@@ -1952,8 +2176,8 @@
     }
   },
   "rows_written": 2462,
-  "columns_written": 473,
-  "generated_at_utc": "2026-11-19T13:29:40.969640+00:00",
+  "columns_written": 528,
+  "generated_at_utc": "2026-11-20T09:57:53.925242+00:00",
   "sources": {
     "census_topojson": "/Users/mohamedkhachaniupm/civic/datos/geografia/seccionado-censa.json",
     "districts": "/Users/mohamedkhachaniupm/civic/datos/geografia/distritos.csv",
@@ -1961,7 +2185,7 @@
     "padron": "/Users/mohamedkhachaniupm/civic/datos/padron/padron.csv",
     "district_study_2026": "/Users/mohamedkhachaniupm/civic/datos/padron/estudio-2026.xlsx",
     "rental_section_2024": "/Users/mohamedkhachaniupm/civic/datos/alquiler/referencia-precio-alquiler-seccion-censa;.xlsx",
-    "rental_district_2024": null,
+    "rental_district_2024": "/Users/mohamedkhachaniupm/civic/datos/alquiler/referencias-precio-alquiler-distrito.xlsx",
     "rental_postal_2023": "/Users/mohamedkhachaniupm/civic/datos/alquiler/alquiler-medio.csv",
     "section_postal_crosswalk": null,
     "schools": "/Users/mohamedkhachaniupm/civic/datos/calidad-vida/centros-educativos.csv",
@@ -1974,9 +2198,9 @@
     "bike_accidents": "/Users/mohamedkhachaniupm/civic/datos/accidentes/accidentes-bici.xlsx",
     "noise": "/Users/mohamedkhachaniupm/civic/datos/calidad-vida/contaminacion-acustica.csv",
     "air_quality": "/Users/mohamedkhachaniupm/civic/datos/calidad-vida/calidad-aire.csv",
-    "traffic_zip": null,
+    "traffic_zip": "/Users/mohamedkhachaniupm/civic/datos/accidentes/trafico-2026.zip",
     "traffic_sensor_locations": null,
-    "air_station_locations": null,
-    "noise_station_locations": null
+    "air_station_locations": "/Users/mohamedkhachaniupm/civic/datos/_etl_/reference_data/air_stations.csv",
+    "noise_station_locations": "/Users/mohamedkhachaniupm/civic/datos/_etl_/reference_data/noise_stations.csv"
   }
 }

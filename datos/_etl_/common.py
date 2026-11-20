@@ -170,7 +170,7 @@ def iter_xlsx(file: Path, sheet: int = 0) -> Iterator[dict[str, str]]:
 def write_csv(file: Path, records: list[dict], fields: list[str]):
     file.parent.mkdir(parents=True, exist_ok=True)
     with file.open('w', encoding='utf-8', newline='') as f:
-        writer = csv.DictWriter(f, fieldnames=fields, extrasaction='ignore')
+        writer = csv.DictWriter(f, fieldnames=fields, extrasaction='ignore', lineterminator='\n')
         writer.writeheader()
         for record in records:
             writer.writerow({k: scalar(record.get(k)) for k in fields})
@@ -199,15 +199,17 @@ def point_of(row: dict):
         for key in keys:
             val = fields.get(normalized(key))
             if val is not None and str(val).strip():
-                return as_number(val)
+                number = as_number(val)
+                if number is not None:
+                    return number
         return None
 
-    lat = first('LATITUD', 'latitude', 'lat', 'LATITUD_ETRS89')
-    lon = first('LONGITUD', 'longitude', 'lon', 'LONGITUD_ETRS89')
+    lat = first('LATITUD_ETRS89', 'LATITUD', 'latitude', 'lat')
+    lon = first('LONGITUD_ETRS89', 'LONGITUD', 'longitude', 'lon')
     if lat is not None and lon is not None and 40.0 < lat < 40.8 and -4.3 < lon < -3.2:
         return Point(lon, lat)
-    x = first('COORDENADA-X', 'coordenada_x_utm', 'x_utm', 'utm_x')
-    y = first('COORDENADA-Y', 'coordenada_y_utm', 'y_utm', 'utm_y')
+    x = first('COORDENADA-X', 'coordenada_x_utm', 'COORDENADA_X_ETRS89', 'x_utm', 'utm_x')
+    y = first('COORDENADA-Y', 'coordenada_y_utm', 'COORDENADA_Y_ETRS89', 'y_utm', 'utm_y')
     if x is not None and y is not None and 350000 < x < 550000 and 4400000 < y < 4550000:
         return Point(*UTM_TO_WGS84(x, y))
     return None

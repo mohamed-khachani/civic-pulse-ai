@@ -2,6 +2,8 @@
 
 This is a complete, reproducible ETL based on the **19 datasets provided in this conversation**. The primary output is one **single-row CSV for each census section**, with the inherited district/neighbourhood fields and spatially joined section attributes.
 
+The complete rows and metric metadata can also be loaded into PostgreSQL using `python db/ingest-sections.py` from the repository root. See `db/README.md` for schema, credentials and ingestion commands. The current run contains 2,462 sections and 528 fields per row, including district rental references and real nearest-station air/noise proxies. The original observation files are reused locally; only missing station-location metadata was obtained externally, with provenance under `reference_data/`.
+
 ## Setup
 
 Python 3.10+:
@@ -32,7 +34,7 @@ python fetch_station_locations.py --config paths.json
 python main.py --config paths.json
 ```
 
-This downloads station-location metadata from the official Madrid open-data portal and stores it in `reference_data/`, updating only the corresponding paths in `paths.json`. Traffic uses the **September 2026** official snapshot; verify sensor ID coverage against October 2026 readings. Network access is required. If a download fails, the pipeline does not invent station locations. The URLs and resource IDs are in `fetch_station_locations.py` and may need updating when the city's dataset changes. Running the full October traffic aggregation may take time because the uploaded CSV is over 800MB uncompressed.
+This downloads station-location metadata from official sources and stores it in `reference_data/`, updating only the corresponding paths in `paths.json`. Air metadata falls back to the official EEA station service when the municipal download is unavailable. Traffic requests the **October 2026** location snapshot to match the local October readings. Network access is required only for this optional metadata refresh. Failed downloads do not replace working local reference paths or invent station locations. URLs and resource IDs may need updating when a dataset changes. The full traffic archive is over 800MB uncompressed.
 
 Official sources: [traffic-location dataset](https://datos.madrid.es/dataset/202468-0-intensidad-trafico), [air-monitoring stations](https://datos.madrid.es/dataset/212629-0-estaciones-control-aire), [noise-monitoring stations](https://datos.madrid.es/dataset/211346-0-estaciones-acusticas).
 
@@ -94,7 +96,7 @@ You can add paths and call individual stages independently. If geographic sensor
 2. **Distance means straight-line Euclidean distance in EPSG:25830**, not walking time or network distance. Use your multimodal router separately for actual commute/travel times.
 3. **The 2024 rents are reference medians**, not live listing prices; compare them with actual scraped listings using date/context.
 4. **POI locations are points, not polygons.** Park coverage area cannot be derived from a list of park markers. For real green coverage, supply official park/green-space polygon geometry.
-5. **Monitoring values are nearest-station proxies**, with an explicit station distance cutoff, not an exposure model. Air `MAGNITUD` codes preserve their original measurement code and are not merged across pollutants; consult official unit definitions.
+5. **Monitoring values are nearest-station proxies**, with an explicit station distance cutoff, not an exposure model. Air `MAGNITUD` codes preserve their original measurement code and are not merged across pollutants; consult official unit definitions. Equal-duration noise LAeq readings combine as energy, not arithmetic dB. Current noise station coordinates are a partial verified 2025 municipal table; three inconsistent entries were excluded. Air station coordinates come from official EEA sampling-point metadata. Station moves are not reconstructed across historical years. Latest-year observations may cover only part of the year.
 6. **Traffic intensity is a reported sensor rate**, not a counted traffic flow sum. 2026 input contains October observations; do not label it yearly traffic.
 7. **Population demographic columns are context only, not protected-characteristic filters**. Do not score housing suitability based on age, nationality, gender, ethnicity or proxies for protected traits. Score property suitability by stated user requirements, price, transit and amenities.
 8. The source studies bundle indicators from **different years**. Each source's year is preserved in names or metadata; never claim all variables are 2026 observations.

@@ -68,7 +68,10 @@ def extract(cfg, records):
             for col, value in nums.items():
                 if col in barrios and value is not None:
                     barrio_values[barrios[col]]['barrio_' + m] = value
-            catalog[m] = {'metric': title, **metadata.get(normalized(title), {}),
+            # Workbook values add chapter numbers absent from the indicator dictionary.
+            unnumbered = re.sub(r'^\d+(?:\.\d+)*\.?\s*', '', title)
+            details = metadata.get(normalized(title), metadata.get(normalized(unnumbered), {}))
+            catalog[m] = {'metric': title, **details,
                           'file': 'estudio-2026.xlsx', 'level': 'district/barrio'}
         if district:
             for record in records.values():

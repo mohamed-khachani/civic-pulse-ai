@@ -1,0 +1,10 @@
+{
+  "source_url": "https://air.discomap.eea.europa.eu/arcgis/rest/services/AirQuality/AirQualityDownloadServiceEUMonitoringStations/MapServer/0/query",
+  "query": {
+    "where": "CountryCode='ES'",
+    "geometry": "-3.9,40.30,-3.5,40.65",
+    "outSR": 4326
+  },
+  "records": 27,
+  "notes": "Official EEA station coordinates; national IDs extracted from sampling point references. Snapshot retrieved 2026-11-20. Historical station relocations are not reconstructed."
+}

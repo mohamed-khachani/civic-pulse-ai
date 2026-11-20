@@ -189,14 +189,16 @@ export async function areaContext(
       for (const pattern of patterns) add(all.find((m) => pattern.test(m.id)));
   for (const { m } of ranked) add(m);
   const { rows } = await pool.query(
-    `SELECT sd.cusec,sd.data FROM madrid.section_data sd
+    `SELECT sd.cusec,jsonb_build_object('district_code',sd.data->'district_code','barrio_code',sd.data->'barrio_code')
+      || COALESCE((SELECT jsonb_object_agg(key,sd.data->key) FROM unnest($3::text[]) AS key),'{}'::jsonb) AS data
+      FROM madrid.section_data sd
       JOIN madrid.census_sections cs ON cs.dataset_id=sd.census_dataset_id AND cs.cusec=sd.cusec
       LEFT JOIN madrid.neighborhoods n ON n.municipality_code=cs.municipality_code AND n.code=cs.neighborhood_code
       LEFT JOIN madrid.districts d ON d.municipality_code=cs.municipality_code AND d.code=cs.district_code
       WHERE sd.census_dataset_id='madrid-municipal'
       AND ($1::text IS NULL OR lower(n.name)=lower($1))
       AND ($2::text IS NULL OR lower(d.name)=lower($2)) ORDER BY sd.cusec`,
-    [geography.neighborhood || null, geography.district || null],
+    [geography.neighborhood || null, geography.district || null, selected.map((m) => m.id)],
   );
   const groups = new Map<string, { ids: string[]; values: unknown[] }>();
   if (selected.length) for (const row of rows) {

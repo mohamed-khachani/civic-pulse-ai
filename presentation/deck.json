@@ -1,10 +1,10 @@
 {
   "output": "/Users/mohamedkhachaniupm/civic/presentation/output/Atlas-pitch-4min.pptx",
-  "revision_output": "/Users/mohamedkhachaniupm/civic/presentation/output/Atlas-pitch-4min-v4.pptx",
-  "revision": "v4",
+  "revision_output": "/Users/mohamedkhachaniupm/civic/presentation/output/Atlas-pitch-4min-v5.pptx",
+  "revision": "v5",
   "slides": 7,
   "seconds": 240,
-  "script_words": 542,
+  "script_words": 582,
   "font": "Helvetica Neue",
   "notes": [
     {
@@ -59,7 +59,7 @@
     {
       "title": "API y conversación",
       "seconds": 50,
-      "script": "La interfaz de Next.js consulta una API propia en Express y TypeScript. En la primera etapa, Claude Haiku 5.5 recibe los criterios y los datos relevantes de las secciones en arrays compactos. Devuelve un plan estructurado. El backend valida los campos y construye consultas parametrizadas para aplicar límites de precio, características y condiciones del entorno. En la segunda etapa, Claude valora lotes de hasta 300 anuncios. Si acepta menos de 50, el sistema consulta otro lote, respetando un presupuesto de tiempo y consumo. Dos etapas no significa siempre dos peticiones. El servidor registra tokens, coste estimado, latencia y los motivos de parada.",
+      "script": "La interfaz de Next.js consulta una API propia en Express y TypeScript. En la primera etapa, Claude Haiku 5.5 recibe los criterios y los datos relevantes de las secciones en arrays compactos. Devuelve un plan estructurado. El backend valida los campos y construye consultas parametrizadas para aplicar límites de precio, características y condiciones del entorno. En la segunda etapa, Claude valora lotes de hasta 300 anuncios, repartidos en dos peticiones paralelas. Los valores censales repetidos se agrupan sin perder sus secciones; pedir vivir en un barrio restringe la búsqueda a sus censos. Si acepta menos de 50, el sistema consulta otro lote, respetando un presupuesto de tiempo y consumo. Dos etapas no significa siempre dos peticiones. El servidor registra tokens, coste estimado, latencia y los motivos de parada.",
       "sources": [
         "backend/src/chat.ts",
         "backend/src/claude.ts",
@@ -71,7 +71,7 @@
     {
       "title": "Experiencia de uso",
       "seconds": 35,
-      "script": "La selección recibe un identificador común. Las fichas, el mapa y la exportación muestran ese mismo conjunto, y una conversación posterior conserva el contexto. Al pulsar un grupo del mapa aparecen sus anuncios, sin tener que localizar cada punto haciendo zoom. También puede explicar su rutina: ir a clase, visitar a la familia o ver a sus amigos. La frecuencia manda: los viajes diarios pesan más que las visitas ocasionales, salvo prioridad expresa. Para responder antes, Claude estima tiempos y recorridos de las cinco primeras viviendas. Son aproximaciones de IA, sin horarios ni conexiones comprobados.",
+      "script": "La selección recibe un identificador común. Las fichas, el mapa y la exportación muestran ese mismo conjunto, y una conversación posterior conserva el contexto. Al pulsar un grupo del mapa aparecen sus anuncios, sin tener que localizar cada punto haciendo zoom. También puede explicar su rutina: ir a clase, visitar a la familia o ver a sus amigos. Durante la búsqueda se oculta el listado anterior y rotan curiosidades reales. Los trayectos diarios pesan más que las visitas ocasionales. Claude estima rutas de las cinco primeras viviendas, usando transporte público por defecto u otro modo solicitado. El chat da un resumen breve: son aproximaciones de IA, sin horarios comprobados.",
       "sources": [
         "backend/src/db.ts",
         "backend/src/chat.ts",
@@ -91,11 +91,11 @@
     }
   ],
   "validation": {
-    "finalPath": "/Users/mohamedkhachaniupm/civic/presentation/output/Atlas-pitch-4min-v4.pptx",
-    "receiptPath": "/Users/mohamedkhachaniupm/civic/presentation/.build/v4/validation.json",
+    "finalPath": "/Users/mohamedkhachaniupm/civic/presentation/output/Atlas-pitch-4min-v5.pptx",
+    "receiptPath": "/Users/mohamedkhachaniupm/civic/presentation/.build/v5/validation.json",
     "schemaVersion": "presentation-finalization.v1",
-    "finalSha256": "923c62c10257bda24980dce086c4adbd433c3f322ada1390786ff7cb484d3861",
-    "byteCount": 51274,
+    "finalSha256": "719462a28c0a65436662846be154a4258546871268415a8a2b1a9ee78c7fc9e9",
+    "byteCount": 51407,
     "packageIntegrity": {
       "chart_count": 2,
       "claim_boundary": "Structural package checks only; no slide text, notes, formulas, chart values, or native PowerPoint execution were inspected.",
@@ -169,7 +169,7 @@
       "performed": true,
       "passed": true,
       "slideCount": 7,
-      "sha256": "923c62c10257bda24980dce086c4adbd433c3f322ada1390786ff7cb484d3861",
+      "sha256": "719462a28c0a65436662846be154a4258546871268415a8a2b1a9ee78c7fc9e9",
       "runtimeNodeModules": "/Users/mohamedkhachaniupm/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules",
       "nodeExecutable": "/Users/mohamedkhachaniupm/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node"
     },
@@ -208,7 +208,7 @@
       "native_chart_count": 2,
       "native_powerpoint_verified": false,
       "passed": true,
-      "presentation_sha256": "923c62c10257bda24980dce086c4adbd433c3f322ada1390786ff7cb484d3861",
+      "presentation_sha256": "719462a28c0a65436662846be154a4258546871268415a8a2b1a9ee78c7fc9e9",
       "schema_version": "presentation-native-chart-titles.v1",
       "slide_count": 7,
       "source_text_emitted": false,
@@ -248,7 +248,7 @@
         "failed_slides": [],
         "formal_human_reviewed": false,
         "native_application_open_verified": false,
-        "package_sha256": "923c62c10257bda24980dce086c4adbd433c3f322ada1390786ff7cb484d3861",
+        "package_sha256": "719462a28c0a65436662846be154a4258546871268415a8a2b1a9ee78c7fc9e9",
         "passed": true,
         "results": [
           {
@@ -333,10 +333,10 @@
         4
       ],
       "experimental": true,
-      "input_sha256": "ae168793000a70b96f34d8084091bd50157186a5d0a1dada879b2e14e51b8206",
+      "input_sha256": "382581ee6cdc2335ab039395819006ab2ba608bedc26e0396f0fdcdd9e515688",
       "new_formulas_describe_snapshot_only": true,
-      "output_bytes": 51274,
-      "output_sha256": "923c62c10257bda24980dce086c4adbd433c3f322ada1390786ff7cb484d3861",
+      "output_bytes": 51407,
+      "output_sha256": "719462a28c0a65436662846be154a4258546871268415a8a2b1a9ee78c7fc9e9",
       "portable_chart_validation_passed": true,
       "portable_validated_owner_slides": [
         3,

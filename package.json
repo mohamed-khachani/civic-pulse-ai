@@ -1,0 +1,14 @@
+{
+  "name": "atlas-madrid-workspace",
+  "private": true,
+  "scripts": {
+    "dev": "node scripts/dev.mjs",
+    "dev:api": "npm --prefix backend run dev",
+    "dev:web": "npm --prefix front-end run dev",
+    "build": "npm --prefix backend run build && npm --prefix front-end run build",
+    "test": "npm --prefix backend test && npm --prefix front-end test",
+    "test:integration": "node scripts/smoke.mjs",
+    "start": "node scripts/dev.mjs --production",
+    "stop": "node scripts/stop.mjs"
+  }
+}

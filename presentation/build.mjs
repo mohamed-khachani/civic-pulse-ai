@@ -125,14 +125,14 @@ function bar(s,categories,values,position,{max,unit=''}={}) {
  connect(s,ui,api);connect(s,api,db);
  const p=node(s,'1. Claude interpreta\nrequisitos y preferencias',70,355,350,100);
  const sql=node(s,'Filtros validados\ny SQL parametrizado',475,355,330,100);
- const rank=node(s,'2. Claude valora\nlotes de 300 anuncios',860,355,350,100);
+ const rank=node(s,'2. Claude valora\nlotes de 300, en paralelo',860,355,350,100);
  connect(s,p,sql);connect(s,sql,rank);
  text(s,'Claude Haiku 5.5 con datos de zona en arrays compactos',70,283,1110,43,20,colors.muted);
  text(s,'Logs de tokens, coste y latencia',70,493,650,55,20,colors.muted);
  text(s,'Hasta 50 resultados aceptados',860,491,360,58,24,colors.green,true);
  text(s,'Si faltan resultados, se analiza el siguiente lote hasta agotar candidatos o presupuesto.',72,585,1100,57,19,colors.muted);
  note(s,'API y conversación',50,
- 'La interfaz de Next.js consulta una API propia en Express y TypeScript. En la primera etapa, Claude Haiku 5.5 recibe los criterios y los datos relevantes de las secciones en arrays compactos. Devuelve un plan estructurado. El backend valida los campos y construye consultas parametrizadas para aplicar límites de precio, características y condiciones del entorno. En la segunda etapa, Claude valora lotes de hasta 300 anuncios. Si acepta menos de 50, el sistema consulta otro lote, respetando un presupuesto de tiempo y consumo. Dos etapas no significa siempre dos peticiones. El servidor registra tokens, coste estimado, latencia y los motivos de parada.',
+ 'La interfaz de Next.js consulta una API propia en Express y TypeScript. En la primera etapa, Claude Haiku 5.5 recibe los criterios y los datos relevantes de las secciones en arrays compactos. Devuelve un plan estructurado. El backend valida los campos y construye consultas parametrizadas para aplicar límites de precio, características y condiciones del entorno. En la segunda etapa, Claude valora lotes de hasta 300 anuncios, repartidos en dos peticiones paralelas. Los valores censales repetidos se agrupan sin perder sus secciones; pedir vivir en un barrio restringe la búsqueda a sus censos. Si acepta menos de 50, el sistema consulta otro lote, respetando un presupuesto de tiempo y consumo. Dos etapas no significa siempre dos peticiones. El servidor registra tokens, coste estimado, latencia y los motivos de parada.',
  ['backend/src/chat.ts','backend/src/claude.ts','backend/src/search.ts','backend/src/log.ts','front-end/src/lib/server/atlas-api.ts']);
 }
 // 6. Shared result set and routine.
@@ -144,7 +144,7 @@ function bar(s,categories,values,position,{max,unit=''}={}) {
  text(s,'Los trayectos diarios pesan más que las visitas ocasionales',74,517,1120,60,24,colors.dark,true);
  text(s,'Los trayectos del MVP son estimaciones de Claude, sin horarios ni conexiones verificados.',74,595,1100,55,18,colors.muted);
  note(s,'Experiencia de uso',35,
- 'La selección recibe un identificador común. Las fichas, el mapa y la exportación muestran ese mismo conjunto, y una conversación posterior conserva el contexto. Al pulsar un grupo del mapa aparecen sus anuncios, sin tener que localizar cada punto haciendo zoom. También puede explicar su rutina: ir a clase, visitar a la familia o ver a sus amigos. La frecuencia manda: los viajes diarios pesan más que las visitas ocasionales, salvo prioridad expresa. Para responder antes, Claude estima tiempos y recorridos de las cinco primeras viviendas. Son aproximaciones de IA, sin horarios ni conexiones comprobados.',
+ 'La selección recibe un identificador común. Las fichas, el mapa y la exportación muestran ese mismo conjunto, y una conversación posterior conserva el contexto. Al pulsar un grupo del mapa aparecen sus anuncios, sin tener que localizar cada punto haciendo zoom. También puede explicar su rutina: ir a clase, visitar a la familia o ver a sus amigos. Durante la búsqueda se oculta el listado anterior y rotan curiosidades reales. Los trayectos diarios pesan más que las visitas ocasionales. Claude estima rutas de las cinco primeras viviendas, usando transporte público por defecto u otro modo solicitado. El chat da un resumen breve: son aproximaciones de IA, sin horarios comprobados.',
  ['backend/src/db.ts','backend/src/chat.ts','front-end/src/stores/conversation-slice.ts','front-end/src/components/map/madrid-map.tsx']);
 }
 // 7. Honest close.

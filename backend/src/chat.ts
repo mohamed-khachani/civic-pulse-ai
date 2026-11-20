@@ -128,7 +128,11 @@ async function runChat(
   if (residential || canonical) {
     plan.filters.neighborhood = residential || canonical;
     // The neighborhood belongs to its own district; stale geography must not empty the search.
-    if (residential && plan.filters.district && !input.filters.district) delete plan.filters.district;
+    if (residential) {
+      delete plan.filters.district;
+      delete plan.filters.census_section;
+      delete plan.filters.bounds;
+    }
   }
   const allMetrics = await catalog();
   const known = new Set(

@@ -1,0 +1,14 @@
+{
+  "source_url": "https://www.madrid.es/UnidadesDescentralizadas/Sostenibilidad/Ruido/PlanAccionContaminacionAcustica/2025/PAMCA2025Memoria.pdf",
+  "publisher": "Ayuntamiento de Madrid",
+  "title": "PAMCA 2025, fixed noise monitoring station table",
+  "reference_year": 2025,
+  "extraction": "Station IDs and DMS coordinates transcribed from the official table indexed by web search; converted arithmetically to decimal WGS84.",
+  "excluded_station_ids": [
+    "16",
+    "24",
+    "54"
+  ],
+  "exclusion_reason": "Obvious coordinate inconsistencies in the published table: Arturo Soria latitude duplicates Villaverde, Casa de Campo east of city, Ensanche de Vallecas latitude in northeast. No guessed correction.",
+  "notes": "Partial verified metadata fallback because station CSV server unreachable. Station moves and current inventory require future verification."
+}

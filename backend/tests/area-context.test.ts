@@ -12,7 +12,8 @@ test("scoped area context groups identical values and preserves missing values a
   };
   try {
     const context = await areaContext("Quiero una zona tranquila", undefined, { neighborhood: "Ciudad Universitaria" });
-    assert.deepEqual(scope, ["Ciudad Universitaria", null]);
+    assert.deepEqual(scope.slice(0, 2), ["Ciudad Universitaria", null]);
+    assert.equal((scope[2] as string[]).length, 1);
     assert.equal(context.section_count, 3);
     assert.equal(context.rows.length, 2);
     assert.deepEqual(context.rows[0][0], ["2807909001", "2807909002"]);

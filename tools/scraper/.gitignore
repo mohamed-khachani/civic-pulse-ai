@@ -11,5 +11,6 @@ run-proxy.sh
 fotocasa_output
 logs
 logs_downloads
-mixed
+mixed/
 nuevos_logs/
+fotocasa_output/

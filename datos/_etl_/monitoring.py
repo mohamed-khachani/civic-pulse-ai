@@ -4,6 +4,7 @@ Measurements are point observations, not measured section-wide exposure. Require
 optional station-location CSVs. No fabricated station geocoding.
 """
 from collections import defaultdict
+from math import log10
 from common import source, iter_csv, as_number, as_int, point_of, PointIndex
 
 
@@ -94,12 +95,13 @@ def enrich(cfg, records, census):
                 continue
             latest_year = max(latest_year, year)
             agg = aggregate[(station, period, year)]
-            agg[0] += value
+            # Equal-duration LAeq readings combine as energy, not arithmetic dB.
+            agg[0] += 10 ** (value / 10)
             agg[1] += 1
         readings = defaultdict(dict)
         for (station, period, year), (total, n) in aggregate.items():
             if year == latest_year and n:
-                readings[station][f'noise_laeq_{period.lower()}_{year}_nearest_station_db_arithmetic_mean'] = total / n
+                readings[station][f'noise_laeq_{period.lower()}_{year}_nearest_station_db_energy_mean'] = 10 * log10(total / n)
                 readings[station][f'noise_laeq_{period.lower()}_{year}_nearest_station_observations'] = n
         report['noise'] = {'stations_with_locations': len(noise_geo), 'latest_year': latest_year,
                            'sections_near_monitor': assign_station_metrics(
