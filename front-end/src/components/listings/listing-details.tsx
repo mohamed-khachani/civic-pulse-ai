@@ -25,6 +25,7 @@ import {
 } from "../ui/dialog";
 import { Button } from "../ui/button";
 import { ListingImage } from "./listing-card";
+import { ListingLink } from "./listing-link";
 export function ListingDetails() {
   const id = useAtlas((s) => s.detailsId);
   return (
@@ -39,14 +40,15 @@ export function ListingDetails() {
   );
 }
 function DetailsBody({ id }: { id: string }) {
+  const resultSetId = useAtlas((s) => s.resultSetId);
   const {
     data: l,
     isPending,
     error,
     refetch,
   } = useQuery({
-    queryKey: ["detail", id],
-    queryFn: ({ signal }) => api.detail(id, signal),
+    queryKey: ["detail", id, resultSetId],
+    queryFn: ({ signal }) => api.detail(id, signal, resultSetId),
   });
   const [image, setImage] = useState(0);
   return (
@@ -99,19 +101,14 @@ function DetailsBody({ id }: { id: string }) {
                   </button>
                 </div>
               )}
-              {l.source === "demo" && (
-                <span className="detail-demo">
-                  Vivienda sintética · imágenes ilustrativas
-                </span>
-              )}
             </div>
             <div className="details-body">
               <div className="detail-top">
                 <div>
                   <span className="eyebrow">
-                    {l.source === "demo" ? "VIVIENDA DE EJEMPLO" : l.source}
+                    {l.source}
                   </span>
-                  <h2>{l.title}</h2>
+                  <h2><ListingLink id={l.id} url={l.url}>{l.title}</ListingLink></h2>
                   <p className="listing-location">
                     <MapPin size={14} />
                     {[l.neighborhood, l.district, "Madrid"]
@@ -198,7 +195,9 @@ function DetailsBody({ id }: { id: string }) {
                             ? "Distrito"
                             : m.scope === "neighborhood"
                               ? "Barrio"
-                              : "Vivienda"}
+                              : m.scope === "census"
+                                ? "Sección censal"
+                                : "Vivienda"}
                         </small>
                       </div>
                     ))}
@@ -232,7 +231,7 @@ function DetailsBody({ id }: { id: string }) {
                 ) : (
                   <span className="source-notice">
                     <Info size={15} />
-                    Ejemplo sin anuncio real
+                    Enlace al anuncio no disponible
                   </span>
                 )}
               </div>

@@ -7,7 +7,6 @@ import { Logo } from "./logo";
 import { ExportButton } from "./export-button";
 import { ChatPanel } from "./chat/chat-panel";
 import { ListingDetails } from "./listings/listing-details";
-import { isMock } from "@/lib/api";
 import { Popover } from "./ui/popover";
 import { Button } from "./ui/button";
 const MadridMap = dynamic(() => import("./map/madrid-map"), {
@@ -70,28 +69,15 @@ export function AppShell() {
               resultado en el mapa.
             </p>
             <p>
-              {isMock
-                ? "Modo demostración: viviendas sintéticas e imágenes ilustrativas. No son anuncios reales."
-                : "Los datos proceden de la API configurada."}
+              Anuncios de Pisos.com y Fotocasa, con datos de las zonas de Madrid.
+              Los trayectos sugeridos son estimaciones de IA, sin horarios verificados.
             </p>
           </Popover>
         </div>
       </header>
-      <div className="demo-banner">
-        {isMock ? (
-          <>
-            <span className="demo-badge">DEMO</span>Explora Atlas con viviendas
-            de ejemplo.{" "}
-            <span className="banner-extra">
-              Los anuncios y las imágenes son ilustrativos.
-            </span>
-          </>
-        ) : (
-          <>
-            <MapPin size={13} />
-            Tu próximo hogar empieza en Madrid.
-          </>
-        )}
+      <div className="context-banner">
+        <MapPin size={13} />
+        Tu próximo hogar empieza en Madrid.
       </div>
       <main
         id="main"

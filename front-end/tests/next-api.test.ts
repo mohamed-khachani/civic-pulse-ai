@@ -1,141 +1,83 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { handleAtlasRequest, getCensusSnapshot } from "@/lib/server/atlas-api";
+import { handleAtlasRequest } from "@/lib/server/atlas-api";
 import { api } from "@/lib/api";
-import { censusSectionInfoSchema } from "@/types";
+import { compactCensusMetricsSchema } from "@/types";
+
 afterEach(() => {
   vi.unstubAllGlobals();
   vi.unstubAllEnvs();
   vi.restoreAllMocks();
 });
-function demo() {
-  vi.stubEnv("NEXT_PUBLIC_USE_MOCK_API", "true");
-  vi.stubEnv("NEXT_PUBLIC_MOCK_LATENCY_MS", "0");
-}
 const req = (path: string, init?: RequestInit) =>
-  handleAtlasRequest(
-    new Request(`http://atlas.test/api/${path}`, init),
-    path.split("?")[0].split("/"),
-  );
-describe("Next.js data gateway", () => {
-  it("routes every client data method through same-origin Next.js API handlers, including mock mode", async () => {
-    demo();
-    vi.spyOn(console, "log").mockImplementation(() => {});
-    const paths: string[] = [];
-    vi.stubGlobal(
-      "fetch",
-      vi.fn(async (input: string, init?: RequestInit) => {
-        paths.push(input);
-        expect(input.startsWith("/api/")).toBe(true);
-        return handleAtlasRequest(
-          new Request("http://atlas.test" + input, init),
-          input.split("?")[0].slice(5).split("/"),
-        );
-      }),
-    );
-    const listings = await api.listings({ max_price: 1000 }, "price_asc");
-    expect(listings.listings.every((l) => l.price <= 1000)).toBe(true);
-    await api.detail(listings.listings[0].id);
-    await api.geo({ max_price: 1000 });
-    await api.options();
-    await api.layers();
-    const census = await api.census();
-    expect(census.features).toHaveLength(4518);
-    await api.censusMetrics();
-    const detail = await api.censusSection(
-      census.features[0].properties.id,
-      "hover",
-      "noise",
-    );
-    expect(detail.metrics).toHaveLength(3);
-    await api.chat({
-      message: "2 habitaciones por menos de 1000 €",
-      filters: {},
-    });
-    const csv = await api.export({ max_price: 1000 }, "price_asc");
-    expect((await csv.text()).includes("source,url,title")).toBe(true);
-    expect(paths).toHaveLength(10);
-    expect(
-      paths.some((p) => p.includes("/insights?interaction=hover&metric=noise")),
-    ).toBe(true);
-  });
-  it("returns compact per-section data and logs hover/click context server-side", async () => {
-    demo();
-    const log = vi.spyOn(console, "log").mockImplementation(() => {});
-    const id = (await getCensusSnapshot()).features[0].properties.id;
-    const response = await req(
-      `geo/census-sections/${id}/insights?interaction=click&metric=air`,
-    );
-    expect(response.status).toBe(200);
-    const body = await response.json();
-    expect(censusSectionInfoSchema.safeParse(body).success).toBe(true);
-    expect(body.metrics[0]).not.toHaveProperty("values");
-    expect(body.metrics[0]).not.toHaveProperty("stops");
-    expect(log).toHaveBeenCalledWith(
-      "[Atlas API] census section reached",
-      JSON.stringify({ section_id: id, interaction: "click", metric: "air" }),
-    );
-  });
-  it("rejects unknown routes, invalid filters and malformed chat bodies", async () => {
-    demo();
-    expect((await req("unknown")).status).toBe(404);
-    expect((await req("listings?max_price=invalid")).status).toBe(400);
-    expect((await req("listings?furnished=unknown")).status).toBe(400);
-    expect(
-      (
-        await req("chat", {
-          method: "POST",
-          body: JSON.stringify({ message: "" }),
-        })
-      ).status,
-    ).toBe(400);
-  });
-  it("forwards production requests server-side with query parameters intact", async () => {
-    vi.stubEnv("NEXT_PUBLIC_USE_MOCK_API", "false");
+  handleAtlasRequest(new Request(`http://atlas.test/api/${path}`, init), path.split("?")[0].split("/"));
+const metricPayload = {
+  sections: ["2807901001", "2807901002"],
+  metrics: [{
+    id: "noise", name: "Ruido", unit: "dB", kind: "estimated", source: "Municipal monitoring stations",
+    stops: [{ value: 40, color: "#00ff00" }, { value: 70, color: "#ff0000" }], values: [0, null],
+  }],
+};
+
+describe("Next.js real data gateway", () => {
+  it("forwards all supported data routes to Express with query parameters intact", async () => {
     vi.stubEnv("ATLAS_API_BASE_URL", "http://external.test");
-    const fetcher = vi.fn(async () =>
-      Response.json({ listings: [], total: 0, page: 1, page_size: 8 }),
-    );
+    const fetcher = vi.fn(async () => Response.json({ ok: true }));
     vi.stubGlobal("fetch", fetcher);
-    const response = await req("listings?max_price=1200&furnished=false");
-    expect(response.status).toBe(200);
-    expect(fetcher).toHaveBeenCalledWith(
-      new URL(
-        "http://external.test/api/listings?max_price=1200&furnished=false",
-      ),
-      expect.objectContaining({ method: "GET" }),
-    );
+    for (const path of [
+      "listings?max_price=1200&furnished=false", "listings/123?result_set_id=search-1", "listings/geo",
+      "listings/export", "listings/123/insights", "filters/options", "geo/layers", "geo/districts",
+      "geo/census-sections", "geo/census-metrics", "geo/metric-catalog", "geo/census-sections/2807901001/data", "geo/census-sections/2807901001/insights?interaction=click&metric=noise",
+    ]) {
+      expect((await req(path)).status).toBe(200);
+      expect(fetcher).toHaveBeenLastCalledWith(new URL(`http://external.test/api/${path}`), expect.objectContaining({ method: "GET", cache: "no-store" }));
+    }
   });
-  it("preserves streamed chat responses through the gateway", async () => {
-    vi.stubEnv("NEXT_PUBLIC_USE_MOCK_API", "false");
+  it("forwards chat context, streams, and request identifiers without logging personal data", async () => {
     vi.stubEnv("ATLAS_API_BASE_URL", "http://external.test");
     const payload = 'event: delta\ndata: {"text":"Hola"}\n\n';
-    vi.stubGlobal(
-      "fetch",
-      vi.fn(
-        async () =>
-          new Response(payload, {
-            headers: { "content-type": "text/event-stream" },
-          }),
-      ),
-    );
-    const response = await req("chat", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: "{}",
-    });
+    const fetcher = vi.fn(async () => new Response(payload, { headers: { "content-type": "text/event-stream", "x-request-id": "request-1" } }));
+    vi.stubGlobal("fetch", fetcher);
+    const body = JSON.stringify({ message: "Cerca de casa de mi familia", filters: {}, selected_listing_id: "123", result_set_id: "search-1" });
+    const response = await req("chat", { method: "POST", headers: { "Content-Type": "application/json", "X-Request-Id": "request-1" }, body });
+    expect(fetcher).toHaveBeenCalledWith(new URL("http://external.test/api/chat"), expect.objectContaining({ method: "POST", body, headers: expect.objectContaining({ "X-Request-Id": "request-1" }) }));
     expect(response.headers.get("content-type")).toBe("text/event-stream");
+    expect(response.headers.get("x-request-id")).toBe("request-1");
     expect(await response.text()).toBe(payload);
   });
-  it("returns a clear error for upstream failure rather than silently replacing it with fixtures", async () => {
-    vi.stubEnv("NEXT_PUBLIC_USE_MOCK_API", "false");
-    vi.stubEnv("ATLAS_API_BASE_URL", "http://external.test");
+  it("preserves backend validation, expired results and CSV download headers", async () => {
+    vi.stubGlobal("fetch", vi.fn(async () => Response.json({ error: "La búsqueda ha caducado." }, { status: 410 })));
+    const response = await req("listings?result_set_id=expired");
+    expect(response.status).toBe(410);
+    expect(await response.json()).toEqual({ error: "La búsqueda ha caducado." });
+    vi.stubGlobal("fetch", vi.fn(async () => new Response("id,title\n1,Piso", { headers: { "Content-Type": "text/csv", "Content-Disposition": 'attachment; filename="listings.csv"' } })));
+    expect((await req("listings/export")).headers.get("content-disposition")).toContain("listings.csv");
+  });
+  it("rejects unsupported routes and proxy loops", async () => {
+    expect((await req("unknown")).status).toBe(404);
+    expect((await req("listings", { method: "DELETE" })).status).toBe(404);
+    expect((await handleAtlasRequest(new Request("http://atlas.test/api/listings"), ["..", "listings"])).status).toBe(404);
+    vi.stubEnv("ATLAS_API_BASE_URL", "http://atlas.test");
+    expect((await req("listings")).status).toBe(503);
+  });
+  it("returns an error on upstream failure without switching to fixture data", async () => {
     vi.spyOn(console, "error").mockImplementation(() => {});
-    vi.stubGlobal(
-      "fetch",
-      vi.fn(async () => {
-        throw new Error("offline");
-      }),
-    );
+    vi.stubGlobal("fetch", vi.fn(async () => { throw new Error("offline"); }));
     expect((await req("listings")).status).toBe(502);
+  });
+  it("decodes ordered metric arrays without losing zeroes or missing values", async () => {
+    vi.stubGlobal("fetch", vi.fn(async () => Response.json(metricPayload)));
+    const metrics = await api.censusMetrics();
+    expect(metrics[0].values).toEqual({ "2807901001": 0, "2807901002": null });
+    expect(compactCensusMetricsSchema.safeParse({ ...metricPayload, sections: ["2807901001"] }).success).toBe(false);
+    expect(compactCensusMetricsSchema.safeParse({ ...metricPayload, sections: ["2807901001", "2807901001"] }).success).toBe(false);
+  });
+  it("includes the result set when fetching property-specific assessments", async () => {
+    const fetcher = vi.fn(async () => Response.json({ id: "123", source: "pisos.com", title: "Piso", price: 1000,
+      insights: { metrics: [{ label: "Ruido", value: "53 dB", kind: "estimated", scope: "census" }] },
+    }));
+    vi.stubGlobal("fetch", fetcher);
+    const listing = await api.detail("123", undefined, "search-1");
+    expect(listing.insights?.metrics[0].scope).toBe("census");
+    expect(fetcher).toHaveBeenCalledWith("/api/listings/123?result_set_id=search-1", expect.any(Object));
   });
 });

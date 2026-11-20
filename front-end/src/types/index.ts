@@ -13,14 +13,14 @@ export const insightsSchema = z.object({
       value: z.string(),
       detail: z.string().optional(),
       kind: z.enum(["observed", "estimated"]),
-      scope: z.enum(["listing", "neighborhood", "district"]),
+      scope: z.enum(["listing", "census", "neighborhood", "district"]),
     }),
   ),
   note: z.string().optional(),
 });
 export const listingSchema = z.object({
   id: z.string(),
-  source: z.enum(["pisos.com", "Fotocasa", "demo"]),
+  source: z.enum(["pisos.com", "Fotocasa"]),
   url: z.url().nullable().optional(),
   title: z.string(),
   description: z.string().nullable().optional(),
@@ -64,7 +64,7 @@ export const filtersSchema = z.object({
   district: z.string().optional(),
   neighborhood: z.string().optional(),
   census_section: z.string().optional(),
-  source: z.enum(["pisos.com", "Fotocasa", "demo"]).optional(),
+  source: z.enum(["pisos.com", "Fotocasa"]).optional(),
   bounds: boundsSchema.optional(),
   near_metro: z.boolean().optional(),
 });
@@ -163,7 +163,7 @@ export const censusMetricSchema = z.object({
   id: z.string(),
   name: z.string(),
   unit: z.string(),
-  kind: z.enum(["observed", "estimated", "synthetic"]),
+  kind: z.enum(["observed", "estimated"]),
   source: z.string(),
   description: z.string().optional(),
   year: z.number().int().optional(),
@@ -178,6 +178,13 @@ export const censusMetricSchema = z.object({
 });
 export type CensusCollection = z.infer<typeof censusCollectionSchema>;
 export type CensusMetric = z.infer<typeof censusMetricSchema>;
+export const compactCensusMetricsSchema = z.object({
+  sections: z.array(z.string()).refine((ids) => new Set(ids).size === ids.length, "Section identifiers must be unique"),
+  metrics: z.array(censusMetricSchema.extend({
+    kind: z.enum(["observed", "estimated"]),
+    values: z.array(z.number().finite().nullable()),
+  })),
+}).refine(({ sections, metrics }) => metrics.every((metric) => metric.values.length === sections.length), "Metric values must align with sections");
 export const censusSectionInfoSchema = z.object({
   id: z.string(),
   municipality: z.string(),
@@ -187,7 +194,7 @@ export const censusSectionInfoSchema = z.object({
       name: z.string(),
       unit: z.string(),
       value: z.number().nullable(),
-      kind: z.enum(["observed", "estimated", "synthetic"]),
+      kind: z.enum(["observed", "estimated"]),
       source: z.string(),
       description: z.string().optional(),
       year: z.number().optional(),
@@ -223,7 +230,7 @@ export const geographicLayerSchema = z.object({
 export const optionsSchema = z.object({
   districts: z.array(z.string()),
   neighborhoods: z.array(z.string()),
-  sources: z.array(z.enum(["pisos.com", "Fotocasa", "demo"])),
+  sources: z.array(z.enum(["pisos.com", "Fotocasa"])),
   features: z.array(
     z.enum([
       "furnished",

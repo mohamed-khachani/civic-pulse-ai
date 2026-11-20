@@ -61,8 +61,9 @@ import {
   createCensusHoverIntent,
   CENSUS_DETAIL_MIN_ZOOM,
 } from "@/lib/census-hover-intent";
-import { mapHoverTarget } from "@/lib/map-interactions";
+import { mapHoverTarget, overlappingListings, listingGroupAnchor } from "@/lib/map-interactions";
 import { LoadingStatus } from "../ui/loading-status";
+import { ListingGroupPopup, type ListingGroup } from "./listing-group-popup";
 const constrainCamera: maplibregl.TransformConstrainFunction = (
   lngLat,
   zoom,
@@ -76,6 +77,7 @@ export default function MadridMap() {
   const [ready, setReady] = useState(false);
   const [failed, setFailed] = useState(false);
   const [popupId, setPopupId] = useState<string>();
+  const [listingGroup, setListingGroup] = useState<ListingGroup>();
   const [hoveredId, setHoveredId] = useState<string>();
   const [overListing, setOverListing] = useState(false);
   const [hoveredCensus, setHoveredCensus] = useState<{
@@ -103,6 +105,8 @@ export default function MadridMap() {
   const viewport = useAtlas((s) => s.viewport);
   const visibleLayers = useAtlas((s) => s.visibleLayers);
   const pendingChat = useAtlas((s) => s.pending);
+  const resultSetId = useAtlas((s) => s.resultSetId);
+  const searchRevision = useAtlas((s) => s.searchRevision);
   const censusVisible = useAtlas((s) => s.censusVisible);
   const activeMetric = useAtlas((s) => s.activeCensusMetric);
   const listingsVisible = useAtlas((s) => s.listingsVisible);
@@ -137,8 +141,8 @@ export default function MadridMap() {
     error: popupError,
     isPending: popupPending,
   } = useQuery({
-    queryKey: ["detail", popupId],
-    queryFn: ({ signal }) => api.detail(popupId!, signal),
+    queryKey: ["detail", popupId, resultSetId],
+    queryFn: ({ signal }) => api.detail(popupId!, signal, resultSetId),
     enabled: !!popupFeature,
   });
   const lastAction = useRef(-1);
@@ -230,7 +234,10 @@ export default function MadridMap() {
             ? 0
             : 500,
         });
-        queueMicrotask(() => setPopupId(a.listing_id));
+        queueMicrotask(() => {
+          setListingGroup(undefined);
+          setPopupId(a.listing_id);
+        });
       }
     }
     if (a.type !== "none") useAtlas.setState({ fittedResultKey: resultKey });
@@ -270,7 +277,7 @@ export default function MadridMap() {
     () => ["==", ["get", "id"], selected ?? ""] as never,
     [selected],
   );
-  async function onClick(e: MapLayerMouseEvent) {
+  function onClick(e: MapLayerMouseEvent) {
     const target = mapHoverTarget(e.features, listingsVisible);
     if (target?.type === "section" && censusVisible) {
       if ((map.current?.getZoom() ?? 0) < CENSUS_DETAIL_MIN_ZOOM) return;
@@ -283,30 +290,39 @@ export default function MadridMap() {
       });
       setHoveredCensus(undefined);
       setPopupId(undefined);
+      setListingGroup(undefined);
       return;
     }
     const feature = listingsVisible
-      ? e.features?.find((f) => f.layer.id !== "census-fill")
+      ? e.features?.find((f) => ["clusters", "prices", "selected-price"].includes(f.layer.id))
       : undefined;
     if (!feature) return;
+    censusHoverIntent.cancel();
+    useAtlas.getState().selectCensus(undefined);
+    setPinnedCensus(undefined);
+    const anchor = listingGroupAnchor(e.point, map.current?.getContainer().clientWidth ?? 800, map.current?.getContainer().clientHeight ?? 600);
     if (feature.properties?.cluster_id !== undefined) {
-      const source = map.current?.getSource("listings") as GeoJSONSource;
-      const zoom = await source.getClusterExpansionZoom(
-        feature.properties.cluster_id,
-      );
       const coords = (feature.geometry as GeoJSON.Point).coordinates;
-      map.current?.easeTo({
-        center: [coords[0], coords[1]],
-        zoom,
-        duration: window.matchMedia("(prefers-reduced-motion: reduce)").matches
-          ? 0
-          : 400,
+      setPopupId(undefined);
+      setListingGroup({
+        key: crypto.randomUUID(), longitude: coords[0], latitude: coords[1],
+        total: Number(feature.properties.point_count), clusterId: Number(feature.properties.cluster_id),
+        searchRevision, resultKey, anchor,
       });
     } else if (feature.properties?.id) {
-      useAtlas.getState().selectCensus(undefined);
       const id = String(feature.properties.id);
       useAtlas.getState().select(id);
-      setPopupId(id);
+      const members = (map.current?.getZoom() ?? 0) >= 14
+        ? overlappingListings(geo?.features ?? [], id, (coordinates) => map.current!.project(coordinates))
+        : [];
+      if (members.length > 1) {
+        const coords = members[0].geometry.coordinates;
+        setPopupId(undefined);
+        setListingGroup({ key: crypto.randomUUID(), longitude: coords[0], latitude: coords[1], total: members.length, members, searchRevision, resultKey, anchor });
+      } else {
+        setListingGroup(undefined);
+        setPopupId(id);
+      }
     }
   }
   function searchBounds() {
@@ -368,6 +384,7 @@ export default function MadridMap() {
           ]
         }
         minZoom={MADRID_MIN_ZOOM}
+        maxZoom={22}
         renderWorldCopies={false}
         transformConstrain={constrainCamera}
         locale={{ "Popup.Close": "Cerrar vista previa" }}
@@ -401,7 +418,7 @@ export default function MadridMap() {
             zoom: e.viewState.zoom,
           })
         }
-        onClick={(e) => void onClick(e)}
+        onClick={onClick}
         interactiveLayerIds={[
           ...(listingsVisible ? ["clusters", "prices", "selected-price"] : []),
           ...(censusVisible && census.data ? ["census-fill"] : []),
@@ -457,10 +474,10 @@ export default function MadridMap() {
           <Source
             id="listings"
             type="geojson"
-            data={geo ?? { type: "FeatureCollection", features: [] }}
+            data={!pendingChat && !isPlaceholderData && filtersReady && geo ? geo : { type: "FeatureCollection", features: [] }}
             cluster
-            clusterMaxZoom={13}
-            clusterRadius={42}
+            clusterMaxZoom={22}
+            clusterRadius={80}
           >
             <Layer
               id="clusters"
@@ -489,6 +506,7 @@ export default function MadridMap() {
               layout={{
                 visibility: listingsVisible ? "visible" : "none",
                 "text-field": ["get", "point_count_abbreviated"],
+                "text-allow-overlap": true,
                 "text-font": ["Open Sans Regular"],
                 "text-size": 13,
               }}
@@ -560,7 +578,17 @@ export default function MadridMap() {
             }}
           />
         )}
-        {listingsVisible && popupFeature && (
+        {!pendingChat && listingsVisible && listingGroup && listingGroup.searchRevision === searchRevision && listingGroup.resultKey === resultKey && (
+          <ListingGroupPopup key={listingGroup.key} group={listingGroup}
+            getSource={() => map.current?.getSource("listings") as GeoJSONSource | undefined}
+            resultSetId={resultSetId} onClose={() => setListingGroup(undefined)}
+            onFit={(members) => {
+              const bounds = resultBounds(members);
+              if (!bounds) return;
+              map.current?.fitBounds(bounds, { padding: 90, maxZoom: 16, duration: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 450 });
+            }} />
+        )}
+        {!pendingChat && listingsVisible && popupFeature && !listingGroup && (
           <Popup
             longitude={popupFeature.geometry.coordinates[0]}
             latitude={popupFeature.geometry.coordinates[1]}
@@ -588,7 +616,7 @@ export default function MadridMap() {
                       {euros(popup.price)}
                       <small>/mes</small>
                     </strong>
-                    <h3>{popup.title}</h3>
+                    <h3>{popup.url ? <a href={popup.url} target="_blank" rel="noopener noreferrer">{popup.title}</a> : popup.title}</h3>
                     <p>
                       {popup.neighborhood}
                       {popup.surface_m2 != null

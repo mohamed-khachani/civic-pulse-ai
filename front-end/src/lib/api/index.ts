@@ -3,6 +3,7 @@ import {
   geographicLayerSchema,
   censusCollectionSchema,
   censusMetricSchema,
+  compactCensusMetricsSchema,
   censusSectionInfoSchema,
   geoResponseSchema,
   listingSchema,
@@ -15,12 +16,16 @@ import {
 import { endpoints, json, request } from "./client";
 import { readChatResponse } from "./chat";
 import { serializeFilters } from "@/lib/search";
-export { isMock } from "./client";
 export const api = {
   census: (signal?: AbortSignal) =>
     json(endpoints.census, censusCollectionSchema, { signal }),
-  censusMetrics: (signal?: AbortSignal) =>
-    json(endpoints.censusMetrics, z.array(censusMetricSchema), { signal }),
+  censusMetrics: async (signal?: AbortSignal) => {
+    const { sections, metrics } = await json(endpoints.censusMetrics, compactCensusMetricsSchema, { signal });
+    return metrics.map((metric) => censusMetricSchema.parse({
+      ...metric,
+      values: Object.fromEntries(sections.map((id, index) => [id, metric.values[index]])),
+    }));
+  },
   censusSection: (
     id: string,
     interaction: "hover" | "click",
@@ -44,8 +49,8 @@ export const api = {
       searchResponseSchema,
       { signal },
     ),
-  detail: async (id: string, signal?: AbortSignal) =>
-    json(endpoints.detail(id), listingSchema, { signal }),
+  detail: async (id: string, signal?: AbortSignal, resultSetId?: string) =>
+    json(`${endpoints.detail(id)}${resultSetId ? `?${new URLSearchParams({ result_set_id: resultSetId })}` : ""}`, listingSchema, { signal }),
   geo: async (
     f: ListingSearchFilters,
     signal?: AbortSignal,

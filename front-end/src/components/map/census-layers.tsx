@@ -35,7 +35,7 @@ export function CensusMapLayers({ hoveredId }: { hoveredId?: string }) {
       id="census-sections"
       type="geojson"
       data={display}
-      attribution="Seccionado cedido por el Instituto Nacional de Estadística · 2025"
+      attribution="Seccionado municipal de Madrid · fuente y fecha según el conjunto de datos"
     >
       <Layer
         id="census-fill"
@@ -184,11 +184,7 @@ function CensusPanel() {
               <span>
                 {metric.name}
                 <small>
-                  {metric.kind === "synthetic"
-                    ? "DEMO · valores sintéticos"
-                    : metric.kind === "estimated"
-                      ? "Estimación"
-                      : "Dato observado"}{" "}
+                  {metric.kind === "estimated" ? "Estimación" : "Dato observado"}{" "}
                   · {metric.unit}
                 </small>
               </span>
@@ -205,7 +201,7 @@ function CensusPanel() {
         <LoadingStatus
           compact
           title="Cargando datos del mapa"
-          detail="Preparando las zonas de la Comunidad de Madrid."
+          detail="Preparando las zonas de Madrid."
         />
       )}
       {visible && census.error && (
@@ -239,8 +235,8 @@ function CensusPanel() {
         </div>
       )}
       <p className="census-attribution">
-        Seccionado cedido por el Instituto Nacional de Estadística. Cartografía
-        2025; no representa medidas ambientales actuales.
+        Consulta la fuente y el año de cada variable. Los valores ambientales
+        de estaciones cercanas son estimaciones para la zona.
       </p>
     </div>
   );
@@ -295,11 +291,7 @@ function CensusSectionInfo({
                 </strong>
               </div>
               <small>
-                {metric.kind === "synthetic"
-                  ? "DEMO · dato sintético"
-                  : metric.kind === "estimated"
-                    ? `Estimación · ${metric.source}`
-                    : metric.source}
+                {metric.kind === "estimated" ? `Estimación · ${metric.source}` : metric.source}
               </small>
             </div>
           ))}
@@ -369,14 +361,8 @@ export function CensusLegend({ hidden = false }: { hidden?: boolean }) {
   return (
     <div className="census-legend">
       <h4>{metric.name}</h4>
-      <span
-        className={`metric-kind ${metric.kind === "synthetic" ? "metric-demo" : ""}`}
-      >
-        {metric.kind === "synthetic"
-          ? "DEMO · valores sintéticos"
-          : metric.kind === "observed"
-            ? "Dato observado"
-            : "Estimación"}{" "}
+      <span className="metric-kind">
+        {metric.kind === "observed" ? "Dato observado" : "Estimación"}{" "}
         · {metric.unit}
       </span>
       <div

@@ -9,6 +9,7 @@ import { ListingList } from "@/components/listings/listing-list";
 import { Logo } from "../logo";
 import { Button } from "../ui/button";
 import { LoadingStatus } from "../ui/loading-status";
+import { WaitingListing } from "./waiting-listing";
 export function ChatPanel({ compact }: { compact: boolean }) {
   const messages = useAtlas((s) => s.messages);
   const pending = useAtlas((s) => s.pending);
@@ -76,10 +77,13 @@ export function ChatPanel({ compact }: { compact: boolean }) {
             </div>
           ))}
           {pending && (
+            <>
             <LoadingStatus
               title="Atlas está buscando tu próximo hogar"
               detail="Estamos procesando tus criterios y consultando las viviendas. Los resultados aparecerán aquí y en el mapa."
             />
+            <WaitingListing />
+            </>
           )}
           <div ref={bottom} />
         </div>
@@ -100,7 +104,7 @@ export function ChatPanel({ compact }: { compact: boolean }) {
             ))}
           </div>
         )}
-        <ListingList compact={compact} />
+        {!pending && <ListingList compact={compact} />}
       </div>
       <div className="chat-input-area">
         {selectedId && (
@@ -119,7 +123,7 @@ export function ChatPanel({ compact }: { compact: boolean }) {
         )}
         <ChatInput />
         <p className="input-footnote">
-          Tu búsqueda, a tu ritmo. Los datos de cada anuncio pueden variar.
+          Los trayectos son estimaciones de IA; comprueba las líneas y los horarios antes de viajar.
         </p>
       </div>
     </div>

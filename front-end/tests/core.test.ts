@@ -3,8 +3,8 @@ import { QueryClient } from "@tanstack/react-query";
 import { serializeFilters, filterListings } from "@/lib/search";
 import { escapeCsv, toCsv, csvColumns } from "@/lib/csv";
 import { mapActionSchema, listingSchema, chatResponseSchema } from "@/types";
-import { mockListings } from "@/lib/mock/data";
-import { mockApi, parseMockFilters } from "@/lib/mock/adapter";
+import { mockListings } from "./fixtures/data";
+import { mockApi, parseMockFilters } from "./fixtures/adapter";
 import { viewportCamera, metricRange } from "@/lib/map";
 import { useAtlas } from "@/stores/atlas-store";
 const initial = useAtlas.getState();
@@ -45,7 +45,7 @@ describe("Search contracts", () => {
       id: "x",
       title: "Piso",
       price: 900,
-      source: "demo",
+      source: "pisos.com",
       furnished: false,
     });
     expect(l.images).toEqual([]);
@@ -154,7 +154,7 @@ describe("Export", () => {
         id: "x",
         title: "Piso",
         price: 900,
-        source: "demo",
+        source: "pisos.com",
         images: [],
         furnished: false,
       },

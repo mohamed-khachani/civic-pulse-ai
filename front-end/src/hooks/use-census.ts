@@ -23,17 +23,7 @@ export function useCensusSection(id: string, interaction: "hover" | "click") {
   const metric = useAtlas((s) => s.activeCensusMetric);
   return useQuery({
     queryKey: ["census-section", id, interaction, metric],
-    queryFn: ({ signal }) => {
-      console.log(
-        "[Atlas] census section reached",
-        JSON.stringify({
-          section_id: id,
-          interaction,
-          metric,
-        }),
-      );
-      return api.censusSection(id, interaction, metric, signal);
-    },
+    queryFn: ({ signal }) => api.censusSection(id, interaction, metric, signal),
     staleTime: 0,
     refetchOnMount: "always",
     retry: false,

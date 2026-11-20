@@ -39,7 +39,7 @@ export const mockListings: Listing[] = rows.map(
     i,
   ) => ({
     id: `demo-${i + 1}`,
-    source: "demo",
+    source: "pisos.com",
     url: null,
     title: `${i % 3 === 0 ? "Piso luminoso" : i % 3 === 1 ? "Un hogar con encanto" : "Piso exterior"} en ${neighborhood}`,
     description: `Vivienda de ejemplo en ${neighborhood}, ${district}. Distribución con ${bedrooms} ${bedrooms === 1 ? "dormitorio" : "dormitorios"}, salón y cocina independiente. Esta ficha es sintética: las imágenes son ilustrativas y no corresponden a una vivienda en alquiler. No es un anuncio real.`,
@@ -67,7 +67,7 @@ export const mockListings: Listing[] = rows.map(
 export const mockOptions: FilterOptions = {
   districts: [...new Set(rows.map((r) => r[0]))].sort(),
   neighborhoods: rows.map((r) => r[1]).sort(),
-  sources: ["demo"],
+  sources: ["pisos.com"],
   features: ["furnished", "elevator", "parking", "air_conditioning", "terrace"],
   sorts: ["recommended", "price_asc", "price_desc", "surface_desc", "updated"],
 };

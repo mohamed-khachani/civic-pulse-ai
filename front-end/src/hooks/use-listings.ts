@@ -16,7 +16,9 @@ export function useListings(page = 1) {
   const filters = useDebounced(currentFilters);
   const sort = useAtlas((s) => s.sort);
   const resultSetId = useAtlas((s) => s.resultSetId);
+  const pending = useAtlas((s) => s.pending);
   const query = useQuery({
+    enabled: !pending,
     placeholderData: keepPreviousData,
     queryKey: ["listings", filters, sort, page, resultSetId],
     queryFn: ({ signal }) =>
@@ -28,7 +30,9 @@ export function useGeo() {
   const currentFilters = useAtlas((s) => s.filters);
   const filters = useDebounced(currentFilters);
   const resultSetId = useAtlas((s) => s.resultSetId);
+  const pending = useAtlas((s) => s.pending);
   const query = useQuery({
+    enabled: !pending,
     placeholderData: keepPreviousData,
     queryKey: ["geo", filters, resultSetId],
     queryFn: ({ signal }) => api.geo(filters, signal, resultSetId),

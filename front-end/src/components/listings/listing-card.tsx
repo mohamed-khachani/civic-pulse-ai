@@ -6,6 +6,7 @@ import { useState } from "react";
 import type { Listing } from "@/types";
 import { useAtlas } from "@/stores/atlas-store";
 import { euros } from "@/lib/utils";
+import { ListingLink } from "./listing-link";
 export function ListingImage({
   src,
   alt,
@@ -43,30 +44,31 @@ export function ListingCard({
     <article
       className={`listing-card ${compact ? "listing-compact" : ""} ${selected ? "selected" : ""}`}
     >
-      <button
+      <ListingLink
+        id={l.id}
+        url={l.url}
         className="listing-image-button"
-        onClick={() => useAtlas.getState().openDetails(l.id)}
-        aria-label={`Ver detalles: ${l.title}`}
+        label={`Abrir anuncio: ${l.title}`}
       >
         <ListingImage src={l.images[0]} alt={l.title} />
-        {l.source === "demo" && <span className="image-demo">Ejemplo</span>}
         {l.compatibility && (
           <span className="compatibility-tag">
             {l.compatibility.score}/100 de compatibilidad
           </span>
         )}
-      </button>
+      </ListingLink>
       <div className="listing-copy">
         <div className="listing-price">
           {euros(l.price)}
           <span>/mes</span>
         </div>
-        <button
+        <ListingLink
+          id={l.id}
+          url={l.url}
           className="listing-title"
-          onClick={() => useAtlas.getState().openDetails(l.id)}
         >
           {l.title}
-        </button>
+        </ListingLink>
         <p className="listing-location">
           <MapPin size={12} />
           {[l.neighborhood, l.district].filter(Boolean).join(" · ") ||
@@ -93,7 +95,8 @@ export function ListingCard({
           )}
         </div>
         <div className="listing-bottom">
-          <span>{l.source === "demo" ? "Datos sintéticos" : l.source}</span>
+          <span>{l.source}</span>
+          <button aria-label={`Ver detalles: ${l.title}`} onClick={() => useAtlas.getState().openDetails(l.id)}>Ver detalles</button>
           <button
             onClick={() => {
               const s = useAtlas.getState();

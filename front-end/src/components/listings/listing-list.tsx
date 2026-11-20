@@ -26,12 +26,15 @@ export function ListingList({ compact = false }: { compact?: boolean }) {
     setPrevious({ filters, sort });
     setPage(1);
   }
-  const { data, error, isPending, isFetching, filtersReady, refetch } =
+  const { data, error, isPending, isFetching, isPlaceholderData, filtersReady, refetch } =
     useListings(page);
   const pendingChat = useAtlas((s) => s.pending);
   const refreshing = isFetching || !filtersReady;
 
   const options = useOptions();
+  const messages = useAtlas((s) => s.messages);
+  const resultSetId = useAtlas((s) => s.resultSetId);
+  if (pendingChat || (messages.length > 0 && (!filtersReady || isPlaceholderData || (!resultSetId && Object.keys(filters).length === 0)))) return null;
   return (
     <section
       className="results-section"

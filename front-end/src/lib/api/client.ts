@@ -1,8 +1,4 @@
 import { z } from "zod";
-export const isMock =
-  process.env.NEXT_PUBLIC_USE_MOCK_API === "true" ||
-  (process.env.NODE_ENV === "development" &&
-    process.env.NEXT_PUBLIC_USE_MOCK_API === undefined);
 export const endpoints = {
   chat: "/api/chat",
   listings: "/api/listings",
@@ -23,12 +19,12 @@ export async function request(
   init: RequestInit = {},
 ): Promise<Response> {
   const configuredTimeout = Number(
-    process.env.NEXT_PUBLIC_API_TIMEOUT_MS ?? 90000,
+    process.env.NEXT_PUBLIC_API_TIMEOUT_MS ?? 300000,
   );
   const timeout = AbortSignal.timeout(
     Number.isFinite(configuredTimeout)
       ? Math.max(1000, Math.min(300000, configuredTimeout))
-      : 90000,
+      : 300000,
   );
   const signal = init.signal
     ? AbortSignal.any([init.signal, timeout])
@@ -39,10 +35,14 @@ export async function request(
       signal,
       headers: { Accept: "application/json", ...init.headers },
     });
-    if (!response.ok)
+    if (!response.ok) {
+      const payload = await response.json().catch(() => null);
       throw new Error(
-        `El servicio devolvió un error (${response.status}). Inténtalo de nuevo.`,
+        typeof payload?.error === "string"
+          ? payload.error
+          : `El servicio devolvió un error (${response.status}). Inténtalo de nuevo.`,
       );
+    }
     return response;
   } catch (error) {
     if (timeout.aborted)

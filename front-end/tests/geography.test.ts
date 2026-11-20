@@ -32,7 +32,7 @@ const metric = censusMetricSchema.parse({
   id: "noise",
   name: "Ruido",
   unit: "dB",
-  kind: "synthetic",
+  kind: "estimated",
   source: "Test fixture",
   stops: [
     { value: 40, color: "#00ff00" },
@@ -133,7 +133,7 @@ describe("Full regional census and thematic mapping", () => {
     expect("sectionColors" in s).toBe(false);
     expect("metricColors" in s).toBe(false);
   });
-  it("validates palettes and distinguishes synthetic from observed data", () => {
+  it("validates palettes and distinguishes estimates from observed data", () => {
     expect(
       censusMetricSchema.safeParse({
         ...metric,

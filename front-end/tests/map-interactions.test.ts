@@ -1,8 +1,8 @@
 import { describe, it, expect, afterEach } from "vitest";
-import { mapHoverTarget } from "@/lib/map-interactions";
+import { mapHoverTarget, listingMembers, overlappingListings, listingGroupAnchor } from "@/lib/map-interactions";
 import { sectionMetrics } from "@/lib/census";
 import { useAtlas } from "@/stores/atlas-store";
-import type { CensusMetric } from "@/types";
+import type { CensusMetric, ListingGeoFeature } from "@/types";
 const initial = useAtlas.getState();
 afterEach(() => useAtlas.setState(initial, true));
 const section = {
@@ -71,7 +71,7 @@ describe("Map hover priority and analysis mode", () => {
         id,
         name: id,
         unit: "unit",
-        kind: "synthetic",
+        kind: "estimated",
         source: "Test",
         stops: [
           { value: 0, color: "#000000" },
@@ -83,5 +83,33 @@ describe("Map hover priority and analysis mode", () => {
     const rows = sectionMetrics(metrics, "2807901001");
     expect(rows.map((r) => r.id)).toEqual(["noise", "air", "population"]);
     expect(rows.map((r) => r.value)).toEqual([55, 0, null]);
+  });
+});
+
+const point = (id: string, x: number, y: number): ListingGeoFeature => ({
+  type: "Feature", geometry: { type: "Point", coordinates: [x, y] }, properties: { id, price: 1000 },
+});
+describe("Map groups and hidden price markers", () => {
+  it("centers a group at the middle of the map and grows inward near an edge", () => {
+    expect(listingGroupAnchor({ x: 425, y: 310 }, 850, 620)).toBe("center");
+    expect(listingGroupAnchor({ x: 30, y: 30 }, 850, 620)).toBe("top-left");
+    expect(listingGroupAnchor({ x: 820, y: 590 }, 850, 620)).toBe("bottom-right");
+  });
+  it("keeps every co-located cluster listing while deduplicating repeated IDs", () => {
+    const points = Array.from({ length: 60 }, (_, index) => point(String(index), 10, 10));
+    const members = listingMembers([...points, points[0], { type: "Feature", geometry: { type: "Point", coordinates: [10, 10] }, properties: { cluster_id: 7 } }]);
+    expect(members).toHaveLength(60);
+    expect(new Set(members.map((feature) => feature.properties.id)).size).toBe(60);
+    expect(members.every((feature) => feature.geometry.coordinates[0] === 10)).toBe(true);
+  });
+  it("finds hidden co-located and nearby points even when only one symbol was rendered", () => {
+    const points = [point("hidden", 100, 100), point("nearby", 130, 115), point("clicked", 100, 100), point("far-east", 160, 100), point("far-south", 100, 130)];
+    expect(overlappingListings(points, "clicked", ([x, y]) => ({ x, y })).map((feature) => feature.properties.id)).toEqual(["clicked", "hidden", "nearby"]);
+  });
+  it("uses screen coordinates at the current zoom, and never pulls distant labels into the group", () => {
+    const points = [point("clicked", 0, 0), point("other", 1, 0)];
+    expect(overlappingListings(points, "clicked", ([x, y]) => ({ x: x * 30, y })).length).toBe(2);
+    expect(overlappingListings(points, "clicked", ([x, y]) => ({ x: x * 100, y })).length).toBe(1);
+    expect(overlappingListings(points, "missing", ([x, y]) => ({ x, y }))).toEqual([]);
   });
 });
