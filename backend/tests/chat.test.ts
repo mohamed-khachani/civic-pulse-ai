@@ -107,7 +107,7 @@ async function scenario(mode: "refill" | "empty" | "unknown" | "journey") {
           : mode === "unknown"
             ? ["999999"]
             : input.candidates
-                .slice(0, evaluations === 1 ? 20 : 30)
+                .slice(0, evaluations <= 2 ? 10 : 15)
                 .map((row: unknown[]) => row[0]);
       output = {
         accepted: ids.map((id: string) => ({
@@ -156,7 +156,7 @@ async function scenario(mode: "refill" | "empty" | "unknown" | "journey") {
 test("chat refills from the next 300 candidates until 50 accepted listings are persisted", async () => {
   const { result, offsets, persisted, evaluations } = await scenario("refill");
   assert.deepEqual(offsets, [0, 300]);
-  assert.equal(evaluations, 2);
+  assert.equal(evaluations, 4);
   assert.equal(result.result_count, 50);
   assert.equal(persisted?.length, 50);
   assert.equal(new Set(persisted).size, 50);

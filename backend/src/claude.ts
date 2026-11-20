@@ -101,6 +101,7 @@ export async function askClaude<T>(args: {
   maxTokens: number;
   signal: AbortSignal;
   batch?: number;
+  part?: number;
 }): Promise<T> {
   if (!config.apiKey)
     throw new HttpError(
@@ -116,7 +117,8 @@ export async function askClaude<T>(args: {
       "PROMPT_BUDGET",
     );
   const started = Date.now();
-  log("claude_started", { request_id: args.requestId, stage: args.stage, batch: args.batch, input_chars: content.length });
+  log("claude_started", { request_id: args.requestId, stage: args.stage, batch: args.batch,
+      part: args.part, input_chars: content.length });
   for (let attempt = 0; attempt < 3; attempt++) {
     args.signal.throwIfAborted();
     let response: Response;
@@ -148,6 +150,7 @@ export async function askClaude<T>(args: {
         request_id: args.requestId,
         stage: args.stage,
         batch: args.batch,
+      part: args.part,
         attempt,
         elapsed_ms: Date.now() - started,
         error: args.signal.aborted ? "aborted" : "network",
@@ -168,6 +171,7 @@ export async function askClaude<T>(args: {
         request_id: args.requestId,
         stage: args.stage,
         batch: args.batch,
+      part: args.part,
         status: response.status,
         provider_error_type: body.error?.type,
         provider_error_message:
@@ -214,6 +218,7 @@ export async function askClaude<T>(args: {
       request_id: args.requestId,
       stage: args.stage,
       batch: args.batch,
+      part: args.part,
       model: body.model,
       provider_request_id: response.headers.get("request-id"),
       attempt,

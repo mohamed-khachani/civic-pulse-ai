@@ -233,10 +233,15 @@ async function runChat(
       String(r.description || "").slice(0, 550),
       ...areaColumns.map((k) => r.area_data?.[k] ?? null),
     ]);
-    const evaluation = await askClaude({
+    const parts = candidates.length > 100
+      ? [candidates.slice(0, Math.ceil(candidates.length / 2)), candidates.slice(Math.ceil(candidates.length / 2))]
+      : [candidates];
+    log("chat_evaluating", { request_id: requestId, batch, candidates: candidates.length, parallel_calls: parts.length });
+    const evaluationResults = await Promise.allSettled(parts.map((part, partIndex) => askClaude({
       stage: "evaluate",
       requestId,
       batch,
+      part: partIndex + 1,
       system: assessorSystem,
       input: {
         message: input.message,
@@ -272,13 +277,13 @@ async function runChat(
             m.year,
             m.description,
           ]),
-        candidates,
-        target_remaining: config.target - accepted.size,
+        candidates: part,
+        target_remaining: Math.ceil((config.target - accepted.size) / parts.length),
         accepted_so_far: accepted.size,
         previous_best: [...accepted.values()]
           .sort((a, b) => b.score - a.score)
           .slice(0, 5),
-        database_exhausted: offset >= count,
+        database_exhausted: offset >= count && parts.length === 1,
         selected_listing: selected
           ? {
               id: selected.id,
@@ -291,9 +296,20 @@ async function runChat(
       },
       schema: quickEvaluationSchema,
       jsonSchema: z.toJSONSchema(quickEvaluationSchema) as any,
-      maxTokens: 10000,
+      maxTokens: 4000,
       signal,
+    })));
+    const failedPart = evaluationResults.find((item) => item.status === "rejected");
+    if (failedPart?.status === "rejected") throw failedPart.reason;
+    const evaluations = evaluationResults.map((item) => {
+      if (item.status === "rejected") throw item.reason;
+      return item.value;
     });
+    const evaluation = {
+      accepted: evaluations.flatMap((item) => item.accepted),
+      message: evaluations[0].message,
+      suggestions: evaluations[0].suggestions,
+    };
     const allowed = new Set(eligible.map((r) => String(r.id)));
     for (const candidate of evaluation.accepted) {
       const a: Assessment = { ...candidate, routes: [] };
